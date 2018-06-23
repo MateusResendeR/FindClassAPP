@@ -42,7 +42,7 @@ script:
     - ./gradlew --continue build connectedCheck jacocoTestReport sonarqube -PdisablePreDex --stacktrace
     - ./gradlew build createDebugCoverageReport jacocTestReport sonarqube -PdisablePreDex --stacktrace
     #Mesmo q d� erro em algum teste integrado, ir� continuar e upar o que deu certo pro codecov
-    - chmod +x backend.sh && ./backend.sh $GITHUB_PASSHASH_PM $TRAVIS_BRANCH "$datahora"
+    #- chmod +x backend.sh && ./backend.sh $GITHUB_PASSHASH_PM $TRAVIS_BRANCH "$datahora"
     #assembleAndroidTest
 
 before_install:
