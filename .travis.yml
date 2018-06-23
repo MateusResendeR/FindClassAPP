@@ -40,8 +40,8 @@ before_script:
 script: 
     - datahora=`TZ=America/Recife date "+%A %d/%m/%Y %T"`' America/Recife'
     - ./gradlew --continue build connectedCheck jacocoTestReport sonarqube -PdisablePreDex --stacktrace
-    #- ./gradlew build createDebugCoverageReport jacocTestReport sonarqube -PdisablePreDex --stacktrace
-    #Mesmo q dê erro em algum teste integrado, irá continuar e upar o que deu certo pro codecov
+    - ./gradlew build createDebugCoverageReport jacocTestReport sonarqube -PdisablePreDex --stacktrace
+    #Mesmo q dï¿½ erro em algum teste integrado, irï¿½ continuar e upar o que deu certo pro codecov
     - chmod +x backend.sh && ./backend.sh $GITHUB_PASSHASH_PM $TRAVIS_BRANCH "$datahora"
     #assembleAndroidTest
 
@@ -51,7 +51,7 @@ before_install:
     - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55" > "$ANDROID_HOME/licenses/android-sdk-license"
     - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
     - pip install --user codecov
-    #- echo yes | android update sdk --all --filter build-tools-$ANDROID_BUILD_TOOLS_VERSION --no-ui --force
+    - echo yes | android update sdk --all --filter build-tools-$ANDROID_BUILD_TOOLS_VERSION --no-ui --force
 after_success:
     - bash <(curl -s https://codecov.io/bash)
 after_failure:
