@@ -1,5 +1,3 @@
-before_install:
-        - chmod +x gradlew
 language: android
 android:
     components:
@@ -26,3 +24,5 @@ android:
         - sys-img-armeabi-v7a-android-28
     licenses:
         - '.+'
+    script:
+        - chmod +x ./gradlew
