@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "383973575511",
+    "firebase_url": "https://findclass-a-jvm.firebaseio.com",
+    "project_id": "findclass-a-jvm",
+    "storage_bucket": "findclass-a-jvm.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:383973575511:android:1fbbc638ee0e7ecb",
+        "android_client_info": {
+          "package_name": "com.findclass.ajvm.findclassapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "383973575511-k5ck62c8nn2gp64urnfvmrrgg3bfuj3o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNpYz1ZjiTGQaWarUP8UDEPq2x9NssV6Y"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
