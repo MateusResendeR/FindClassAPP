@@ -13,6 +13,8 @@ android:
         - android-28
 
         # Additional components
+        - extra-android-support
+        - extra-android-m2repository
         #- extra-google-google_play_services
         #- extra-google-m2repository
         #- extra-android-m2repository
@@ -22,6 +24,7 @@ android:
         # Specify at least one system image,
         # if you need to run emulator(s) during your tests
         - sys-img-armeabi-v7a-android-28
+
     licenses:
         - '.+'
     script:
