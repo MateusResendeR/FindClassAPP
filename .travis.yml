@@ -1,0 +1,32 @@
+language: android
+sudo: enabled
+android:
+  commonents:
+  - tools
+  - platform-tools
+  - build-tools-28.0.3
+  - android-28
+  - extra
+before_install:
+    - chmod +x gradlew
+    - mkdir "$ANDROID_HOME/licenses"
+    - echo -e "\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
+addons:
+   apt:
+     update: true
+script:
+   - ./gradlew assembleRelease
+
+
+jobs:
+  include:
+    - stage: gem release
+      deploy:
+        provider: rubygems
+        api_key:
+          - secure: "t436ODiIAAMjnChfdmgI3kvhSeEXV3uVhE/UZERVvIEuP8rC966i9m6dkRvYOLQ72jE/7Wyy56wIFp0Fpx/qUeStxC1+v5zT8+dlQ51NUWaxZD/zWQYpX8YaDE2lvung665Jpiso4XkTZWaO8snJx9EPdLxPnNnRyTHYHIsdmvEVhSraq6qQ8zkThH1qh/o3jYlSnLrOV9LTAOBxX2VSp1AnlXM7mhGfxxqav/5g5G0FLNUXr1FKOmqFMMCohSJ+qL9+gszhL/9GA/aGgH5UD0t40IJGZ2KbnvXeqMWBQufSIQ6qZZlMtu2uwIypN66kJzI7NvWh1EzBqmDeVFm6UHcUBOBmmP/riv1Atvfv+CEYaO/EbYk3E8uAHYl0TilPZMNgtCVsqdwAxVtkM7LuoctFLbofHyumxHmfa4MGOryAphRSVk6dTYcJJcEo+aZiMYsaR1MOmz7RWrMNRQeLF3AI0xubqvEZLRZhrvAE3DA8ylIyd5uVKJGZ6PvP+JmMu5dfMKufn2N3GEiMhfY+6ZyBP3UPZ2/oFMR/QwasxTMiH7bvmmbdwgNBvbv4rslsDOmyLYq2R1DklDyU4rZfa0bNW8wZZNUNcGZKXm7fgd1vV4TEr8Uff6C/4yDZ4oflburVOl4L3UxU1WoLWNaP3DJLu17zggePYJ6ncUwci6w="
+        gem: for-azure-rm-test
+        gemspec: fog-azure-rm.gemspec
+        on:
+          tags: true
+branch: master
