@@ -1,3 +1,8 @@
 <resources>
-    <string name="app_name">FindClassApp</string>
+    <string name="app_name">FindClass</string>
+    <string name="signin">Entrar</string>
+    <string name="signup">Cadastrar</string>
+    <string name="email">E-mail</string>
+    <string name="password">Senha</string>
+    <string name="next">Continuar</string>
 </resources>
