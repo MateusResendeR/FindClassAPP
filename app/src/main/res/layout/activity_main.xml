@@ -6,4 +6,26 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
+    <Button
+        android:id="@+id/signinButton"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="18dp"
+        android:layout_marginTop="16dp"
+        android:text="@string/signin"
+        app:layout_constraintBottom_toTopOf="@+id/signupButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:layout_marginBottom="379dp"
+        android:onClick="signup"
+        android:text="@string/signup"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/signinButton"
+        app:layout_constraintTop_toBottomOf="@+id/signinButton" />
 </android.support.constraint.ConstraintLayout>
