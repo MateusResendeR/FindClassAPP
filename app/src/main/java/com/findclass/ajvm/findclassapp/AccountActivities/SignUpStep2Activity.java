@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.AccountActivities;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -53,6 +54,10 @@ public class SignUpStep2Activity extends AppCompatActivity {
         });
     }
 
+    public static void displayExceptionMessage(Context context, String msg) {
+        Toast.makeText(context, msg , Toast.LENGTH_LONG).show();
+    }
+
     public void signUpStep2(View view){
         password = (EditText) findViewById(R.id.passwordEditText);
         name = (EditText) findViewById(R.id.nameEditText);
@@ -62,13 +67,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
         telephony = (EditText) findViewById(R.id.TelephoneEditText);
         professor = (CheckBox) findViewById(R.id.professorCheckBox);
 
-        if(TextUtils.isEmpty(password.getText()) || TextUtils.isEmpty(name.getText()) ||
-                TextUtils.isEmpty(surname.getText()) || TextUtils.isEmpty(birthdate.getText()) ||
-                        TextUtils.isEmpty(telephony.getText()) || TextUtils.isEmpty(professor.getText()) ||
-                TextUtils.isEmpty(cpf.getText())){
-            Toast.makeText(SignUpStep2Activity.this,"Campos em branco não são permitidos",
-                    Toast.LENGTH_SHORT).show();
-        }else{
+        try{
             auth.createUserWithEmailAndPassword(email,password.getText().toString());
 
             User user = new User(email, name.getText().toString(), surname.getText().toString(), cpf.getText().toString(),
@@ -85,6 +84,9 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
             Intent intent = new Intent(SignUpStep2Activity.this, MainActivity.class);
             startActivity(intent);
+        }
+        catch (Exception e){
+            displayExceptionMessage(this, e.getMessage());
         }
 
 
