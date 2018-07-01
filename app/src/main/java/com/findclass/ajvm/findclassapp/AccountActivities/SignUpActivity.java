@@ -1,6 +1,5 @@
 package com.findclass.ajvm.findclassapp.AccountActivities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -29,10 +28,6 @@ public class SignUpActivity extends AppCompatActivity {
         setContentView(R.layout.activity_sign_up);
     }
 
-    public static void displayExceptionMessage(Context context, String msg) {
-        Toast.makeText(context, msg , Toast.LENGTH_LONG).show();
-    }
-
     public void signUp(View view){
         email = (EditText) findViewById(R.id.emailEditText);
 
@@ -41,22 +36,26 @@ public class SignUpActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
 
-        try{
+        if(email.getText().length() > 0){
             mAuth.createUserWithEmailAndPassword(email.getText().toString(),String.valueOf(tempPassword))
                     .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
-
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                            user.delete();
-                            Intent intent = new Intent(getBaseContext(), SignUpStep2Activity.class);
-                            intent.putExtra("EMAIL", email.getText().toString());
-                            startActivity(intent);
+                            if(task.isSuccessful()){
+                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                user.delete();
+                                Intent intent = new Intent(getBaseContext(), SignUpStep2Activity.class);
+                                intent.putExtra("EMAIL", email.getText().toString());
+                                startActivity(intent);
+                            }else{
+                                Toast.makeText(SignUpActivity.this, "E-mail inválido ou já em uso",
+                                        Toast.LENGTH_SHORT).show();
+                            }
                         }
                     });
         }
-        catch (Exception e){
-            displayExceptionMessage(this,e.getMessage());
+        else{
+            Toast.makeText(SignUpActivity.this,"E-mail inválido",Toast.LENGTH_SHORT).show();
         }
     }
 }
