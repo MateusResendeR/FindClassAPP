@@ -8,7 +8,6 @@ import java.util.Map;
 
 public class User {
     private DatabaseReference db;
-
     private String email;
     private String name;
     private String surname;
