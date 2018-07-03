@@ -3,9 +3,6 @@ package com.findclass.ajvm.findclassapp.Model;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.HashMap;
-import java.util.Map;
-
 public class User {
     private DatabaseReference db;
     private String email;
