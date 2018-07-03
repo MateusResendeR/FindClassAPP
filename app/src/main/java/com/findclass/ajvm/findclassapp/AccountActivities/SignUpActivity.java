@@ -19,8 +19,6 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
-import org.w3c.dom.Text;
-
 public class SignUpActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
