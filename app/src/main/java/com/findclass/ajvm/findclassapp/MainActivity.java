@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignUpActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -49,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
             String email = auth.getCurrentUser().getEmail().toString();
             tv.setText(email);
         }catch (Exception e){
-            //startActivity(new Intent(MainActivity.this,SignInActivity.class));
+            startActivity(new Intent(MainActivity.this,SignInActivity.class));
         }
     }
 
@@ -73,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         if(auth.getCurrentUser() != null){
             Toast.makeText(this,"Você já está logado!",Toast.LENGTH_SHORT).show();
         }else{
-            //startActivity(new Intent(this,SignInActivity.class));
+            startActivity(new Intent(this,SignInActivity.class));
         }
     }
 }

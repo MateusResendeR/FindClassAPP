@@ -19,7 +19,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".AccountActivities.SignUpActivity" />
-        <activity android:name=".AccountActivities.SignUpStep2Activity"></activity>
+        <activity android:name=".AccountActivities.SignUpStep2Activity" />
+        <activity android:name=".AccountActivities.SignInActivity"></activity>
     </application>
 
 </manifest>
