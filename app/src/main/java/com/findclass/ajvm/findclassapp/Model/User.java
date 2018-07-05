@@ -9,19 +9,19 @@ public class User {
     private String name;
     private String surname;
     private String cpf;
-    private String telephony;
+    private String telephone;
     private String bithdate;
     private String professor;
     private String verified;
 
     public User(String email, String name, String surname, String cpf,
-                String bithdate, String telephony, Boolean professor) {
+                String bithdate, String telephone, Boolean professor) {
         this.db = FirebaseDatabase.getInstance().getReference();
         this.email = email;
         this.name = name;
         this.surname = surname;
         this.cpf = cpf;
-        this.telephony = telephony;
+        this.telephone = telephone;
         this.bithdate = bithdate;
         if (professor==true){
             this.professor = "true";
@@ -44,7 +44,7 @@ public class User {
     }
 
     public String getTelephony(){
-        return this.telephony;
+        return this.telephone;
     }
 
     public String getBirthdate(){
