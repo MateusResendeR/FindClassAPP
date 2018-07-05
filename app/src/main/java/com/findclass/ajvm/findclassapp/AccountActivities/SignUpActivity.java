@@ -42,8 +42,9 @@ public class SignUpActivity extends AppCompatActivity {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
+                                    mAuth.getCurrentUser().sendEmailVerification();
+                                    Toast.makeText(SignUpActivity.this, "E-mail de confirmação enviado.", Toast.LENGTH_SHORT).show();
                                     Intent intent = new Intent(getBaseContext(), SignUpStep2Activity.class);
-                                    //intent.putExtra("UID", mAuth.getCurrentUser().getUid());
                                     startActivity(intent);
                                 }else{
                                     String message = "";
