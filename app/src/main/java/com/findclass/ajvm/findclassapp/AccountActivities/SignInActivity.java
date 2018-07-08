@@ -10,8 +10,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
-import com.findclass.ajvm.findclassapp.MainActivity;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -122,7 +122,7 @@ public class SignInActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(auth.getCurrentUser() != null) {
                             if(dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())){
-                                startActivity(new Intent(SignInActivity.this,MainActivity.class));
+                                startActivity(new Intent(SignInActivity.this,MenuProfessorActivity.class));
                                 Toast.makeText(SignInActivity.this,"JÁ TÁ NO BANCO",Toast.LENGTH_SHORT)
                                         .show();
                             }else {

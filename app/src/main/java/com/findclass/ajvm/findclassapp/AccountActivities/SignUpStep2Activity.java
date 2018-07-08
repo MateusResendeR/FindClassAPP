@@ -1,7 +1,6 @@
 package com.findclass.ajvm.findclassapp.AccountActivities;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -14,13 +13,10 @@ import com.findclass.ajvm.findclassapp.Exception.CPFLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.DateLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
-import com.findclass.ajvm.findclassapp.MainActivity;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -71,7 +67,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
                 Toast.makeText(this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(this, MainActivity.class);
+                Intent intent = new Intent(this, MenuProfessorActivity.class);
                 startActivity(intent);
             }
         } catch (EmptyFieldException e) {
