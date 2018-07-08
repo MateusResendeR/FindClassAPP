@@ -5,17 +5,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.findclass.ajvm.findclassapp.Exception.CPFLenghtException;
-import com.findclass.ajvm.findclassapp.Exception.DateLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
 import com.findclass.ajvm.findclassapp.MainActivity;
-import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -24,7 +20,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Date;
 
 public class UpdateDataActivity extends AppCompatActivity {
     private FirebaseAuth auth;
