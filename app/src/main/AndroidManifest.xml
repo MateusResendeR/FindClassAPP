@@ -11,6 +11,7 @@
         android:theme="@style/AppTheme">
         <activity android:name=".AccountActivities.SignUpActivity" />
         <activity android:name=".AccountActivities.SignUpStep2Activity" />
+        <activity android:name=".AccountActivities.UpdateDataActivity" />
         <activity android:name=".AccountActivities.SignInActivity" />
         <activity
             android:name=".menuActivities.MenuProfessorActivity"
