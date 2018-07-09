@@ -11,7 +11,7 @@ import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
+import com.findclass.ajvm.findclassapp.MenuActivities.MenuProfessorActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
@@ -61,6 +61,7 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+        auth.signOut();
 
         if (auth.getCurrentUser() != null){
             Toast.makeText(this,"Você já está logado!",Toast.LENGTH_LONG).show();
@@ -123,13 +124,9 @@ public class SignInActivity extends AppCompatActivity {
                         if(auth.getCurrentUser() != null) {
                             if(dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())){
                                 startActivity(new Intent(SignInActivity.this,MenuProfessorActivity.class));
-                                Toast.makeText(SignInActivity.this,"JÁ TÁ NO BANCO",Toast.LENGTH_SHORT)
-                                        .show();
+                                Toast.makeText(SignInActivity.this, "Bem-vindo, "+auth
+                                        .getCurrentUser().getEmail(), Toast.LENGTH_SHORT).show();
                             }else {
-                                Toast.makeText(SignInActivity.this,"NÃO TÁ NO BANCO",Toast.LENGTH_SHORT)
-                                        .show();
-                                //Toast.makeText(SignInActivity.this,"Por favor, finalize seu cadastro " +auth.getCurrentUser().getEmail().toString(),
-                                //        Toast.LENGTH_SHORT).show();
                                 startActivity(new Intent(SignInActivity.this,SignUpStep2Activity.class));
                             }
                         }

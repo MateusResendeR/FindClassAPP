@@ -1,10 +1,7 @@
-package com.findclass.ajvm.findclassapp.menuActivities;
+package com.findclass.ajvm.findclassapp.MenuActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.preference.PreferenceActivity;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -48,7 +45,7 @@ public class MenuProfessorActivity extends AppCompatActivity
                 }
 
                 public void onCancelled(DatabaseError databaseError){
-
+                    //code
                 }
             });
         } catch (Exception e){
@@ -58,15 +55,6 @@ public class MenuProfessorActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -75,6 +63,36 @@ public class MenuProfessorActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        View header = navigationView.getHeaderView(0);
+        TextView email = header.findViewById(R.id.textViewEmailProfessor);
+        email.setText(auth.getCurrentUser().getEmail());
+
+        FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid()).
+                addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            String name = dataSnapshot.child("name")
+                                    .getValue(String.class);
+                            String surname = dataSnapshot.child("surname")
+                                    .getValue(String.class);
+
+                            NavigationView navigationView = findViewById(R.id.nav_view);
+
+                            View header = navigationView.getHeaderView(0);
+                            TextView textViewProfessorName = header.findViewById(R.id.textViewNameProfessor);
+                            textViewProfessorName.setText(name.toString() + " " + surname.toString());
+                        }catch (Exception e){
+                            Toast.makeText(MenuProfessorActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //code
+                    }
+                });
     }
 
     @Override

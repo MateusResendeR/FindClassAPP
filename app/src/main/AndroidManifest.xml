@@ -12,16 +12,16 @@
         <activity android:name=".AccountActivities.SignUpActivity" />
         <activity android:name=".AccountActivities.SignUpStep2Activity" />
         <activity android:name=".AccountActivities.UpdateDataActivity" />
-        <activity android:name=".AccountActivities.SignInActivity" />
-        <activity
-            android:name=".menuActivities.MenuProfessorActivity"
-            android:label="@string/title_activity_menu_professor"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".AccountActivities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name=".MenuActivities.MenuProfessorActivity"
+            android:label="@string/title_activity_menu_professor"
+            android:theme="@style/AppTheme.NoActionBar">
         </activity>
     </application>
 
