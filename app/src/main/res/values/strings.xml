@@ -15,4 +15,8 @@
     <string name="action_logoutProfessor">Sair</string>
     <string name="title_activity_menu_aluno">FindClass</string>
     <string name="action_logoutAluno">Sair</string>
+    <string name="TOAST_STRING">Campos em branco não são permitidos.</string>
+    <string name="WEAK_PASSWORD_TOAST">Senha fraca, senhas precisam de no mínimo 6 caracteres.</string>
+    <string name="INVALID_EMAIL_TOAST">E-mail inválido.</string>
+    <string name="TOAST_STRING_EMAIL_NAO_CADASTRADO">E-mail não cadastrado, realize cadastro</string>
 </resources>
