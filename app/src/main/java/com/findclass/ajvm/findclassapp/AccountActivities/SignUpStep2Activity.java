@@ -27,15 +27,28 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_sign_up_step2);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Toast.makeText(this,"Conclua seu cadastro, por favor.",Toast.LENGTH_SHORT).show();
+
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
 
         uid = auth.getCurrentUser().getUid().toString();
         email = auth.getCurrentUser().getEmail().toString();
-        auth.signOut();
-
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_sign_up_step2);
+        String completeName = auth.getCurrentUser().getDisplayName();
+        if(completeName != null){
+            String[] splitedName = completeName.split(" ");
+            EditText name = findViewById(R.id.nameEditText);
+            name.setText(splitedName[0]);
+            EditText surname = findViewById(R.id.surnameEditText);
+            surname.setText(splitedName[1]);
+        }
     }
 
     public void finishSignUp(View view) {
@@ -64,10 +77,13 @@ public class SignUpStep2Activity extends AppCompatActivity {
                     db.child("users").child(uid).setValue(user);
                 }
 
-                Toast.makeText(this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
+                if (!auth.getCurrentUser().isEmailVerified()){
+                    auth.signOut();
+                }
 
                 Intent intent = new Intent(this, SignInActivity.class);
                 startActivity(intent);
+                Toast.makeText(this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
             }
         } catch (EmptyFieldException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
