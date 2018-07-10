@@ -47,6 +47,15 @@ public class SignInActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_in);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        if (auth.getCurrentUser() != null){
+            verifyLoggedUser();
+        }
 
         button = findViewById(R.id.googleButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +71,36 @@ public class SignInActivity extends AppCompatActivity {
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-        auth.signOut();
+    }
 
-        if (auth.getCurrentUser() != null){
-            Toast.makeText(this,"Você já está logado!",Toast.LENGTH_LONG).show();
-        }
+    private void verifyLoggedUser() {
+        dbRef.getReference().child("users").
+                addValueEventListener(new ValueEventListener() {
+
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        if(dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())){
+                            if ((dataSnapshot.child(auth.getCurrentUser().getUid()).child("professor").getValue(String.class)).equals("true")){
+                                startActivity(new Intent(SignInActivity.this,MenuProfessorActivity.class));
+                                Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
+                                        Toast.LENGTH_LONG).show();
+                                finish();
+                            } else {
+                                startActivity(new Intent(SignInActivity.this,MenuAlunoActivity.class));
+                                Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
+                                        Toast.LENGTH_LONG).show();
+                                finish();
+                            }
+                        } else {
+                            auth.signOut();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //Code
+                    }
+                });
     }
 
     public void signIn(View v){
@@ -126,10 +160,14 @@ public class SignInActivity extends AppCompatActivity {
                             if(dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())){
                                 if((dataSnapshot.child(auth.getCurrentUser().getUid()).child("professor").getValue(String.class).toString()).equals("true")){
                                     startActivity(new Intent(SignInActivity.this,MenuProfessorActivity.class));
-                                    Toast.makeText(SignInActivity.this,"Bem-vindo! Professor",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
+                                            Toast.LENGTH_LONG).show();
+                                    finish();
                                 }else {
                                     startActivity(new Intent(SignInActivity.this,MenuAlunoActivity.class));
-                                    Toast.makeText(SignInActivity.this,"Bem-vindo! Aluno",Toast.LENGTH_LONG).show();
+                                    Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
+                                            Toast.LENGTH_LONG).show();
+                                    finish();
                                 }
 
                             }else {
@@ -169,9 +207,6 @@ public class SignInActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            Toast.makeText(SignInActivity.this,"Logado com sucesso! "+
-                                    auth.getCurrentUser().getEmail().toString(),Toast.LENGTH_LONG)
-                                    .show();
                             updateIntent();
                         } else {
                             Toast.makeText(SignInActivity.this,"Erro durante Login",Toast.LENGTH_LONG)

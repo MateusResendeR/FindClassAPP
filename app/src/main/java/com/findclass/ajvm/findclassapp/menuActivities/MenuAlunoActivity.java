@@ -146,6 +146,7 @@ public class MenuAlunoActivity extends AppCompatActivity
         }
         Toast.makeText(this, "Saiu!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(MenuAlunoActivity.this,SignInActivity.class));
+        finish();
     }
 
 }
