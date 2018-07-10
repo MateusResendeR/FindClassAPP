@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
+import com.findclass.ajvm.findclassapp.MenuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
