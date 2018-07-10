@@ -15,7 +15,6 @@ import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.MenuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -67,7 +66,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
                 Toast.makeText(this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(this, MenuProfessorActivity.class);
+                Intent intent = new Intent(this, SignInActivity.class);
                 startActivity(intent);
             }
         } catch (EmptyFieldException e) {

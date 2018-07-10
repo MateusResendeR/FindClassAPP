@@ -23,14 +23,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-public class MenuProfessorActivity extends AppCompatActivity
+public class MenuAlunoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_menu_professor);
+        setContentView(R.layout.activity_menu_aluno);
         FirebaseDatabase dbRef  = FirebaseDatabase.getInstance();
 
         try{
@@ -65,7 +65,7 @@ public class MenuProfessorActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
-        TextView email = header.findViewById(R.id.textViewEmailProfessor);
+        TextView email = header.findViewById(R.id.textViewEmailAluno);
         email.setText(auth.getCurrentUser().getEmail());
 
         FirebaseDatabase.getInstance().getReference().child("users").child(auth.getCurrentUser().getUid()).
@@ -81,10 +81,10 @@ public class MenuProfessorActivity extends AppCompatActivity
                             NavigationView navigationView = findViewById(R.id.nav_view);
 
                             View header = navigationView.getHeaderView(0);
-                            TextView textViewProfessorName = header.findViewById(R.id.textViewNameProfessor);
-                            textViewProfessorName.setText(name.toString() + " " + surname.toString());
+                            TextView textViewAlunoName = header.findViewById(R.id.textViewNameAluno);
+                            textViewAlunoName.setText(name + " " + surname);
                         }catch (Exception e){
-                            Toast.makeText(MenuProfessorActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(MenuAlunoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
 
@@ -108,14 +108,14 @@ public class MenuProfessorActivity extends AppCompatActivity
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_professor, menu);
+        getMenuInflater().inflate(R.menu.menu_aluno, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_logout) {
+        if (id == R.id.action_logoutAluno) {
             logout(this.findViewById(R.id.toolbar));
         }
 
@@ -128,7 +128,7 @@ public class MenuProfessorActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_camera) {
             // Handle the camera action
-        } else if (id == R.id.nav_editAccountProfessor) {
+        } else if (id == R.id.nav_editAccountAluno) {
             Intent intent = new Intent(getBaseContext(), UpdateDataActivity.class);
             startActivity(intent);
         }
@@ -145,7 +145,7 @@ public class MenuProfessorActivity extends AppCompatActivity
             Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
         }
         Toast.makeText(this, "Saiu!", Toast.LENGTH_SHORT).show();
-        startActivity(new Intent(MenuProfessorActivity.this,SignInActivity.class));
+        startActivity(new Intent(MenuAlunoActivity.this,SignInActivity.class));
     }
 
 }

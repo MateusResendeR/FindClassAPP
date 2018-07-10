@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".menuActivities.MenuProfessorActivity"
-    tools:showIn="@layout/app_bar_menu_professor">
+    tools:context=".menuActivities.MenuAlunoActivity"
+    tools:showIn="@layout/app_bar_menu_aluno">
 
 </android.support.constraint.ConstraintLayout>

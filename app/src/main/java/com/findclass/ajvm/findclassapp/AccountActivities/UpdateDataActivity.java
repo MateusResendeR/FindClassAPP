@@ -12,7 +12,8 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.MenuActivities.MenuProfessorActivity;
+import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
+import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -74,8 +75,25 @@ public class UpdateDataActivity extends AppCompatActivity {
 
                 Toast.makeText(this, "Alteração de dados realizada com sucesso.", Toast.LENGTH_SHORT).show();
 
-                Intent intent = new Intent(this, MenuProfessorActivity.class);
-                startActivity(intent);
+                db.child("users").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        try {
+                            if((dataSnapshot.child(auth.getCurrentUser().getUid()).child("professor").getValue(String.class).toString()).equals("true")){
+                                startActivity(new Intent(UpdateDataActivity.this,MenuProfessorActivity.class));
+                            }else {
+                                startActivity(new Intent(UpdateDataActivity.this,MenuAlunoActivity.class));
+                            }
+                        }catch (Exception e){
+                            Toast.makeText(UpdateDataActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         } catch (EmptyFieldException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
