@@ -31,7 +31,7 @@
         android:id="@+id/orTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginBottom="9dp"
         android:layout_marginLeft="17dp"
         android:layout_marginStart="17dp"
         android:text="Ou"
@@ -64,17 +64,26 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
 
+    <TextView
+        android:id="@+id/forgotPasswordTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:text="Esqueci minha senha"
+        app:layout_constraintStart_toStartOf="@+id/passwordEditText"
+        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+
     <Button
         android:id="@+id/signinButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="21dp"
         android:onClick="signIn"
         android:text="Entrar"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView" />
 
     <TextView
         android:id="@+id/notUserYetTextView"
@@ -82,7 +91,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="10dp"
         android:text="Ainda não é nosso usuário?"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signinButton" />
@@ -91,12 +100,9 @@
         android:id="@+id/signUpButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Cadastre-se"
         android:onClick="signUpIntent"
-        app:layout_constraintStart_toStartOf="parent"
+        android:text="Cadastre-se"
+        app:layout_constraintStart_toStartOf="@+id/notUserYetTextView"
         app:layout_constraintTop_toBottomOf="@+id/notUserYetTextView" />
 
 </android.support.constraint.ConstraintLayout>

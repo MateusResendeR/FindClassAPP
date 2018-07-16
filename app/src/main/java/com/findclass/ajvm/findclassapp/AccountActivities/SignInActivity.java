@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
@@ -65,12 +66,39 @@ public class SignInActivity extends AppCompatActivity {
             }
         });
 
+        TextView forgotPassword = findViewById(R.id.forgotPasswordTextView);
+        forgotPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                forgotPassword();
+            }
+        });
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    private void forgotPassword(){
+        EditText email = findViewById(R.id.emailEditText);
+        try {
+            auth.sendPasswordResetEmail(email.getText().toString()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if(task.isSuccessful()){
+                        Toast.makeText(SignInActivity.this,"E-mail de redefinição de senha enviado.",Toast.LENGTH_SHORT).show();
+                    }else{
+                        Toast.makeText(SignInActivity.this,"E-mail inválido!",Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+        } catch (Exception e){
+            Toast.makeText(SignInActivity.this,"Campo de e-mail vazio.",Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     private void verifyLoggedUser() {
@@ -119,6 +147,7 @@ public class SignInActivity extends AppCompatActivity {
                                     if (auth.getCurrentUser().isEmailVerified()){
                                         checkUserInDatabase();
                                     }else{
+                                        auth.getCurrentUser().sendEmailVerification();
                                         auth.signOut();
                                         String message = "Verifique o e-mail, por favor";
                                         Toast.makeText(SignInActivity.this, message, Toast.LENGTH_SHORT).show();
