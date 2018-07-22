@@ -3,6 +3,7 @@ package com.findclass.ajvm.findclassapp.SubjectActivities;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.R;
@@ -18,6 +19,8 @@ public class MySubjectInfoActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         subject = (Subject) data.getSerializable("subject");
 
-        Log.i("RAPAZ!!!!",subject.getName().toString());
+        Toast.makeText(this, subject.getId(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, subject.getName(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, subject.getLevel(), Toast.LENGTH_SHORT).show();
     }
 }

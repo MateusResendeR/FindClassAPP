@@ -28,7 +28,8 @@
             android:label="@string/title_activity_menu_aluno"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SubjectActivities.MySubjectsActivity" />
-        <activity android:name=".SubjectActivities.MySubjectInfoActivity"></activity>
+        <activity android:name=".SubjectActivities.MySubjectInfoActivity" />
+        <activity android:name=".SubjectActivities.AddSubjectActivity"></activity>
     </application>
 
 </manifest>
