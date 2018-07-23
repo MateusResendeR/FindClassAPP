@@ -126,9 +126,7 @@ public class MenuAlunoActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
-        } else if (id == R.id.nav_editAccountAluno) {
+        if (id == R.id.nav_editAccountAluno) {
             Intent intent = new Intent(getBaseContext(), UpdateDataActivity.class);
             startActivity(intent);
         }

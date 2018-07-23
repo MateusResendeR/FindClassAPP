@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.SubjectActivities.MySubjectsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -126,8 +127,9 @@ public class MenuProfessorActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.nav_camera) {
-            // Handle the camera action
+        if (id == R.id.nav_seeMySubjects) {
+            Intent intent = new Intent(getBaseContext(), MySubjectsActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_editAccountProfessor) {
             Intent intent = new Intent(getBaseContext(), UpdateDataActivity.class);
             startActivity(intent);
