@@ -2,7 +2,6 @@ package com.findclass.ajvm.findclassapp.SubjectActivities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Model.Subject;
