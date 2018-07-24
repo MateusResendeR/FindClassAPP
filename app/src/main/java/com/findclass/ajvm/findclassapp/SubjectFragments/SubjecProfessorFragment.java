@@ -122,6 +122,7 @@ public class SubjecProfessorFragment extends Fragment {
     }
 
     public void retrieveProfessors(){
+        listProfessor.clear();
         valueEventListenerProfessores = professorSubjectRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
