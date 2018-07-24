@@ -2,6 +2,7 @@ package com.findclass.ajvm.findclassapp.menuActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,15 +18,21 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.SubjectFragments.SubjecProfessorFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.ogaclejapan.smarttablayout.SmartTabLayout;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
+import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 public class MenuAlunoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private MaterialSearchView searchView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,6 +100,72 @@ public class MenuAlunoActivity extends AppCompatActivity
                         //code
                     }
                 });
+        //abas
+        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+                getSupportFragmentManager(), FragmentPagerItems.with(this)
+                        .add("Disciplinas",SubjecProfessorFragment.class)
+                        .create()
+        );
+        ViewPager viewPager =findViewById(R.id.viewpager);
+        viewPager.setAdapter(adapter);
+
+        SmartTabLayout viewPagerTab = findViewById(R.id.viewpagertab);
+        viewPagerTab.setViewPager(viewPager);
+        //search
+        searchView = findViewById(R.id.search_viewProfessor);
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
+                fragment.reloadList();
+            }
+        });
+
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
+                query = query.replace( 'á' , 'a');
+                query = query.replace( 'ã' , 'a');
+                query = query.replace( 'é' , 'e');
+                query = query.replace( 'ê' , 'e');
+                query = query.replace( 'ó' , 'o');
+                query = query.replace( 'õ' , 'o');
+                query = query.replace( 'ú' , 'u');
+                query = query.replace( 'í' , 'i');
+
+                if(query != null && !query.isEmpty()){
+                    fragment.searchProfessor(query.toLowerCase());
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
+                newText = newText.replace( 'á' , 'a');
+                newText = newText.replace( 'ã' , 'a');
+                newText = newText.replace( 'é' , 'e');
+                newText = newText.replace( 'ê' , 'e');
+                newText = newText.replace( 'ó' , 'o');
+                newText = newText.replace( 'õ' , 'o');
+                newText = newText.replace( 'ú' , 'u');
+                newText = newText.replace( 'í' , 'i');
+
+                if(newText != null && !newText.isEmpty()){
+                    fragment.searchProfessor(newText.toLowerCase());
+                }
+
+                return true;
+            }
+        });
+
     }
 
     @Override
@@ -109,6 +182,8 @@ public class MenuAlunoActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_aluno, menu);
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
         return true;
     }
 

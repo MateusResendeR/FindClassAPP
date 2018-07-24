@@ -11,4 +11,10 @@
         android:orderInCategory="100"
         android:title="@string/action_logoutAluno"
         app:showAsAction="never" />
+    <item android:id="@+id/menuPesquisa"
+        android:title="Pesquisar"
+        app:showAsAction="always"
+        android:icon="@drawable/ic_action_action_search"
+        />
+
 </menu>
