@@ -14,6 +14,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
@@ -130,7 +131,10 @@ public class MenuProfessorActivity extends AppCompatActivity
         if (id == R.id.nav_seeMySubjects) {
             Intent intent = new Intent(getBaseContext(), MySubjectsActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_editAccountProfessor) {
+        } else if (id == R.id.nav_myCalendarProfessor) {
+            Intent intent = new Intent(getBaseContext(), MyCalendarProfessorActivity.class);
+            startActivity(intent);
+        }else if (id == R.id.nav_editAccountProfessor) {
             Intent intent = new Intent(getBaseContext(), UpdateDataActivity.class);
             startActivity(intent);
         }

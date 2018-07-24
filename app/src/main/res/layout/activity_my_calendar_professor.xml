@@ -9,7 +9,7 @@
     android:paddingRight="16dp"
     android:paddingTop="16dp"
     android:layout_height="match_parent"
-    tools:context=".SubjectActivities.MySubjectDaysActivity">
+    tools:context=".AccountActivities.MyCalendarProfessorActivity">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         xmlns:app="http://schemas.android.com/apk/res-auto"

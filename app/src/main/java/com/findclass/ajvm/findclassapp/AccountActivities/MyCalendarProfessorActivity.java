@@ -1,12 +1,12 @@
-package com.findclass.ajvm.findclassapp.SubjectActivities;
+package com.findclass.ajvm.findclassapp.AccountActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
-import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,25 +24,20 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class MySubjectDaysActivity extends AppCompatActivity{
+public class MyCalendarProfessorActivity extends AppCompatActivity{
     private FirebaseAuth auth;
     private DatabaseReference db;
-    private DatabaseReference professorSubject;
+    private DatabaseReference professor;
     private MaterialCalendarView materialCalendarView;
-    private Subject subject;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
-        professorSubject = db.child("professorSubjects").child(auth.getCurrentUser().getUid());
+        professor = db.child("users").child(auth.getCurrentUser().getUid());
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_my_subject_days);
-
-        Bundle data = getIntent().getExtras();
-        subject = (Subject) data.getSerializable("subject");
+        setContentView(R.layout.activity_my_calendar_professor);
 
         materialCalendarView = (MaterialCalendarView) findViewById(R.id.calendarView);
         materialCalendarView.setSelectionMode(MaterialCalendarView.SELECTION_MODE_MULTIPLE);
@@ -53,23 +48,21 @@ public class MySubjectDaysActivity extends AppCompatActivity{
                 .setCalendarDisplayMode(CalendarMode.WEEKS)
                 .commit();
 
-        professorSubject.child(subject.getId()).addValueEventListener(new ValueEventListener() {
+        professor.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
                     if (dataSnapshot.child("dates") != null) {
-                        ArrayList<Date> dates = new ArrayList<Date>();
-                        for (int i = 0; dataSnapshot.child("dates").child(Integer.toString(i)) != null; i++) {
-                            String dateString = dataSnapshot.child("dates").child(Integer.toString(i)).getValue(String.class);
-                            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-                            Date date = sdf.parse(dateString);
-                            dates.add(date);
-                            materialCalendarView.setDateSelected(date,true);
+                        try {
+                            for (int i = 0; dataSnapshot.child("dates").child(Integer.toString(i)) != null; i++) {
+                                String dateString = dataSnapshot.child("dates").child(Integer.toString(i)).getValue(String.class);
+                                SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                                Date date = sdf.parse(dateString);
+                                materialCalendarView.setDateSelected(date, true);
+                            }
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
                     }
-                }catch (Exception e){
-                    Toast.makeText(MySubjectDaysActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -87,9 +80,11 @@ public class MySubjectDaysActivity extends AppCompatActivity{
             for (int i = 0;i < calendarDays.size();i++) {
                 calendarDaysString.add(calendarDays.get(i).getDate().toString());
             }
-            professorSubject.child(subject.getId()).child("dates").setValue(calendarDaysString);
+            professor.child("dates").setValue(calendarDaysString);
         }catch (Exception e){
-            Toast.makeText(MySubjectDaysActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
         }
+        Intent intent = new Intent(this, MenuProfessorActivity.class);
+        startActivity(intent);
     }
 }
