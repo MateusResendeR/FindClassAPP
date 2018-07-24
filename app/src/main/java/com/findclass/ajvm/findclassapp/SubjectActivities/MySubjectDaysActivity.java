@@ -1,17 +1,12 @@
 package com.findclass.ajvm.findclassapp.SubjectActivities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -22,10 +17,8 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -66,7 +59,6 @@ public class MySubjectDaysActivity extends AppCompatActivity{
                 try {
                     if (dataSnapshot.child("dates") != null) {
                         ArrayList<Date> dates = new ArrayList<Date>();
-                        Calendar cal = Calendar.getInstance();
                         for (int i = 0; dataSnapshot.child("dates").child(Integer.toString(i)) != null; i++) {
                             String dateString = dataSnapshot.child("dates").child(Integer.toString(i)).getValue(String.class);
                             SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
