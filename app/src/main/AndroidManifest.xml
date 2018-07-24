@@ -29,7 +29,7 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SubjectActivities.MySubjectsActivity" />
         <activity android:name=".SubjectActivities.MySubjectInfoActivity" />
-        <activity android:name=".SubjectActivities.AddSubjectActivity"></activity>
+        <activity android:name=".SubjectActivities.AddSubjectActivity" />
     </application>
 
 </manifest>
