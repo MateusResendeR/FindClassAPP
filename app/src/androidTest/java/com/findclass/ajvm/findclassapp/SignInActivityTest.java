@@ -62,11 +62,6 @@ public class SignInActivityTest {
 
     }
 
-   /* @Test
-    public void withBothFieldsFilled_andItAuthenticate_shouldOpenUserActivity(){
-
-    }*/
-
     private void testEmptyFieldState(int notEmptyField){
         onView(withId(notEmptyField)).perform(typeText("DefaultText"));
         closeSoftKeyboard();
