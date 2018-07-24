@@ -14,6 +14,9 @@ public class User {
     private String professor;
     private String verified;
 
+    public User() {
+    }
+
     public User(String email, String name, String surname, String cpf,
                 String bithdate, String telephone, Boolean professor) {
         this.db = FirebaseDatabase.getInstance().getReference();
