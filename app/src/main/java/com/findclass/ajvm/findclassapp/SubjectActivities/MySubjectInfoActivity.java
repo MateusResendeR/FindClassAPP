@@ -1,7 +1,9 @@
 package com.findclass.ajvm.findclassapp.SubjectActivities;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Model.Subject;
@@ -21,5 +23,11 @@ public class MySubjectInfoActivity extends AppCompatActivity {
         Toast.makeText(this, subject.getId(), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, subject.getName(), Toast.LENGTH_SHORT).show();
         Toast.makeText(this, subject.getLevel(), Toast.LENGTH_SHORT).show();
+    }
+
+    public void subjectDateInfo(View view){
+        Intent intent = new Intent(this, MySubjectDaysActivity.class);
+        intent.putExtra("subject",subject);
+        startActivity(intent);
     }
 }
