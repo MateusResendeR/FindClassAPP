@@ -131,6 +131,15 @@ public class MenuAlunoActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextSubmit(String query) {
                 SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
+                query = query.replace( 'á' , 'a');
+                query = query.replace( 'ã' , 'a');
+                query = query.replace( 'é' , 'e');
+                query = query.replace( 'ê' , 'e');
+                query = query.replace( 'ó' , 'o');
+                query = query.replace( 'õ' , 'o');
+                query = query.replace( 'ú' , 'u');
+                query = query.replace( 'í' , 'i');
+
                 if(query != null && !query.isEmpty()){
                     fragment.searchProfessor(query.toLowerCase());
                 }
@@ -140,6 +149,15 @@ public class MenuAlunoActivity extends AppCompatActivity
             @Override
             public boolean onQueryTextChange(String newText) {
                 SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
+                newText = newText.replace( 'á' , 'a');
+                newText = newText.replace( 'ã' , 'a');
+                newText = newText.replace( 'é' , 'e');
+                newText = newText.replace( 'ê' , 'e');
+                newText = newText.replace( 'ó' , 'o');
+                newText = newText.replace( 'õ' , 'o');
+                newText = newText.replace( 'ú' , 'u');
+                newText = newText.replace( 'í' , 'i');
+
                 if(newText != null && !newText.isEmpty()){
                     fragment.searchProfessor(newText.toLowerCase());
                 }

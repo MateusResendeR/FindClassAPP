@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -8,26 +9,34 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/textViewNomeProfessor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nome"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textViewMateriaProfessor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Materia" />
+            android:text="Materia"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textViewLevelProfessor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Level" />
+
+        <TextView
+            android:id="@+id/textViewNomeProfessor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome" />
+
+        <View
+            android:id="@+id/divider"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="?android:attr/listDivider"
+            android:visibility="visible" />
     </LinearLayout>
 </LinearLayout>
