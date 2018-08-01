@@ -1,4 +1,4 @@
-package com.findclass.ajvm.findclassapp.SubjectFragments;
+package com.findclass.ajvm.findclassapp.TimeFragments;
 
 
 import android.os.Bundle;
@@ -27,9 +27,9 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddSubjectListFragment extends Fragment {
+public class AddTimeListFragment extends Fragment {
     private RecyclerView recyclerViewAddSubjecs;
-    private AddSubjectAdapter adapter;
+    private AddTimeListFragment adapter;
     private ArrayList<Subject> subjectsToAdd = new ArrayList<>();
     private DatabaseReference rootRef;
     private DatabaseReference subjectsRef;
@@ -37,7 +37,7 @@ public class AddSubjectListFragment extends Fragment {
     private ValueEventListener valueEventListener;
     private FirebaseAuth auth;
 
-    public AddSubjectListFragment() {
+    public AddTimeListFragment() {
         // Required empty public constructor
     }
 
@@ -46,14 +46,14 @@ public class AddSubjectListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_add_subject_list, container, false);
+        View view = inflater.inflate(R.layout.activity_my_calendar_professor, container, false);
 
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
 
-        recyclerViewAddSubjecs = view.findViewById(R.id.addSubjectsRecyclerView);
+        recyclerViewAddSubjecs = view.findViewById(R.id.addTimeRecyclerView);
 
-        adapter = new AddSubjectAdapter(subjectsToAdd,getActivity());
+        adapter = new AddTimeListFragment(subjectsToAdd,getActivity());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewAddSubjecs.setLayoutManager(layoutManager);
