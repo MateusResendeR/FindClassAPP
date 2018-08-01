@@ -6,12 +6,16 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_seeMySubjects"
+
             android:icon="@drawable/ic_menu_slideshow"
             android:title="Minhas disciplinas" />
         <item
             android:id="@+id/nav_myCalendarProfessor"
             android:icon="@drawable/ic_menu_gallery"
             android:title="Meu Calendário" />
+
+
+
         <item
             android:id="@+id/nav_editAccountProfessor"
             android:icon="@drawable/ic_menu_manage"
