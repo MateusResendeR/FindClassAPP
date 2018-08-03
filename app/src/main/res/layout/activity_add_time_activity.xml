@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".AccountActivities.MyCalendarProfessorActivity">
+    tools:context=".TimeActivities.AddTimeActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -22,22 +22,36 @@
         android:background="?android:attr/listDivider" />
 
     <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/timeEditText1"
+        android:id="@+id/startTimeEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="00:00"
         android:inputType="time"
-        app:mask="##:##"/>
+        app:mask="##:##" />
 
     <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/timeEditText2"
+        android:id="@+id/endTimeEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="00:00"
         android:inputType="time"
-        app:mask="##:##"/>
+        app:mask="##:##" />
+
+    <EditText
+        android:id="@+id/dayEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="seg" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="finishAddSubjectTime"
+        android:text="Adicionar" />
 
 
 </LinearLayout>

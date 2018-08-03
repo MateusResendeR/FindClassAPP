@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.TimeActivities.AddTimeActivity;
 import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +35,7 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
     protected void onCreate(Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
-        professor = db.child("users").child(auth.getCurrentUser().getUid());
+        professor = db.child("availability").child(auth.getCurrentUser().getUid());
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_calendar_professor);
@@ -44,8 +45,9 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
         materialCalendarView.setSaveFromParentEnabled(true);
         materialCalendarView.setSaveEnabled(true);
         materialCalendarView.state().edit()
-                .setFirstDayOfWeek(Calendar.MONDAY)
+                .setFirstDayOfWeek(Calendar.SUNDAY)
                 .setCalendarDisplayMode(CalendarMode.WEEKS)
+                .setMinimumDate(CalendarDay.today())
                 .commit();
 
         professor.addValueEventListener(new ValueEventListener() {
@@ -56,8 +58,15 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
                             for (int i = 0; dataSnapshot.child("dates").child(Integer.toString(i)) != null; i++) {
                                 String dateString = dataSnapshot.child("dates").child(Integer.toString(i)).getValue(String.class);
                                 SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                                Date today = sdf.parse(CalendarDay.today().getDate().toString());
                                 Date date = sdf.parse(dateString);
-                                materialCalendarView.setDateSelected(date, true);
+                                if(date.before(today)){
+                                    professor.child("dates").child(Integer.toString(i)).removeValue();
+                                }
+                                else{
+                                    materialCalendarView.setDateSelected(date, true);
+                                }
+
                             }
                         }catch (Exception e){
                             e.printStackTrace();
@@ -85,6 +94,21 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
             e.printStackTrace();
         }
         Intent intent = new Intent(this, MenuProfessorActivity.class);
+        startActivity(intent);
+    }
+
+    public void addSubjectTime(View view){
+        try {
+            List<CalendarDay> calendarDays = materialCalendarView.getSelectedDates();
+            ArrayList<String> calendarDaysString = new ArrayList<String>();
+            for (int i = 0;i < calendarDays.size();i++) {
+                calendarDaysString.add(calendarDays.get(i).getDate().toString());
+            }
+            professor.child("dates").setValue(calendarDaysString);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        Intent intent = new Intent(this, AddTimeActivity.class);
         startActivity(intent);
     }
 }

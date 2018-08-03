@@ -8,21 +8,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.findclass.ajvm.findclassapp.Model.Subject;
+import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
 
-import java.sql.Time;
 import java.util.List;
 
 public class MyTimesAdapter extends RecyclerView.Adapter<MyTimesAdapter.MyViewHolder> {
 
-    private List<String> myStartTimes;
-    private List<String> myEndTimes;
+    private List<Time> myTimes;
     private Context context;
 
-    public MyTimesAdapter(List<String> myStartTimes, List<String> myEndTimes, Context context) {
-        this.myStartTimes = myStartTimes;
-        this.myEndTimes = myEndTimes;
+    public MyTimesAdapter(List<Time> myTimes, Context context) {
+        this.myTimes = myTimes;
         this.context = context;
     }
 
@@ -40,28 +37,30 @@ public class MyTimesAdapter extends RecyclerView.Adapter<MyTimesAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        String time1 = myStartTimes.get(position);
-        String time2 = myEndTimes.get(position);
+        Time time = myTimes.get(position);
 
-        holder.startTime.setText(time1);
-        holder.endTime.setText(time2);
+        holder.timeStartTime.setText(time.getStartTime());
+        holder.timeEndTime.setText(time.getEndTime());
+        holder.timeDay.setText(time.getDay());
 
     }
 
     @Override
     public int getItemCount() {
-        return myStartTimes.size();
+        return myTimes.size();
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder  {
 
-        TextView startTime;
-        TextView endTime;
+        TextView timeStartTime;
+        TextView timeEndTime;
+        TextView timeDay;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            startTime = itemView.findViewById(R.id.timeTextView1);
-            endTime = itemView.findViewById(R.id.timeTextView2);
+            timeStartTime = itemView.findViewById(R.id.timeStartTimeTextView);
+            timeEndTime = itemView.findViewById(R.id.timeEndTimeTextView);
+            timeDay = itemView.findViewById(R.id.timeDayTextView);
         }
     }
 }
