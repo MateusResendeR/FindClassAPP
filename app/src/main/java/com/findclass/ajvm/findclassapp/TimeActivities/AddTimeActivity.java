@@ -12,6 +12,9 @@ import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActivity;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
+import com.findclass.ajvm.findclassapp.Exception.InvalidTimeException;
+import com.findclass.ajvm.findclassapp.Exception.TimeFurtherThanOtherException;
+import com.findclass.ajvm.findclassapp.Exception.TimeLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.WeekDayException;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
@@ -28,7 +31,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static java.lang.Boolean.FALSE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,7 +41,6 @@ public class AddTimeActivity extends AppCompatActivity {
     private FirebaseAuth auth;
     private String lastTimeId = new String();
 
-    private ValueEventListener valueEventListener;
 
 
     @Override
@@ -62,8 +63,20 @@ public class AddTimeActivity extends AppCompatActivity {
             DateFormat sdf = new SimpleDateFormat("hh:mm");
             Date dateStartTime = sdf.parse(startTime.getText().toString());
             Date dateEndTime = sdf.parse(endTime.getText().toString());
+
+            String[] startTimeWithoutColon = startTime.getText().toString().split(":");
+            String[] endTimeWithoutColon = endTime.getText().toString().split(":");
+
             if (thereAreEmptyFields(startTime, endTime, day)) {
                 throw new EmptyFieldException();
+            } else if (startTime.getText().toString().length() < 5 || endTime.getText().toString().length() < 5){
+                throw new TimeLenghtException();
+            } else if (dateEndTime.before(dateStartTime)){
+                throw new TimeFurtherThanOtherException();
+            } else if(Integer.valueOf(startTimeWithoutColon[0]) > 23 || Integer.valueOf(endTimeWithoutColon[0]) > 23) {
+                throw new InvalidTimeException();
+            } else if(Integer.valueOf(startTimeWithoutColon[1]) > 59 || Integer.valueOf(endTimeWithoutColon[1]) > 59) {
+                throw new InvalidTimeException();
             } else if (!day.getText().toString().equals("seg") && !day.getText().toString().equals("ter")
                     && !day.getText().toString().equals("qua") && !day.getText().toString().equals("qui")
                     && !day.getText().toString().equals("sex") && !day.getText().toString().equals("sab")
@@ -71,48 +84,48 @@ public class AddTimeActivity extends AppCompatActivity {
                 throw new WeekDayException();
             } else {
 
-                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),
-                        day.getText().toString());
-                    valueEventListener = professor
-                            .child("times")
-                            .addValueEventListener(
-                                    new ValueEventListener() {
-                                        @Override
-                                        public void onDataChange(DataSnapshot dataSnapshot) {
+                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),day.getText().toString());
+                Integer id;
+                professor
+                        .child("times")
+                        .addListenerForSingleValueEvent(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        if(dataSnapshot.hasChildren()) {
                                             for (DataSnapshot d : dataSnapshot.getChildren()) {
                                                 lastTimeId = d.getKey();
-
                                             }
-                                            Integer id = Integer.valueOf(lastTimeId);
-                                            id++;
-                                            if(lastTimeId == null){
-                                                professor.child("times").child("1").setValue(time);
-                                            }
-                                            else {
-                                                Toast.makeText(AddTimeActivity.this, (id).toString(), Toast.LENGTH_SHORT).show();
-                                                professor.child("times").child((id).toString()).setValue(time);
-                                            }
+                                            Integer id = Integer.valueOf(lastTimeId)+1;
+                                            professor.child("times").child(id.toString()).setValue(time);
                                         }
-
-                                        @Override
-                                        public void onCancelled(DatabaseError databaseError) {
-
+                                        else{
+                                            professor.child("times").child("1").setValue(time);
                                         }
-
                                     }
 
-                            );
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
 
+                                    }
+                                }
+                        );
 
-                Intent intent = new Intent(this, MyCalendarProfessorActivity.class);
-                startActivity(intent);
-                Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(this, MyCalendarProfessorActivity.class);
+                    startActivity(intent);
+                    Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_SHORT).show();
             }
             } catch(EmptyFieldException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch(WeekDayException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            } catch (ParseException e) {
+            } catch(TimeLenghtException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            } catch(TimeFurtherThanOtherException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }catch(InvalidTimeException e){
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            }catch (ParseException e) {
                 e.printStackTrace();
             } catch (Exception e){
                 e.printStackTrace();

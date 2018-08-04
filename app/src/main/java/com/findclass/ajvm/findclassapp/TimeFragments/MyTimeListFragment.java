@@ -105,6 +105,7 @@ public class MyTimeListFragment extends Fragment {
 
         valueEventListener = professorTimesRef
                 .child(auth.getCurrentUser().getUid())
+                .child("times")
                 .addValueEventListener(
                         new ValueEventListener() {
                             @Override
@@ -114,7 +115,7 @@ public class MyTimeListFragment extends Fragment {
                                     timesId.add(d.getKey());
                                 }
 
-                                timesRef = rootRef.child("times");
+                                timesRef = rootRef.child("availability").child(auth.getCurrentUser().getUid()).child("times");
                                 valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
                                         new ValueEventListener() {
                                             @Override
@@ -145,25 +146,7 @@ public class MyTimeListFragment extends Fragment {
                         }
                 );
 
-        /*timesRef = rootRef.child("times");
-        valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot time: dataSnapshot.getChildren()){
-                            Time thisTime = time.getValue(Time.class);
-                            myTimeList.add(thisTime);
-                        }
-
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //
-                    }
-                }
-        );*/
+        
     }
 
 }
