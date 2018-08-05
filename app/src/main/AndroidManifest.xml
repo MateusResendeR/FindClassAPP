@@ -12,7 +12,6 @@
         <activity android:name=".AccountActivities.SignUpActivity" />
         <activity android:name=".AccountActivities.SignUpStep2Activity" />
         <activity android:name=".AccountActivities.UpdateDataActivity" />
-
         <activity android:name=".AccountActivities.SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -30,13 +29,37 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SubjectActivities.MySubjectsActivity" />
         <activity android:name=".SubjectActivities.MySubjectInfoActivity" />
-
         <activity android:name=".AccountActivities.MyCalendarProfessorActivity" />
-        <activity android:name=".SubjectActivities.AddSubjectActivity"></activity>
-
+        <activity android:name=".SubjectActivities.AddSubjectActivity" />
         <activity android:name=".TimeActivities.AddTimeActivity" />
         <activity android:name=".TimeActivities.MyTimesActivity" />
-
+        <activity
+            android:name=".menuActivities.SubjectCategoryFundamentalActivity"
+            android:label="@string/title_activity_subject_category"
+            android:parentActivityName=".menuActivities.MenuAlunoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
+        </activity>
+        <activity
+            android:name=".menuActivities.SubjectCategoryMedioActivity"
+            android:label="@string/title_activity_subject_category_medio"
+            android:parentActivityName=".menuActivities.MenuAlunoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
+        </activity>
+        <activity
+            android:name=".menuActivities.SubjectCategoryVariadosActivity"
+            android:label="@string/title_activity_subject_category_variados"
+            android:parentActivityName=".menuActivities.MenuAlunoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
+        </activity>
     </application>
 
 </manifest>

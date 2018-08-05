@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.SubjectFragments.SubjecProfessorFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -38,25 +37,25 @@ public class MenuAlunoActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_menu_aluno);
-        FirebaseDatabase dbRef  = FirebaseDatabase.getInstance();
+        FirebaseDatabase dbRef = FirebaseDatabase.getInstance();
 
-        try{
+        try {
             dbRef.getReference().child("users").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
-                    if (auth.getCurrentUser()!=null){
-                        if(!dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())){
+                    if (auth.getCurrentUser() != null) {
+                        if (!dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())) {
                             auth.signOut();
                         }
                     }
                 }
 
-                public void onCancelled(DatabaseError databaseError){
+                public void onCancelled(DatabaseError databaseError) {
                     //code
                 }
             });
-        } catch (Exception e){
-            Toast.makeText(this,e.getClass().getSimpleName(),Toast.LENGTH_LONG).show();
+        } catch (Exception e) {
+            Toast.makeText(this, e.getClass().getSimpleName(), Toast.LENGTH_LONG).show();
         }
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -90,7 +89,7 @@ public class MenuAlunoActivity extends AppCompatActivity
                             View header = navigationView.getHeaderView(0);
                             TextView textViewAlunoName = header.findViewById(R.id.textViewNameAluno);
                             textViewAlunoName.setText(name + " " + surname);
-                        }catch (Exception e){
+                        } catch (Exception e) {
                             Toast.makeText(MenuAlunoActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();
                         }
                     }
@@ -101,89 +100,22 @@ public class MenuAlunoActivity extends AppCompatActivity
                     }
                 });
         //abas
-        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+       /* final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                        .add("Disciplinas",SubjecProfessorFragment.class)
-                        .create()
+                .add("Aulas Marcadas",)//Colocar activity notificacoes
+                .create()
         );
-        ViewPager viewPager =findViewById(R.id.viewpager);
+        ViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewpagertab);
-        viewPagerTab.setViewPager(viewPager);
-        //search
-        searchView = findViewById(R.id.search_viewProfessor);
-        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
-            @Override
-            public void onSearchViewShown() {
-
-            }
-
-            @Override
-            public void onSearchViewClosed() {
-                SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
-                fragment.reloadList();
-            }
-        });
-
-
-        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String query) {
-                SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
-                query = query.replace( 'á' , 'a');
-                query = query.replace( 'ã' , 'a');
-                query = query.replace( 'é' , 'e');
-                query = query.replace( 'ê' , 'e');
-                query = query.replace( 'ó' , 'o');
-                query = query.replace( 'õ' , 'o');
-                query = query.replace( 'ú' , 'u');
-                query = query.replace( 'í' , 'i');
-
-                if(query != null && !query.isEmpty()){
-                    fragment.searchProfessor(query.toLowerCase());
-                }
-                return true;
-            }
-
-            @Override
-            public boolean onQueryTextChange(String newText) {
-                SubjecProfessorFragment fragment = (SubjecProfessorFragment) adapter.getPage(0);
-                newText = newText.replace( 'á' , 'a');
-                newText = newText.replace( 'ã' , 'a');
-                newText = newText.replace( 'é' , 'e');
-                newText = newText.replace( 'ê' , 'e');
-                newText = newText.replace( 'ó' , 'o');
-                newText = newText.replace( 'õ' , 'o');
-                newText = newText.replace( 'ú' , 'u');
-                newText = newText.replace( 'í' , 'i');
-
-                if(newText != null && !newText.isEmpty()){
-                    fragment.searchProfessor(newText.toLowerCase());
-                }
-
-                return true;
-            }
-        });
-
-    }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        viewPagerTab.setViewPager(viewPager);*/
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_aluno, menu);
-        MenuItem item = menu.findItem(R.id.menuPesquisa);
-        searchView.setMenuItem(item);
         return true;
     }
 
@@ -203,6 +135,15 @@ public class MenuAlunoActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.nav_editAccountAluno) {
             Intent intent = new Intent(getBaseContext(), UpdateDataActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.nav_LevelFundamental){
+            Intent intent = new Intent(getBaseContext(), SubjectCategoryFundamentalActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.nav_LevelMedio){
+            Intent intent = new Intent(getBaseContext(), SubjectCategoryMedioActivity.class);
+            startActivity(intent);
+        }else if(id == R.id.nav_LevelVariados){
+            Intent intent = new Intent(getBaseContext(), SubjectCategoryVariadosActivity.class);
             startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

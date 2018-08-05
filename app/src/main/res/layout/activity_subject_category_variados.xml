@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menuActivities.MenuAlunoActivity">
+    tools:context=".menuActivities.SubjectCategoryVariadosActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
@@ -18,11 +18,14 @@
             android:background="?attr/colorPrimary"
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_viewProfessor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_menu_aluno" />
+    <include layout="@layout/content_subject_category_variados" />
 
 
 </android.support.design.widget.CoordinatorLayout>
