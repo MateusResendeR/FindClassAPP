@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
+import com.findclass.ajvm.findclassapp.Adapter.AddSubjectAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Professor_Subject;
 import com.findclass.ajvm.findclassapp.Model.Subject;

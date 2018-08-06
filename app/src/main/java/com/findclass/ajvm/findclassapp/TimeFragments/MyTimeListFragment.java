@@ -1,7 +1,6 @@
 package com.findclass.ajvm.findclassapp.TimeFragments;
 
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,12 +10,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 
-import com.findclass.ajvm.findclassapp.Adapter.MySubjectsAdapter;
 import com.findclass.ajvm.findclassapp.Adapter.MyTimesAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
-import com.findclass.ajvm.findclassapp.Model.Subject;
+import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.SubjectActivities.MySubjectInfoActivity;
+
+import java.util.ArrayList;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -24,19 +24,16 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MyTimeListFragment extends Fragment {
 
-    private RecyclerView recyclerViewMyTimesList;
+    private RecyclerView recyclerViewMyTimeList;
     private MyTimesAdapter adapter;
-    private ArrayList<String> myStartTimeList = new ArrayList<>();
-    private ArrayList<String> myEndTimeList = new ArrayList<>();
+    private ArrayList<Time> myTimeList = new ArrayList<>();
     private DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-    private DatabaseReference timeRef;
+    private DatabaseReference timesRef;
     private ValueEventListener valueEventListener;
     private FirebaseAuth auth = FirebaseAuth.getInstance();
 
@@ -49,16 +46,39 @@ public class MyTimeListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.activity_my_calendar_professor, container, false);
+        View view = inflater.inflate(R.layout.fragment_my_time_list, container, false);
 
-        recyclerViewMyTimesList = view.findViewById(R.id.myTimesRecyclerView);
+        recyclerViewMyTimeList = view.findViewById(R.id.myTimesRecyclerView);
 
-        adapter = new MyTimesAdapter(myStartTimeList,myEndTimeList, getActivity());
+        adapter = new MyTimesAdapter(myTimeList, getActivity());
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
-        recyclerViewMyTimesList.setLayoutManager(layoutManager);
-        recyclerViewMyTimesList.setHasFixedSize(true);
-        recyclerViewMyTimesList.setAdapter(adapter);
+        recyclerViewMyTimeList.setLayoutManager(layoutManager);
+        recyclerViewMyTimeList.setHasFixedSize(true);
+        recyclerViewMyTimeList.setAdapter(adapter);
+
+        recyclerViewMyTimeList.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewMyTimeList,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                //Ainda lugar nenhum
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                //
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                //
+                            }
+                        }
+                )
+        );
 
         return view;
     }
@@ -66,43 +86,44 @@ public class MyTimeListFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        //mySubjectsList = new ArrayList<>();
-        retrieveMySubjects();
+        //myTimeList = new ArrayList<>();
+        retrieveMyTimes();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        timeRef.removeEventListener(valueEventListener);
+        timesRef.removeEventListener(valueEventListener);
     }
 
-    public void retrieveMySubjects(){
-        myStartTimeList.clear();
+    public void retrieveMyTimes(){
+        myTimeList.clear();
 
 
 
-        DatabaseReference calendarList = rootRef.child("availability");
+        DatabaseReference professorTimesRef = rootRef.child("availability");
 
-        valueEventListener = calendarList
+        valueEventListener = professorTimesRef
                 .child(auth.getCurrentUser().getUid())
+                .child("times")
                 .addValueEventListener(
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                final ArrayList<String> subjectsId = new ArrayList<>();
+                                final ArrayList<String> timesId = new ArrayList<>();
                                 for (DataSnapshot d: dataSnapshot.getChildren()){
-                                    subjectsId.add(d.getKey());
+                                    timesId.add(d.getKey());
                                 }
 
-                                timeRef = rootRef.child("startTime");
-                                valueEventListener = timeRef.orderByChild("time").addValueEventListener(
+                                timesRef = rootRef.child("availability").child(auth.getCurrentUser().getUid()).child("times");
+                                valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
                                         new ValueEventListener() {
                                             @Override
                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot subject: dataSnapshot.getChildren()){
-                                                    if (subjectsId.contains(subject.getKey())){
-                                                        String thisStartTime = subject.getValue(Subject.class);
-                                                        myStartTimeList.add(thisSubject);
+                                                for (DataSnapshot time: dataSnapshot.getChildren()){
+                                                    if (timesId.contains(time.getKey())){
+                                                        Time thisTime = time.getValue(Time.class);
+                                                        myTimeList.add(thisTime);
                                                     }
                                                 }
 
@@ -125,25 +146,7 @@ public class MyTimeListFragment extends Fragment {
                         }
                 );
 
-        /*subjectsRef = rootRef.child("subjects");
-        valueEventListener = subjectsRef.orderByChild("name").addValueEventListener(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot subject: dataSnapshot.getChildren()){
-                            Subject thisSubject = subject.getValue(Subject.class);
-                            mySubjectsList.add(thisSubject);
-                        }
-
-                        adapter.notifyDataSetChanged();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //
-                    }
-                }
-        );*/
+        
     }
 
 }

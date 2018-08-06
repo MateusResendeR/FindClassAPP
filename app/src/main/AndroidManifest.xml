@@ -34,7 +34,8 @@
         <activity android:name=".AccountActivities.MyCalendarProfessorActivity" />
         <activity android:name=".SubjectActivities.AddSubjectActivity"></activity>
 
-        <activity android:name=".SubjectActivities.AddSubjectActivity" />
+        <activity android:name=".TimeActivities.AddTimeActivity" />
+        <activity android:name=".TimeActivities.MyTimesActivity" />
 
     </application>
 
