@@ -4,11 +4,36 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_editAccountAluno"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Editar Cadastro" />
+
+        <item android:title="Categorias">
+            <menu>
+                <item
+                    android:id="@+id/nav_LevelMedio"
+                    android:title="Ensino Médio"
+                    android:icon="@drawable/ic_menu_book"/>
+                <item
+                    android:id="@+id/nav_LevelFundamental"
+                    android:title="Ensino Fundamental"
+                    android:icon="@drawable/ic_menu_abc"/>
+                <item
+                    android:id="@+id/nav_LevelVariados"
+                    android:title="Variados"
+                    android:icon="@drawable/ic_menu_guitar"/>
+
+            </menu>
+        </item>
+
+
     </group>
 
+    <item android:title="Conta">
+        <menu>
+            <item
+                android:id="@+id/nav_editAccountAluno"
+                android:title="Editar Cadastro"
+                android:icon="@drawable/ic_menu_edit"/>
+
+        </menu>
+    </item>
 
 </menu>
