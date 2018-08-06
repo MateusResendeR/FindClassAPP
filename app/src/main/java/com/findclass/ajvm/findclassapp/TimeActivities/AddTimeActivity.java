@@ -16,6 +16,7 @@ import com.findclass.ajvm.findclassapp.Exception.InvalidTimeException;
 import com.findclass.ajvm.findclassapp.Exception.TimeFurtherThanOtherException;
 import com.findclass.ajvm.findclassapp.Exception.TimeLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.WeekDayException;
+import com.findclass.ajvm.findclassapp.Model.Date_time;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -77,33 +78,73 @@ public class AddTimeActivity extends AppCompatActivity {
                 throw new InvalidTimeException();
             } else if(Integer.valueOf(startTimeWithoutColon[1]) > 59 || Integer.valueOf(endTimeWithoutColon[1]) > 59) {
                 throw new InvalidTimeException();
-            } else if (!day.getText().toString().equals("seg") && !day.getText().toString().equals("ter")
-                    && !day.getText().toString().equals("qua") && !day.getText().toString().equals("qui")
-                    && !day.getText().toString().equals("sex") && !day.getText().toString().equals("sab")
-                    && !day.getText().toString().equals("dom")) {
+            } else if (isDayOfWeek(day)) {
                 throw new WeekDayException();
             } else {
 
                 final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),day.getText().toString());
-                Integer id;
                 professor
-                        .child("times")
                         .addListenerForSingleValueEvent(
                                 new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if(dataSnapshot.hasChildren()) {
-                                            for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                        if (dataSnapshot.child("times").hasChildren()) {
+                                            for (DataSnapshot d : dataSnapshot.child("times").getChildren()) {
                                                 lastTimeId = d.getKey();
                                             }
-                                            Integer id = Integer.valueOf(lastTimeId)+1;
+                                            Integer id = Integer.valueOf(lastTimeId) + 1;
                                             professor.child("times").child(id.toString()).setValue(time);
+                                        } else {
+                                            professor.child("times").child("0").setValue(time);
                                         }
-                                        else{
-                                            professor.child("times").child("1").setValue(time);
+                                        if(dataSnapshot.child("dates").hasChildren()){
+                                            for (DataSnapshot d: dataSnapshot.child("dates").getChildren()){
+                                                String[] weekDay = d.getValue().toString().split(" ");
+                                                if(weekDay[0].equals("Sun")
+                                                        && time.getDay().equals("dom")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                                else if(weekDay[0].equals("Mon")
+                                                        && time.getDay().equals("seg")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                                else if(weekDay[0].equals("Tue")
+                                                        && time.getDay().equals("ter")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                                else if(weekDay[0].equals("Wen")
+                                                        && time.getDay().equals("qua")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                                else if(weekDay[0].equals("Thu")
+                                                        && time.getDay().equals("qui")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                                else if(weekDay[0].equals("Fri")
+                                                        && time.getDay().equals("sex")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                                else if(weekDay[0].equals("Sat")
+                                                        && time.getDay().equals("sab")){
+                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.push();
+                                                    pushDateTime.setValue(dt);
+                                                }
+                                            }
                                         }
                                     }
-
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
 
@@ -132,8 +173,6 @@ public class AddTimeActivity extends AppCompatActivity {
             }
     }
 
-
-
         private boolean thereAreEmptyFields (EditText startTime, EditText endTime, EditText day){
             if (TextUtils.isEmpty(startTime.getText()) || TextUtils.isEmpty(endTime.getText()) ||
                     TextUtils.isEmpty(day.getText())) {
@@ -142,4 +181,15 @@ public class AddTimeActivity extends AppCompatActivity {
                 return false;
             }
         }
+
+    private boolean isDayOfWeek (EditText day){
+        if (!day.getText().toString().equals("seg") && !day.getText().toString().equals("ter")
+                && !day.getText().toString().equals("qua") && !day.getText().toString().equals("qui")
+                && !day.getText().toString().equals("sex") && !day.getText().toString().equals("sab")
+                && !day.getText().toString().equals("dom")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
     }
