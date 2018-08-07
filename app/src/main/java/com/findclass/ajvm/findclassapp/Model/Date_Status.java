@@ -12,6 +12,11 @@ public class Date_Status implements Serializable {
         this.status = status;
     }
 
+    public Date_Status(Date_Status date_status) {
+        this.date = date_status.getDate();
+        this.status = date_status.getStatus();
+    }
+
     public String getDate() {
         return date;
     }

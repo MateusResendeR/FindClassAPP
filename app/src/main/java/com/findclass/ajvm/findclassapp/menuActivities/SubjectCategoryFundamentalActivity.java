@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -10,8 +11,11 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 
 import com.findclass.ajvm.findclassapp.Adapter.SubjectProfessorAdapter;
+import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Professor_Subject;
 import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.Subject_Professor;
@@ -26,6 +30,8 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.PendingIntent.getActivity;
 
 public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
     private RecyclerView recyclerViewFundamental;
@@ -109,6 +115,35 @@ public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        recyclerViewFundamental.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerViewFundamental,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent intent = new Intent(getBaseContext(),AvailabilityListAlunoActivity.class);
+
+                                Subject_Professor thisSubjectProfessor = listProfessors.get(position);
+                                intent.putExtra("professor_uid",thisSubjectProfessor.getProfessorSubject().getProfessorUid());
+                                intent.putExtra("subject_id",thisSubjectProfessor.getSubject().getId());
+
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                //
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                //
+                            }
+                        }
+                )
+        );
 
     }
 

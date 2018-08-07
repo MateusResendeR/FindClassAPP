@@ -35,7 +35,6 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
     private DatabaseReference db;
     private DatabaseReference professor;
     private MaterialCalendarView materialCalendarView;
-    private boolean change = FALSE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,90 +92,12 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
         try {
             final List<CalendarDay> calendarDays = materialCalendarView.getSelectedDates();
             final ArrayList<Date_Status> calendarDaysString = new ArrayList<Date_Status>();
-            professor
-                    .addListenerForSingleValueEvent(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    change = TRUE;
-                                    for (int i = 0;i < calendarDays.size();i++) {
-                                        if (dataSnapshot.child("dates").hasChildren()) {
-                                            boolean isEqual = FALSE;
-                                            for (DataSnapshot d : dataSnapshot.child("dates").getChildren()) {
-                                                if (calendarDays.get(i).getDate().toString().equals(d.child("date").getValue().toString())){
-                                                    calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString()
-                                                            ,d.child("status").getValue().toString()));
-                                                    isEqual = TRUE;
-                                                    break;
-                                                }
-                                            }
-                                            if (!isEqual){
-                                                for (DataSnapshot d : dataSnapshot.child("times").getChildren()) {
-                                                    String[] weekDay = calendarDays.get(i).getDate().toString().split(" ");
-                                                    if (weekDay[0].equals("Sun")
-                                                            && d.child("day").getValue().toString().equals("dom")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(),"sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Mon")
-                                                            && d.child("day").getValue().toString().equals("seg")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Tue")
-                                                            && d.child("day").getValue().toString().equals("ter")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Wen")
-                                                            && d.child("day").getValue().toString().equals("qua")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Thu")
-                                                            && d.child("day").getValue().toString().equals("qui")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Fri")
-                                                            && d.child("day").getValue().toString().equals("sex")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Sat")
-                                                            && d.child("day").getValue().toString().equals("sab")) {
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "sim"));
-                                                        Date_Time dt = new Date_Time(d.getKey(), Integer.valueOf(i).toString(), d.child("day").getValue().toString(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    }
-                                                    else{
-                                                        calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(),"não"));
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        else{
-                                            calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(),"não"));
-                                        }
-                                    }
-                                }
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-
-                                }
-                            }
-
-                    );
-
-            professor.child("dates").setValue(calendarDaysString);
-
+            for (int i = 0;i < calendarDays.size();i++) {
+                calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "não"));
+                Date_Status ds = new Date_Status(calendarDaysString.get(i));
+                DatabaseReference pushDate = professor.child("dates").push();
+                pushDate.setValue(ds);
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -191,8 +112,10 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
             final ArrayList<Date_Status> calendarDaysString = new ArrayList<Date_Status>();
             for (int i = 0;i < calendarDays.size();i++) {
                 calendarDaysString.add(new Date_Status(calendarDays.get(i).getDate().toString(), "não"));
+                Date_Status ds = new Date_Status(calendarDaysString.get(i));
+                DatabaseReference pushDate = professor.child("dates").push();
+                pushDate.setValue(ds);
             }
-            professor.child("dates").setValue(calendarDaysString);
 
            
 
