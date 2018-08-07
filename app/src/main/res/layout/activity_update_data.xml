@@ -2,33 +2,33 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:minHeight="211dp"
     tools:context=".AccountActivities.UpdateDataActivity"
     tools:layout_editor_absoluteY="81dp">
+
 
     <EditText
         android:id="@+id/nameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="7dp"
+        android:layout_marginTop="27dp"
         android:ems="10"
         android:hint="Nome"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/surnameEditText"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
         android:id="@+id/surnameEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
         android:ems="10"
         android:hint="Sobrenome"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/phoneEditText"
         app:layout_constraintStart_toStartOf="@+id/nameEditText"
         app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
 
@@ -36,11 +36,11 @@
         android:id="@+id/phoneEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="11dp"
+        android:layout_marginTop="21dp"
         android:ems="10"
         android:hint="Telefone"
         android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/finishUpdateData"
+        app:layout_constraintStart_toStartOf="@+id/surnameEditText"
         app:layout_constraintTop_toBottomOf="@+id/surnameEditText"
         app:mask="(##)#####-####" />
 
@@ -48,12 +48,13 @@
         android:id="@+id/finishUpdateData"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="40dp"
-        android:layout_marginStart="40dp"
+        android:layout_marginTop="30dp"
         android:onClick="finishUpdateData"
         android:text="Alterar Dados"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/phoneEditText"
-        app:layout_constraintTop_toBottomOf="@+id/phoneEditText" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/phoneEditText"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/button"/>
 
 </android.support.constraint.ConstraintLayout>
