@@ -3,25 +3,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_seeMySubjects"
 
-            android:icon="@drawable/ic_menu_subjects"
-            android:title="Minhas disciplinas" />
-        <item
-            android:id="@+id/nav_myCalendarProfessor"
-            android:icon="@drawable/ic_menu_calendar"
-            android:title="Meu Calendário" />
+        <group android:checkableBehavior="single">
 
+            <item android:title="Ações">
+                <menu>
+                    <item
+                        android:id="@+id/nav_seeMySubjects"
 
+                        android:icon="@drawable/ic_menu_subjects"
+                        android:title="Minhas disciplinas" />
+                    <item
+                        android:id="@+id/nav_myCalendarProfessor"
+                        android:icon="@drawable/ic_menu_calendar"
+                        android:title="Meu Calendário" />
 
-        <item
-            android:id="@+id/nav_editAccountProfessor"
-            android:icon="@drawable/ic_menu_edit"
-            android:title="Editar conta" />
+                </menu>
+            </item>
 
-    </group>
+        </group>
+
+    <item android:title="Conta">
+        <menu>
+            <item
+                android:id="@+id/nav_editAccountProfessor"
+                android:icon="@drawable/ic_menu_edit"
+                android:title="Editar conta" />
+
+        </menu>
+    </item>
 
         </menu>
 

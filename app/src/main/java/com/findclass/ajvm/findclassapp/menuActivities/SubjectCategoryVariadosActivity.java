@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -114,12 +115,9 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
