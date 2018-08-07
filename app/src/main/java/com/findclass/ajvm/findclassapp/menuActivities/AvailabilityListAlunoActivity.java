@@ -33,7 +33,6 @@ import com.miguelcatalan.materialsearchview.MaterialSearchView;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.app.PendingIntent.getActivity;
 
 public class AvailabilityListAlunoActivity extends AppCompatActivity {
     private RecyclerView recyclerViewAvailability;
@@ -70,6 +69,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         dateTimeRef = FirebaseDatabase.getInstance().getReference().child("availability").child(professorUid).child("dateTimes");
         timeRef = FirebaseDatabase.getInstance().getReference().child("availability").child(professorUid).child("times");
         dateRef = FirebaseDatabase.getInstance().getReference().child("availability").child(professorUid).child("dates");
+
         scheduleRef = FirebaseDatabase.getInstance().getReference().child("schedule");
 
         adapter = new AvailabilityListAdapter(listTimeDates, this);
@@ -143,16 +143,17 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
                                 final Time_Date thisTimeDate = listTimeDates.get(position);
                                 final Schedule schedule = new Schedule();
-
                                 schedule.setProfessor_id(professorUid);
                                 schedule.setStudent_id(auth.getCurrentUser().getUid());
                                 schedule.setSubject_id(subjectId);
                                 schedule.setDatetime_id(thisTimeDate.getDate_time_id());
 
+
                                 DatabaseReference schedulePush = scheduleRef.child(professorUid).child(auth.getCurrentUser().getUid())
                                         .push();
                                 schedulePush.setValue(schedule);
                                 dateTimeRef.child(thisTimeDate.getDate_time_id()).child("status").setValue("sim");
+
                                 startActivity(intent);
                             }
 
@@ -243,7 +244,6 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                     final Date_Time dt = dado.getValue(Date_Time.class);
                     td.setDate_time(dt);
 
-
                     td.setDate_time_id(dado.getKey());
 
 
@@ -258,6 +258,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
                                         }adapter.notifyDataSetChanged();
                                     }adapter.notifyDataSetChanged();
+
                                 }
 
 
@@ -290,6 +291,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                     );
                     adapter.notifyDataSetChanged();
                 }
+
 
 
             }

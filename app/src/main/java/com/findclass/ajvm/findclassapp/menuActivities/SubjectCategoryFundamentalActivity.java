@@ -223,7 +223,6 @@ public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
                                     final Subject_Professor sp = new Subject_Professor();
                                     final Professor_Subject ps = dado.getValue(Professor_Subject.class);
                                     sp.setProfessorSubject(ps);
-
                                     userRef.addValueEventListener(
                                             new ValueEventListener() {
                                                 @Override
