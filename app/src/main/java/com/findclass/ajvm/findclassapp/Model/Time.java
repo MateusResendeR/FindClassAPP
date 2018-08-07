@@ -6,15 +6,21 @@ public class Time implements Serializable {
     private String startTime;
     private String endTime;
     private String day;
+    private String price;
 
     public Time() {
     }
 
-    public Time(String startTime, String endTime, String day) {
+    public Time(String startTime, String endTime, String day, String price) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.day = day;
+        this.price = price;
     }
+
+    public String getPrice() { return price; }
+
+    public void setPrice(String price) { this.price = price; }
 
     public String getStartTime() {
         return startTime;
