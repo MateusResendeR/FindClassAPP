@@ -14,9 +14,9 @@ import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActi
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.InvalidTimeException;
 import com.findclass.ajvm.findclassapp.Exception.TimeFurtherThanOtherException;
-import com.findclass.ajvm.findclassapp.Exception.TimeLenghtException;
+import com.findclass.ajvm.findclassapp.Exception.FieldLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.WeekDayException;
-import com.findclass.ajvm.findclassapp.Model.Date_time;
+import com.findclass.ajvm.findclassapp.Model.Date_Time;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -48,12 +48,13 @@ public class AddTimeActivity extends AppCompatActivity {
         professor = db.child("availability").child(auth.getCurrentUser().getUid());
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_time_activity);
+        setContentView(R.layout.activity_add_time);
     }
 
     public void finishAddSubjectTime(View view) {
         MaskedEditText startTime = findViewById(R.id.startTimeEditText);
         MaskedEditText endTime = findViewById(R.id.endTimeEditText);
+        MaskedEditText price = findViewById(R.id.priceEditText);
         EditText day = findViewById(R.id.dayEditText);
 
         try {
@@ -67,8 +68,9 @@ public class AddTimeActivity extends AppCompatActivity {
 
             if (thereAreEmptyFields(startTime, endTime, day)) {
                 throw new EmptyFieldException();
-            } else if (startTime.getText().toString().length() < 5 || endTime.getText().toString().length() < 5){
-                throw new TimeLenghtException();
+            } else if (startTime.getText().toString().length() < 5 || endTime.getText().toString().length() < 5
+                    || price.getText().toString().length() < 7){
+                throw new FieldLenghtException();
             } else if (dateEndTime.before(dateStartTime)){
                 throw new TimeFurtherThanOtherException();
             } else if(Integer.valueOf(startTimeWithoutColon[0]) > 23 || Integer.valueOf(endTimeWithoutColon[0]) > 23) {
@@ -79,7 +81,8 @@ public class AddTimeActivity extends AppCompatActivity {
                 throw new WeekDayException();
             } else {
 
-                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),day.getText().toString());
+                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),
+                        day.getText().toString(),price.getText().toString());
                 professor
                         .addListenerForSingleValueEvent(
                                 new ValueEventListener() {
@@ -92,38 +95,45 @@ public class AddTimeActivity extends AppCompatActivity {
                                                 String[] weekDay = d.child("date").getValue().toString().split(" ");
                                                 if (weekDay[0].equals("Sun")
                                                         && time.getDay().equals("dom")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 } else if (weekDay[0].equals("Mon")
                                                         && time.getDay().equals("seg")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 } else if (weekDay[0].equals("Tue")
                                                         && time.getDay().equals("ter")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 } else if (weekDay[0].equals("Wen")
                                                         && time.getDay().equals("qua")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 } else if (weekDay[0].equals("Thu")
                                                         && time.getDay().equals("qui")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 } else if (weekDay[0].equals("Fri")
                                                         && time.getDay().equals("sex")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 } else if (weekDay[0].equals("Sat")
                                                         && time.getDay().equals("sab")) {
-                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.push();
+                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
+                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
+                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
                                                 }
                                             }
@@ -140,12 +150,12 @@ public class AddTimeActivity extends AppCompatActivity {
                     Intent intent = new Intent(this, MyCalendarProfessorActivity.class);
                     startActivity(intent);
                     Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_SHORT).show();
-            }
+                }
             } catch(EmptyFieldException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch(WeekDayException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            } catch(TimeLenghtException e){
+            } catch(FieldLenghtException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch(TimeFurtherThanOtherException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

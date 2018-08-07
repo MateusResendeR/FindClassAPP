@@ -26,7 +26,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="00:00"
+        android:hint="Horário inicial (00:00)"
         android:inputType="time"
         app:mask="##:##" />
 
@@ -35,16 +35,25 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="00:00"
+        android:hint="Horário final (00:00)"
         android:inputType="time"
         app:mask="##:##" />
+
+    <com.vicmikhailau.maskededittext.MaskedEditText
+        android:id="@+id/priceEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Preço (R$00,00)"
+        android:inputType="number"
+        app:mask="R$##,##" />
 
     <EditText
         android:id="@+id/dayEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="seg" />
+        android:hint="Dia da semana (seg)" />
 
     <Button
         android:id="@+id/addButton"
