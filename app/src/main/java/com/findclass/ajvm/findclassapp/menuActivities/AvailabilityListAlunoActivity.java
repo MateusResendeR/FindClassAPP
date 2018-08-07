@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -16,13 +15,13 @@ import android.widget.AdapterView;
 
 import com.findclass.ajvm.findclassapp.Adapter.AvailabilityListAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
+import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Date_Time;
-import com.findclass.ajvm.findclassapp.Model.Professor_Subject;
-import com.findclass.ajvm.findclassapp.Model.Subject;
-import com.findclass.ajvm.findclassapp.Model.Subject_Professor;
+import com.findclass.ajvm.findclassapp.Model.Schedule;
+import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.Time_Date;
-import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,9 +42,13 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
     private DatabaseReference professorRef;
     private String professorUid;
     private DatabaseReference subjectRef;
+    private DatabaseReference scheduleRef;
+    private DatabaseReference timeRef;
+    private DatabaseReference dateRef;
     private String subjectId;
     private ValueEventListener valueEventListenerProfessores;
     private MaterialSearchView searchView;
+    private final FirebaseAuth auth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +66,10 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         recyclerViewAvailability = findViewById(R.id.recycleViewAvailabilityList);
         professorRef = FirebaseDatabase.getInstance().getReference().child("users");
         subjectRef = FirebaseDatabase.getInstance().getReference().child("subjects");
-        dateTimeRef = FirebaseDatabase.getInstance().getReference().child("availability").child(professorRef.child(professorUid).toString()).child("dateTimes");
+        dateTimeRef = FirebaseDatabase.getInstance().getReference().child("availability").child(professorUid).child("dateTimes");
+        timeRef = FirebaseDatabase.getInstance().getReference().child("availability").child("times").child("dateTimes");
+        dateRef = FirebaseDatabase.getInstance().getReference().child("availability").child("dates").child("dateTimes");
+        scheduleRef = FirebaseDatabase.getInstance().getReference().child("schedule");
 
         adapter = new AvailabilityListAdapter(listTimeDates, this);
 
@@ -131,11 +137,37 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getBaseContext(),AvailabilityInfoActivity.class);
+                                Intent intent = new Intent(getBaseContext(),MenuAlunoActivity.class);
 
-                                Time_Date thisTimeDate = listTimeDates.get(position);
-                                intent.putExtra("professor_uid",professorUid);
-                                intent.putExtra("subject_id",subjectId);
+
+                                final Time_Date thisTimeDate = listTimeDates.get(position);
+                                final Schedule schedule = new Schedule();
+                                dateTimeRef.addValueEventListener(
+                                        new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for(DataSnapshot d : dataSnapshot.getChildren()){
+                                                    if(thisTimeDate.getDate_time().getDate_id().equals(d.child("date_id").getValue())
+                                                            && thisTimeDate.getDate_time().getTime_id().equals(d.child("time_id").getValue())){
+                                                        schedule.setDatetime_id(d.getKey());
+                                                        dateTimeRef.child(d.getKey()).child("status").setValue("sim");
+                                                    }
+                                                }
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        }
+                                );
+                                schedule.setProfessor_id(professorUid);
+                                schedule.setStudent_id(auth.getCurrentUser().getUid());
+                                schedule.setSubject_id(subjectId);
+
+                                DatabaseReference schedulePush = scheduleRef.child(professorUid).child(auth.getCurrentUser().getUid())
+                                        .push();
+                                schedulePush.setValue(schedule);
 
                                 startActivity(intent);
                             }
@@ -190,8 +222,8 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
     public void searchDay(String text) {
         List<Time_Date> listDaySearch = new ArrayList<>();
-        for (Time_Date professor : listTimeDates) {
-            String day = professor.getTime().getDay().toLowerCase();
+        for (Time_Date time_date : listTimeDates) {
+            String day = time_date.getTime().getDay().toLowerCase();
             day = day.replace('á', 'a');
             day = day.replace('ã', 'a');
             day = day.replace('é', 'e');
@@ -202,7 +234,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
             day = day.replace('í', 'i');
 
             if (day.contains(text)) {
-                listDaySearch.add(professor);
+                listDaySearch.add(time_date);
 
             }
         }
@@ -222,49 +254,51 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         valueEventListenerProfessores = dateTimeRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                for (final DataSnapshot dado : dataSnapshot.getChildren()) {
+                    final Time_Date td = new Time_Date();
+                    final Date_Time dt = dado.getValue(Date_Time.class);
+                    td.setDate_time(dt);
 
-                for (final DataSnapshot dados : dataSnapshot.getChildren()) {
-                    dateTimeRef.child(dados.getKey()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            for (final DataSnapshot dado : dataSnapshot.getChildren()) {
-                                final Time_Date td = new Time_Date();
-                                final Date_Time dt = dado.getValue(Date_Time.class);
+                    timeRef.addValueEventListener(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                        Time time = d.getValue(Time.class);
+                                        if (d.getKey().equals(dado.child("time_id").getValue())) {
+                                            td.setTime(time);
 
-                                professorRef.addValueEventListener(
-                                        new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                                    User user = d.getValue(User.class);
-                                                    if (d.getKey().equals(professorUid)) {
-                                                        td.setUser(user);
-
-                                                        Log.e("teste", user.getName());
-
-
-                                                    }
-                                                }
-                                            }
-
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                                //
-                                            }
                                         }
-                                );
+                                    }
+                                }
+
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    //
+                                }
                             }
+                    );
+                    dateRef.addValueEventListener(
+                            new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                        Date_Status ds = d.getValue(Date_Status.class);
+                                        if (d.getKey().equals(dado.child("date_id").getValue())) {
+                                            td.setDate_status(ds);
 
-                        }
-
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-                            //
-                        }
-                    });
+                                        }
+                                    }
+                                }
 
 
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+                                    //
+                                }
+                            }
+                    );
                 }
 
             }
@@ -274,6 +308,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                 //
             }
         });
+
     }
 
 }
