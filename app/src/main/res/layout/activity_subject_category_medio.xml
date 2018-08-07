@@ -4,14 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".menuActivities.MenuProfessorActivity">
+    tools:context=".menuActivities.SubjectCategoryMedioActivity">
 
     <android.support.design.widget.AppBarLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/AppTheme.AppBarOverlay">
 
+
         <android.support.v7.widget.Toolbar
+
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
@@ -22,11 +24,18 @@
                 android:layout_width="80px"
                 android:layout_height="wrap_content"
                 android:src="@drawable/lupa" />
+
         </android.support.v7.widget.Toolbar>
 
+        <com.miguelcatalan.materialsearchview.MaterialSearchView
+            android:id="@+id/search_viewProfessor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
     </android.support.design.widget.AppBarLayout>
 
-    <include layout="@layout/content_menu_professor" />
+    <include layout="@layout/content_subject_category_medio" />
+
+
 
 </android.support.design.widget.CoordinatorLayout>
