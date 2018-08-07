@@ -3,7 +3,7 @@ package com.findclass.ajvm.findclassapp.Model;
 import java.io.Serializable;
 
 public class Date_time implements Serializable {
-    private Time time;
+    private String time;
     private String date;
     private String day;
     private String status;
@@ -20,18 +20,18 @@ public class Date_time implements Serializable {
     public Date_time() {
     }
 
-    public Date_time(Time time, String date, String day, String status) {
+    public Date_time(String time, String date, String day, String status) {
         this.time = time;
         this.date = date;
         this.day = day;
         this.status = status;
     }
 
-    public Time getTime() {
+    public String getTime() {
         return time;
     }
 
-    public void setTime(Time time) {
+    public void setTime(String time) {
         this.time = time;
     }
 

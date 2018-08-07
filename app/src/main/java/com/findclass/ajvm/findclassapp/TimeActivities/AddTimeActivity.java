@@ -40,9 +40,6 @@ public class AddTimeActivity extends AppCompatActivity {
     private DatabaseReference db;
     private DatabaseReference professor;
     private FirebaseAuth auth;
-    private String lastTimeId = new String();
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,57 +85,44 @@ public class AddTimeActivity extends AppCompatActivity {
                                 new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        if (dataSnapshot.child("times").hasChildren()) {
-                                            for (DataSnapshot d : dataSnapshot.child("times").getChildren()) {
-                                                lastTimeId = d.getKey();
-                                            }
-                                            Integer id = Integer.valueOf(lastTimeId) + 1;
-                                            professor.child("times").child(id.toString()).setValue(time);
-                                        } else {
-                                            professor.child("times").child("0").setValue(time);
-                                        }
-                                        if(dataSnapshot.child("dates").hasChildren()){
-                                            for (DataSnapshot d: dataSnapshot.child("dates").getChildren()){
-                                                String[] weekDay = d.getValue().toString().split(" ");
-                                                if(weekDay[0].equals("Sun")
-                                                        && time.getDay().equals("dom")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                        DatabaseReference timePush = professor.child("times").push();
+                                        timePush.setValue(time);
+                                        if (dataSnapshot.child("dates").hasChildren()) {
+                                            for (DataSnapshot d : dataSnapshot.child("dates").getChildren()) {
+                                                String[] weekDay = d.child("date").getValue().toString().split(" ");
+                                                if (weekDay[0].equals("Sun")
+                                                        && time.getDay().equals("dom")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
-                                                }
-                                                else if(weekDay[0].equals("Mon")
-                                                        && time.getDay().equals("seg")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                } else if (weekDay[0].equals("Mon")
+                                                        && time.getDay().equals("seg")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
-                                                }
-                                                else if(weekDay[0].equals("Tue")
-                                                        && time.getDay().equals("ter")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                } else if (weekDay[0].equals("Tue")
+                                                        && time.getDay().equals("ter")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
-                                                }
-                                                else if(weekDay[0].equals("Wen")
-                                                        && time.getDay().equals("qua")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                } else if (weekDay[0].equals("Wen")
+                                                        && time.getDay().equals("qua")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
-                                                }
-                                                else if(weekDay[0].equals("Thu")
-                                                        && time.getDay().equals("qui")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                } else if (weekDay[0].equals("Thu")
+                                                        && time.getDay().equals("qui")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
-                                                }
-                                                else if(weekDay[0].equals("Fri")
-                                                        && time.getDay().equals("sex")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                } else if (weekDay[0].equals("Fri")
+                                                        && time.getDay().equals("sex")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
-                                                }
-                                                else if(weekDay[0].equals("Sat")
-                                                        && time.getDay().equals("sab")){
-                                                    Date_time dt = new Date_time(time, d.getValue().toString(),time.getDay(), "não");
+                                                } else if (weekDay[0].equals("Sat")
+                                                        && time.getDay().equals("sab")) {
+                                                    Date_time dt = new Date_time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.push();
                                                     pushDateTime.setValue(dt);
                                                 }
@@ -150,6 +134,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
                                     }
                                 }
+
                         );
 
                     Intent intent = new Intent(this, MyCalendarProfessorActivity.class);
