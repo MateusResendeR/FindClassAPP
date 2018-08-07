@@ -123,7 +123,7 @@ public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getBaseContext(),AvailabilityListAlunoActivity.class);
+                                Intent intent = new Intent(SubjectCategoryFundamentalActivity.this,AvailabilityListAlunoActivity.class);
 
                                 Subject_Professor thisSubjectProfessor = listProfessors.get(position);
                                 intent.putExtra("professor_uid",thisSubjectProfessor.getProfessorSubject().getProfessorUid());

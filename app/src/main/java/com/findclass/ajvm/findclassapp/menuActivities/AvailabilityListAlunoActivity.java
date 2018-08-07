@@ -51,7 +51,230 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_availability_list_aluno);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Bundle data = getIntent().getExtras();
+        subjectId = (String) data.getSerializable("subject_id");
+        professorUid = (String) data.getSerializable("professor_uid");
+
+        recyclerViewAvailability = findViewById(R.id.recycleViewAvailabilityList);
+        professorRef = FirebaseDatabase.getInstance().getReference().child("users");
+        subjectRef = FirebaseDatabase.getInstance().getReference().child("subjects");
+        dateTimeRef = FirebaseDatabase.getInstance().getReference().child("availability").child(professorRef.child(professorUid).toString()).child("dateTimes");
+
+        adapter = new AvailabilityListAdapter(listTimeDates, this);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewAvailability.setLayoutManager(layoutManager);
+        recyclerViewAvailability.setHasFixedSize(true);
+        recyclerViewAvailability.setAdapter(adapter);
+
+
+        searchView = findViewById(R.id.search_viewDays);
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                reloadList();
+            }
+        });
+
+
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                query = query.replace('á', 'a');
+                query = query.replace('ã', 'a');
+                query = query.replace('é', 'e');
+                query = query.replace('ê', 'e');
+                query = query.replace('ó', 'o');
+                query = query.replace('õ', 'o');
+                query = query.replace('ú', 'u');
+                query = query.replace('í', 'i');
+
+                if (query != null && !query.isEmpty()) {
+                    searchDay(query.toLowerCase());
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                newText = newText.replace('á', 'a');
+                newText = newText.replace('ã', 'a');
+                newText = newText.replace('é', 'e');
+                newText = newText.replace('ê', 'e');
+                newText = newText.replace('ó', 'o');
+                newText = newText.replace('õ', 'o');
+                newText = newText.replace('ú', 'u');
+                newText = newText.replace('í', 'i');
+
+                if (newText != null && !newText.isEmpty()) {
+                    searchDay(newText.toLowerCase());
+                }
+
+                return true;
+            }
+        });
+
+        recyclerViewAvailability.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        this,
+                        recyclerViewAvailability,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                Intent intent = new Intent(getBaseContext(),AvailabilityInfoActivity.class);
+
+                                Time_Date thisTimeDate = listTimeDates.get(position);
+                                intent.putExtra("professor_uid",professorUid);
+                                intent.putExtra("subject_id",subjectId);
+
+                                startActivity(intent);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                //
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                //
+                            }
+                        }
+                )
+        );
 
     }
+
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        retrieveDateTimes();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        subjectRef.removeEventListener(valueEventListenerProfessores);
+        dateTimeRef.removeEventListener(valueEventListenerProfessores);
+        professorRef.removeEventListener(valueEventListenerProfessores);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_aluno, menu);
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
+        return true;
+    }
+
+    public void searchDay(String text) {
+        List<Time_Date> listDaySearch = new ArrayList<>();
+        for (Time_Date professor : listTimeDates) {
+            String day = professor.getTime().getDay().toLowerCase();
+            day = day.replace('á', 'a');
+            day = day.replace('ã', 'a');
+            day = day.replace('é', 'e');
+            day = day.replace('ê', 'e');
+            day = day.replace('ó', 'o');
+            day = day.replace('õ', 'o');
+            day = day.replace('ú', 'u');
+            day = day.replace('í', 'i');
+
+            if (day.contains(text)) {
+                listDaySearch.add(professor);
+
+            }
+        }
+        adapter = new AvailabilityListAdapter(listDaySearch, this);
+        recyclerViewAvailability.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void reloadList() {
+        adapter = new AvailabilityListAdapter(listTimeDates, this);
+        recyclerViewAvailability.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
+    }
+
+    public void retrieveDateTimes(){
+        listTimeDates.clear();
+        valueEventListenerProfessores = dateTimeRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for (final DataSnapshot dados : dataSnapshot.getChildren()) {
+                    dateTimeRef.child(dados.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            for (final DataSnapshot dado : dataSnapshot.getChildren()) {
+                                final Time_Date td = new Time_Date();
+                                final Date_Time dt = dado.getValue(Date_Time.class);
+
+                                professorRef.addValueEventListener(
+                                        new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                                    User user = d.getValue(User.class);
+                                                    if (d.getKey().equals(professorUid)) {
+                                                        td.setUser(user);
+
+                                                        Log.e("teste", user.getName());
+
+
+                                                    }
+                                                }
+                                            }
+
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+                                                //
+                                            }
+                                        }
+                                );
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+                            //
+                        }
+                    });
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //
+            }
+        });
+    }
+
 }
 
