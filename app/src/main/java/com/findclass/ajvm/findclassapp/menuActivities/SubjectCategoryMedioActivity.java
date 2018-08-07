@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -118,12 +119,9 @@ public class SubjectCategoryMedioActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 
