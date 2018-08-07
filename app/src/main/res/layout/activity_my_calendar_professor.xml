@@ -32,6 +32,8 @@
         android:layout_marginTop="8dp"
         android:onClick="updateSubjectDate"
         android:text="Atualizar"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/addButton"
@@ -52,7 +54,9 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/updateButton"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment" />
+        app:layout_constraintTop_toBottomOf="@+id/fragment"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/button"/>
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"

@@ -11,6 +11,7 @@
         android:id="@+id/textView2"
         android:layout_width="401dp"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:text="Adicione um horário aqui"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -51,7 +52,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:onClick="finishAddSubjectTime"
-        android:text="Adicionar" />
+        android:text="Adicionar"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/button"/>
 
 
 </LinearLayout>
