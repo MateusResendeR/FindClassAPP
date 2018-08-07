@@ -223,6 +223,7 @@ public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
                                     final Subject_Professor sp = new Subject_Professor();
                                     final Professor_Subject ps = dado.getValue(Professor_Subject.class);
                                     sp.setProfessorSubject(ps);
+
                                     userRef.addValueEventListener(
                                             new ValueEventListener() {
                                                 @Override
@@ -242,9 +243,9 @@ public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
                                                                                 Subject subject = d.getValue(Subject.class);
                                                                                 if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals("Fundamental")) {
                                                                                     sp.setSubject(subject);
-                                                                                    if (dado.child("status").getValue().toString().equals("não")){
-                                                                                        listProfessors.add(sp);
-                                                                                    }
+                                                                                    listProfessors.add(sp);
+
+
                                                                                 }
                                                                                 adapter.notifyDataSetChanged();
                                                                             }
