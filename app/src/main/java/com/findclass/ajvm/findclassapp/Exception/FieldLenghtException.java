@@ -1,8 +1,8 @@
 package com.findclass.ajvm.findclassapp.Exception;
 
-public class TimeLenghtException extends Exception {
+public class FieldLenghtException extends Exception {
     @Override
     public String getMessage(){
-        return "Algum horário inválido!";
+        return "Algum campo está inválido!";
     }
 }
