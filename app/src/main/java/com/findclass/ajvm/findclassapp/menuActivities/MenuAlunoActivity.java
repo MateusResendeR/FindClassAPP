@@ -18,7 +18,6 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleStudentFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -100,18 +99,17 @@ public class MenuAlunoActivity extends AppCompatActivity
                         //code
                     }
                 });
-
         //abas
-        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
+       /* final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("Aulas Marcadas", MyScheduleStudentFragment.class)//Colocar activity notificacoes
+                .add("Aulas Marcadas",)//Colocar activity notificacoes
                 .create()
         );
         ViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewpagertab);
-        viewPagerTab.setViewPager(viewPager);
+        viewPagerTab.setViewPager(viewPager);*/
     }
 
     @Override

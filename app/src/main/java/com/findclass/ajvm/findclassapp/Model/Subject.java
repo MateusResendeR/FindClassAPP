@@ -39,10 +39,4 @@ public class Subject implements Serializable {
     public void setLevel(String level) {
         this.level = level;
     }
-
-    public void setSubject(Subject subject){
-        this.setId(subject.getId());
-        this.setLevel(subject.getLevel());
-        this.setName(subject.getName());
-    }
 }
