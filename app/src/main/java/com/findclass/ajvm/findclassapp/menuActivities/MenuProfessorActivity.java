@@ -2,7 +2,6 @@ package com.findclass.ajvm.findclassapp.menuActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,16 +18,12 @@ import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActi
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleProfessorFragment;
 import com.findclass.ajvm.findclassapp.SubjectActivities.MySubjectsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ogaclejapan.smarttablayout.SmartTabLayout;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
-import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
 public class MenuProfessorActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -100,18 +95,6 @@ public class MenuProfessorActivity extends AppCompatActivity
                         //code
                     }
                 });
-
-        //abas
-        final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
-                getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("Aulas Marcadas", MyScheduleProfessorFragment.class)//Colocar activity notificacoes
-                .create()
-        );
-        ViewPager viewPager = findViewById(R.id.viewpager);
-        viewPager.setAdapter(adapter);
-
-        SmartTabLayout viewPagerTab = findViewById(R.id.viewpagertab);
-        viewPagerTab.setViewPager(viewPager);
     }
 
     @Override
