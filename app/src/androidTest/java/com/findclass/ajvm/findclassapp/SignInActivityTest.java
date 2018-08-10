@@ -28,7 +28,6 @@ public class SignInActivityTest {
     public void whenActivityIsLaunched_shouldDisplayInitialState() throws InterruptedException {
         Thread.sleep(1500);
         onView(withId(R.id.googleButton)).check(matches(isDisplayed()));
-        onView(withId(R.id.facebookButton)).check(matches(isDisplayed()));
         onView(withId(R.id.orTextView)).check(matches(isDisplayed()));
         onView(withId(R.id.emailEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.passwordEditText)).check(matches(isDisplayed()));
