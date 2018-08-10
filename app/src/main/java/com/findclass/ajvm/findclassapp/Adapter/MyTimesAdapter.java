@@ -42,7 +42,6 @@ public class MyTimesAdapter extends RecyclerView.Adapter<MyTimesAdapter.MyViewHo
         holder.timeStartTime.setText(time.getStartTime());
         holder.timeEndTime.setText(time.getEndTime());
         holder.timeDay.setText(time.getDay());
-        holder.timePrice.setText(time.getPrice());
 
     }
 
@@ -56,14 +55,12 @@ public class MyTimesAdapter extends RecyclerView.Adapter<MyTimesAdapter.MyViewHo
         TextView timeStartTime;
         TextView timeEndTime;
         TextView timeDay;
-        TextView timePrice;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
             timeStartTime = itemView.findViewById(R.id.timeStartTimeTextView);
             timeEndTime = itemView.findViewById(R.id.timeEndTimeTextView);
             timeDay = itemView.findViewById(R.id.timeDayTextView);
-            timePrice = itemView.findViewById(R.id.timePriceTextView);
         }
     }
 }

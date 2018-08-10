@@ -1,81 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="100dp"
+    android:layout_height="75dp"
     android:orientation="vertical">
 
     <LinearLayout
-        android:id="@+id/constraintLayout"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/timeEndTimeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/timeEndTimeTextView">
+        android:layout_height="70dp"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/timeStartTimeTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="StartTime"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/timeEndTimeTextView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/timeEndTimeTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="EndTime"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/timePriceTextView"
-            app:layout_constraintTop_toBottomOf="@+id/timeStartTimeTextView"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
-
-        <TextView
-            android:id="@+id/timePriceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/timeDayTextView"
-            app:layout_constraintTop_toBottomOf="@+id/timeEndTimeTextView"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/timeDayTextView"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Day"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
-            app:layout_constraintTop_toBottomOf="@+id/timePriceTextView"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+            android:textSize="14sp" />
 
         <View
             android:id="@+id/divider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:background="?android:attr/listDivider"
-            android:visibility="visible"
-            tools:layout_conversion_absoluteHeight="1dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="92dp" />
+            android:visibility="visible" />
     </LinearLayout>
 
 </LinearLayout>
