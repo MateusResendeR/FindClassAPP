@@ -69,7 +69,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
             } else if (phone.getText().length() < 14) {
                 throw new PhoneLenghtException();
             } else {
-                User user = new User(email, name.getText().toString(),
+                User user = new User(uid, email, name.getText().toString(),
                         surname.getText().toString(), cpf.getText().toString(), birthdate.getText().toString(),
                         phone.getText().toString(), professor.isChecked());
 

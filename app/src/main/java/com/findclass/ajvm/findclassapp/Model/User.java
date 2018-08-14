@@ -4,7 +4,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class User {
-    private DatabaseReference db;
+    private String id;
     private String email;
     private String name;
     private String surname;
@@ -17,9 +17,9 @@ public class User {
     public User() {
     }
 
-    public User(String email, String name, String surname, String cpf,
-                String bithdate, String telephone, Boolean professor) {
-        this.db = FirebaseDatabase.getInstance().getReference();
+    public User(String id, String email, String name, String surname,
+                String cpf, String bithdate, String telephone, Boolean professor) {
+        this.id = id;
         this.email = email;
         this.name = name;
         this.surname = surname;
@@ -66,6 +66,10 @@ public class User {
         return this.cpf;
     }
 
+    public String getId() {
+        return this.id;
+    }
+
     public void setEmail(String email) {
         this.email = email;
     }
@@ -98,6 +102,10 @@ public class User {
         this.verified = verified;
     }
 
+    public void setId(String id) {
+        this.id = id;
+    }
+
     public boolean isNotNull(){
         if(this.getName() == null){
             return false;
@@ -106,6 +114,7 @@ public class User {
     }
 
     public void setUser(User user){
+        this.setId(user.getId());
         this.setEmail(user.getEmail());
         this.setName(user.getName());
         this.setSurname(user.getSurname());
