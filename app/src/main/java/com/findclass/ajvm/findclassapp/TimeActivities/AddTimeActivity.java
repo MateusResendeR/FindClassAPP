@@ -14,9 +14,8 @@ import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActi
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.InvalidTimeException;
 import com.findclass.ajvm.findclassapp.Exception.TimeFurtherThanOtherException;
-import com.findclass.ajvm.findclassapp.Exception.FieldLenghtException;
+import com.findclass.ajvm.findclassapp.Exception.TimeLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.WeekDayException;
-import com.findclass.ajvm.findclassapp.Model.Date_Time;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
 import com.google.firebase.auth.FirebaseAuth;
@@ -40,6 +39,9 @@ public class AddTimeActivity extends AppCompatActivity {
     private DatabaseReference db;
     private DatabaseReference professor;
     private FirebaseAuth auth;
+    private String lastTimeId = new String();
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +50,12 @@ public class AddTimeActivity extends AppCompatActivity {
         professor = db.child("availability").child(auth.getCurrentUser().getUid());
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_time);
+        setContentView(R.layout.activity_add_time_activity);
     }
 
     public void finishAddSubjectTime(View view) {
         MaskedEditText startTime = findViewById(R.id.startTimeEditText);
         MaskedEditText endTime = findViewById(R.id.endTimeEditText);
-        MaskedEditText price = findViewById(R.id.priceEditText);
         EditText day = findViewById(R.id.dayEditText);
 
         try {
@@ -68,94 +69,57 @@ public class AddTimeActivity extends AppCompatActivity {
 
             if (thereAreEmptyFields(startTime, endTime, day)) {
                 throw new EmptyFieldException();
-            } else if (startTime.getText().toString().length() < 5 || endTime.getText().toString().length() < 5
-                    || price.getText().toString().length() < 7){
-                throw new FieldLenghtException();
+            } else if (startTime.getText().toString().length() < 5 || endTime.getText().toString().length() < 5){
+                throw new TimeLenghtException();
             } else if (dateEndTime.before(dateStartTime)){
                 throw new TimeFurtherThanOtherException();
             } else if(Integer.valueOf(startTimeWithoutColon[0]) > 23 || Integer.valueOf(endTimeWithoutColon[0]) > 23) {
                 throw new InvalidTimeException();
             } else if(Integer.valueOf(startTimeWithoutColon[1]) > 59 || Integer.valueOf(endTimeWithoutColon[1]) > 59) {
                 throw new InvalidTimeException();
-            } else if (isDayOfWeek(day)) {
+            } else if (!day.getText().toString().equals("seg") && !day.getText().toString().equals("ter")
+                    && !day.getText().toString().equals("qua") && !day.getText().toString().equals("qui")
+                    && !day.getText().toString().equals("sex") && !day.getText().toString().equals("sab")
+                    && !day.getText().toString().equals("dom")) {
                 throw new WeekDayException();
             } else {
 
-                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),
-                        day.getText().toString(),price.getText().toString());
+                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),day.getText().toString());
+                Integer id;
                 professor
+                        .child("times")
                         .addListenerForSingleValueEvent(
                                 new ValueEventListener() {
                                     @Override
                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                        DatabaseReference timePush = professor.child("times").push();
-                                        timePush.setValue(time);
-                                        if (dataSnapshot.child("dates").hasChildren()) {
-                                            for (DataSnapshot d : dataSnapshot.child("dates").getChildren()) {
-                                                String[] weekDay = d.child("date").getValue().toString().split(" ");
-                                                if (weekDay[0].equals("Sun")
-                                                        && time.getDay().equals("dom")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Mon")
-                                                        && time.getDay().equals("seg")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Tue")
-                                                        && time.getDay().equals("ter")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Wen")
-                                                        && time.getDay().equals("qua")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Thu")
-                                                        && time.getDay().equals("qui")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Fri")
-                                                        && time.getDay().equals("sex")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Sat")
-                                                        && time.getDay().equals("sab")) {
-                                                    professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                    Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                    DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                    pushDateTime.setValue(dt);
-                                                }
+                                        if(dataSnapshot.hasChildren()) {
+                                            for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                                lastTimeId = d.getKey();
                                             }
+                                            Integer id = Integer.valueOf(lastTimeId)+1;
+                                            professor.child("times").child(id.toString()).setValue(time);
+                                        }
+                                        else{
+                                            professor.child("times").child("1").setValue(time);
                                         }
                                     }
+
                                     @Override
                                     public void onCancelled(DatabaseError databaseError) {
 
                                     }
                                 }
-
                         );
 
                     Intent intent = new Intent(this, MyCalendarProfessorActivity.class);
                     startActivity(intent);
                     Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_SHORT).show();
-                }
+            }
             } catch(EmptyFieldException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch(WeekDayException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            } catch(FieldLenghtException e){
+            } catch(TimeLenghtException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             } catch(TimeFurtherThanOtherException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
@@ -168,6 +132,8 @@ public class AddTimeActivity extends AppCompatActivity {
             }
     }
 
+
+
         private boolean thereAreEmptyFields (EditText startTime, EditText endTime, EditText day){
             if (TextUtils.isEmpty(startTime.getText()) || TextUtils.isEmpty(endTime.getText()) ||
                     TextUtils.isEmpty(day.getText())) {
@@ -176,15 +142,4 @@ public class AddTimeActivity extends AppCompatActivity {
                 return false;
             }
         }
-
-    private boolean isDayOfWeek (EditText day){
-        if (!day.getText().toString().equals("seg") && !day.getText().toString().equals("ter")
-                && !day.getText().toString().equals("qua") && !day.getText().toString().equals("qui")
-                && !day.getText().toString().equals("sex") && !day.getText().toString().equals("sab")
-                && !day.getText().toString().equals("dom")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
     }

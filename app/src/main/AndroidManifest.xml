@@ -60,15 +60,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
         </activity>
-        <activity
-            android:name=".menuActivities.AvailabilityListAlunoActivity"
-            android:label="@string/title_activity_availability_list_aluno"
-            android:parentActivityName=".menuActivities.MenuAlunoActivity"
-            android:theme="@style/AppTheme.NoActionBar">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
-        </activity>
     </application>
 
 </manifest>
