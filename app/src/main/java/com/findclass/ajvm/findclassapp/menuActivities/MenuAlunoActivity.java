@@ -18,6 +18,7 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleFinishStudentFragment;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleStudentFragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -65,6 +66,7 @@ public class MenuAlunoActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 
@@ -104,7 +106,8 @@ public class MenuAlunoActivity extends AppCompatActivity
         //abas
         final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("Aulas Marcadas", MyScheduleStudentFragment.class)//Colocar activity notificacoes
+                .add("Aulas Marcadas", MyScheduleStudentFragment.class)
+                .add("Aulas Finalizadas", MyScheduleFinishStudentFragment.class)
                 .create()
         );
         ViewPager viewPager = findViewById(R.id.viewpager);

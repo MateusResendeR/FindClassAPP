@@ -7,14 +7,46 @@ public class Schedule implements Serializable {
     String professor_id;
     String subject_id;
     String student_id;
+    int finish;
+    String id;
+    String rating;
 
-    public Schedule(String datetime_id, String professor_id, String subject_id, String student_id) {
+
+    public Schedule(String id,String datetime_id, String professor_id, String subject_id, String student_id) {
         this.datetime_id = datetime_id;
         this.professor_id = professor_id;
         this.subject_id = subject_id;
         this.student_id = student_id;
+        this.finish = 0;
+        this.id = id;
+        this.rating = "0";
     }
+
     public Schedule() {
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public int getFinish() {
+        return finish;
+    }
+
+    public void setFinish(int finish) {
+        this.finish = finish;
     }
 
     public String getDatetime_id() {

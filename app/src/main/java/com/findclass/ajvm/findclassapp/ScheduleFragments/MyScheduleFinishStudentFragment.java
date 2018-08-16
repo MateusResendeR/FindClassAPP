@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
@@ -19,7 +20,6 @@ import com.findclass.ajvm.findclassapp.Model.ScheduleObject;
 import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.InfoSceduleStudentActivity;
 import com.findclass.ajvm.findclassapp.menuActivities.RatingProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -34,7 +34,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyScheduleStudentFragment extends Fragment {
+public class MyScheduleFinishStudentFragment extends Fragment {
     private RecyclerView recyclerViewMyScheduleList;
     private MyScheduleProfessorAdapter adapter;
     private DatabaseReference schedulesRef;
@@ -44,7 +44,7 @@ public class MyScheduleStudentFragment extends Fragment {
     private ValueEventListener valueEventListener;
 
 
-    public MyScheduleStudentFragment() {
+    public MyScheduleFinishStudentFragment() {
         // Required empty public constructor
     }
 
@@ -61,7 +61,6 @@ public class MyScheduleStudentFragment extends Fragment {
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-
         adapter = new MyScheduleProfessorAdapter(myScheduleObjects, getActivity());
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
@@ -76,11 +75,16 @@ public class MyScheduleStudentFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getContext(),InfoSceduleStudentActivity.class);
-                                intent.putExtra("user", myScheduleObjects.get(position).getProfessor());
-                                intent.putExtra("subject",myScheduleObjects.get(position).getSubject());
-                                intent.putExtra("schedule",myScheduleObjects.get(position));
-                                startActivity(intent);
+                                if(myScheduleObjects.get(position).getRating().equals("0")){
+                                    Intent intent = new Intent(getContext(),RatingProfessorActivity.class);
+                                    intent.putExtra("user", myScheduleObjects.get(position).getProfessor());
+                                    intent.putExtra("subject",myScheduleObjects.get(position).getSubject());
+                                    intent.putExtra("schedule",myScheduleObjects.get(position));
+                                    startActivity(intent);
+                                }
+                                else{
+                                    Toast.makeText(getActivity(), "Aula já avaliada!", Toast.LENGTH_LONG).show();
+                                }
                             }
 
                             @Override
@@ -131,8 +135,10 @@ public class MyScheduleStudentFragment extends Fragment {
                                 }
 
                                 for (final DataSnapshot schedule : array) {
-                                     final String key = schedule.getKey();
-                                    if(schedule.child("finish").getValue(Integer.class) == 0){
+                                    final String key = schedule.getKey();
+
+                                    if(schedule.child("finish").getValue(Integer.class) == 1){
+                                        final String rating = schedule.child("rating").getValue().toString();
                                         final DatabaseReference usersRef = rootRef.child("users");
                                         final DatabaseReference subjectRef = rootRef.child("subjects");
                                         DatabaseReference datatimeRef = rootRef.child("datetime");
@@ -148,7 +154,6 @@ public class MyScheduleStudentFragment extends Fragment {
                                                         new ValueEventListener() {
                                                             @Override
                                                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                Log.e("DEBUG2",dataSnapshot.toString());
                                                                 professor.setUser(dataSnapshot.getValue(User.class));
 
 
@@ -174,12 +179,13 @@ public class MyScheduleStudentFragment extends Fragment {
                                                                                                                 if(professor.getName() != null &&
                                                                                                                         student.getName() != null &&
                                                                                                                         subject.getName() != null){
-                                                                                                                    ScheduleObject obj = new ScheduleObject("0",key,professor,student,subject);
+                                                                                                                    ScheduleObject obj = new ScheduleObject(rating,key,professor,student,subject);
                                                                                                                     myScheduleObjects.add(obj);
 
 
-                                                                                                                }adapter.notifyDataSetChanged();
 
+                                                                                                                }
+                                                                                                                adapter.notifyDataSetChanged();
                                                                                                             }
 
                                                                                                             @Override

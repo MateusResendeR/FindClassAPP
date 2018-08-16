@@ -27,6 +27,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="TOAST_BEM_VINDO">Bem-vindo! victor_s.s.m._15@hotmail.com</string>
+    <string name="title_activity_rating_professor">Avaliar Professor</string>
+    <string name="title_activity_info_scedule_student">Informações</string>
 
 
 </resources>
