@@ -3,8 +3,10 @@ package com.findclass.ajvm.findclassapp.Model;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
-public class User {
-    private String id;
+
+import java.io.Serializable;
+
+public class User implements Serializable {
     private String email;
     private String name;
     private String surname;
@@ -13,6 +15,8 @@ public class User {
     private String bithdate;
     private String professor;
     private String verified;
+    private int score;
+    private String id;
 
     public User() {
     }
@@ -32,6 +36,14 @@ public class User {
             this.professor = "false";
         }
         this.verified = "false";
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = this.score + score;
     }
 
     public String getEmail(){

@@ -22,4 +22,29 @@
         <item name="colorControlHighlight">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="Alertbutton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">@color/colorAccent</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="VeryGoodbutton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">@color/colorVeryGood</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Goodbutton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">@color/colorGood</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Mediobutton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">@color/colorMedio</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
+
+    <style name="Badbutton" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="colorButtonNormal">@color/colorBad</item>
+        <item name="colorControlHighlight">@color/colorPrimaryDark</item>
+    </style>
+
 </resources>

@@ -98,6 +98,7 @@ public class MyScheduleProfessorFragment extends Fragment {
                             }adapter.notifyDataSetChanged();
 
                             for (final DataSnapshot schedule: array){
+                                final String key = schedule.getKey();
                                 final DatabaseReference usersRef = rootRef.child("users");
                                 final DatabaseReference subjectRef = rootRef.child("subjects");
                                 DatabaseReference datatimeRef = rootRef.child("datetime");
@@ -133,7 +134,7 @@ public class MyScheduleProfessorFragment extends Fragment {
                                                                                                 if(professor.getName() != null &&
                                                                                                         student.getName() != null &&
                                                                                                         subject.getName() != null){
-                                                                                                    ScheduleObject obj = new ScheduleObject(professor,student,subject);
+                                                                                                    ScheduleObject obj = new ScheduleObject("0",key,professor,student,subject);
                                                                                                     myScheduleObjects.add(obj);
 
                                                                                                     adapter.notifyDataSetChanged();

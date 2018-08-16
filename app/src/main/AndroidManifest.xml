@@ -69,6 +69,24 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
         </activity>
+        <activity
+            android:name=".menuActivities.RatingProfessorActivity"
+            android:label="@string/title_activity_rating_professor"
+            android:parentActivityName=".menuActivities.MenuAlunoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
+        </activity>
+        <activity
+            android:name=".menuActivities.InfoSceduleStudentActivity"
+            android:label="@string/title_activity_info_scedule_student"
+            android:parentActivityName=".menuActivities.MenuAlunoActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
+        </activity>
     </application>
 
 </manifest>
