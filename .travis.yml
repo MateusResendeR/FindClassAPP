@@ -1,5 +1,6 @@
 language: android
 sudo: enabled
+osx_image: xcode9.4
 android:
   commonents:
   - tools
