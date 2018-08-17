@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.AccountActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -102,6 +103,9 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void verifyLoggedUser() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Um instante...");
+        progressDialog.show();
         dbRef.getReference().child("users").
                 addValueEventListener(new ValueEventListener() {
 
@@ -113,11 +117,13 @@ public class SignInActivity extends AppCompatActivity {
                                 Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
                                         Toast.LENGTH_LONG).show();
                                 finish();
+                                progressDialog.dismiss();
                             } else {
                                 startActivity(new Intent(SignInActivity.this,MenuAlunoActivity.class));
                                 Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
                                         Toast.LENGTH_LONG).show();
                                 finish();
+                                progressDialog.dismiss();
                             }
                         } else {
                             auth.signOut();

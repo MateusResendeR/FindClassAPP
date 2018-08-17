@@ -61,7 +61,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects, getActivity());
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
@@ -156,16 +156,12 @@ public class MyScheduleFinishStudentFragment extends Fragment {
                                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                                 professor.setUser(dataSnapshot.getValue(User.class));
 
-
-
-                                                                Log.e("DEBUG3",schedule.child("student_id").getValue(String.class));
                                                                 usersRef
                                                                         .child(schedule.child("student_id").getValue(String.class))
                                                                         .addValueEventListener(
                                                                                 new ValueEventListener() {
                                                                                     @Override
                                                                                     public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                        Log.e("DEBUG4",dataSnapshot.toString());
                                                                                         student.setUser(dataSnapshot.getValue(User.class));
 
                                                                                         subjectRef
@@ -179,7 +175,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
                                                                                                                 if(professor.getName() != null &&
                                                                                                                         student.getName() != null &&
                                                                                                                         subject.getName() != null){
-                                                                                                                    ScheduleObject obj = new ScheduleObject(rating,key,professor,student,subject);
+                                                                                                                    ScheduleObject obj = new ScheduleObject(professor, student, subject, rating,key);
                                                                                                                     myScheduleObjects.add(obj);
 
 

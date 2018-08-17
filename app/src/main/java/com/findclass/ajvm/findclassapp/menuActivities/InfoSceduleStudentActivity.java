@@ -37,12 +37,12 @@ public class InfoSceduleStudentActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
         scheduleRef = FirebaseDatabase.getInstance().getReference().child("schedule");
+
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
-            professor = (User) bundle.getSerializable("user");
-            subject = (Subject) bundle.getSerializable("subject");
             schedule = (ScheduleObject)bundle.getSerializable("schedule");
-
+            professor = schedule.getProfessor();
+            subject = schedule.getSubject();
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
