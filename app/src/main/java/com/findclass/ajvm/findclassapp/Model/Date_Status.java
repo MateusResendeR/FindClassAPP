@@ -1,7 +1,9 @@
 package com.findclass.ajvm.findclassapp.Model;
 
 
-public class Date_Status {
+import java.io.Serializable;
+
+public class Date_Status implements Serializable {
     private String date;
     private String status;
 
