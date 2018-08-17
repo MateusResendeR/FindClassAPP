@@ -60,13 +60,13 @@ public class MyScheduleStudentFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_schedule_student, container, false);
+        Log.e("DEBUG","Student");
 
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         schedulesRef = rootRef.child("schedule");
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
-
 
         adapter = new MyScheduleStudentAdapter(myScheduleObjects);
 
@@ -116,7 +116,6 @@ public class MyScheduleStudentFragment extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        //schedulesRef.removeEventListener(valueEventListener);
     }
 
     public void retrieveMySchedules(){
@@ -158,32 +157,6 @@ public class MyScheduleStudentFragment extends Fragment {
                     }
                 }
         );
-
-//        schedulesRef
-//                .child(auth.getCurrentUser().getUid())
-//                .addListenerForSingleValueEvent(
-//                        new ValueEventListener() {
-//                            @Override
-//                            public void onDataChange(DataSnapshot dataSnapshot) {
-//                                for (DataSnapshot data: dataSnapshot.getChildren()){
-//                                    for (DataSnapshot myScheduleSnaps: data.getChildren()){
-//                                        myScheduleSnapshots.add(myScheduleSnaps);
-//                                    }
-//
-//                                    for (DataSnapshot scheduleSnap: myScheduleSnapshots){
-//                                        Schedule schedule = scheduleSnap.getValue(Schedule.class);
-//                                        retrieveProfessor(schedule);
-//                                    }
-//
-//                                }
-//                            }
-//
-//                            @Override
-//                            public void onCancelled(DatabaseError databaseError) {
-//                                //
-//                            }
-//                        }
-//                );
     }
 
     public void retrieveProfessor(final Schedule schedule){
@@ -207,6 +180,7 @@ public class MyScheduleStudentFragment extends Fragment {
     }
 
     public void retrieveStudent(final Schedule schedule, final User professor){
+        Log.e("DEBUG","Here!");
         DatabaseReference usersRef = rootRef.child("users");
         usersRef
                 .child(schedule.getStudent_id())

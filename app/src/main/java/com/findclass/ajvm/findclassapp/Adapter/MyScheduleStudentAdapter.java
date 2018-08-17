@@ -2,6 +2,7 @@ package com.findclass.ajvm.findclassapp.Adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +36,8 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ScheduleObject schedule = mySchedules.get(position);
+
+        Log.e("DEBUG","Student Adapter");
 
         String dateString = schedule.getDate().getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);

@@ -52,13 +52,17 @@ public class MyScheduleProfessorFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_schedule_professor, container, false);
 
+        Log.e("DEBUG","Professor");
+
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         schedulesRef = rootRef.child("schedule");
 
+
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
         adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
+
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager);

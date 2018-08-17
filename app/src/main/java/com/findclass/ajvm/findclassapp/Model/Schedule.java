@@ -9,7 +9,7 @@ public class Schedule implements Serializable {
     String student_id;
     int finish;
     String id;
-    String rating;
+    int rating;
 
 
     public Schedule(String id,String datetime_id, String professor_id, String subject_id, String student_id) {
@@ -19,17 +19,17 @@ public class Schedule implements Serializable {
         this.student_id = student_id;
         this.finish = 0;
         this.id = id;
-        this.rating = "0";
+        this.rating = 0;
     }
 
     public Schedule() {
     }
 
-    public String getRating() {
+    public int getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(int rating) {
         this.rating = rating;
     }
 

@@ -147,7 +147,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                                 schedule.setStudent_id(auth.getCurrentUser().getUid());
                                 schedule.setSubject_id(subjectId);
                                 schedule.setDatetime_id(thisTimeDate.getDate_time_id());
-                                schedule.setRating("0");
+                                schedule.setRating(0);
 
 
 
