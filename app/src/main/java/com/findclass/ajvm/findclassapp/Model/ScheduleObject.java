@@ -20,13 +20,16 @@ public class ScheduleObject implements Serializable {
         this.id = id;
     }
 
-    public ScheduleObject(User professor, User student, Subject subject, String rating, String id) {
+    public ScheduleObject(String rating,String id,User professor, User student, Subject subject, Time time, Date_Status date) {
         this.professor = professor;
         this.student = student;
         this.subject = subject;
         this.rating = rating;
         this.id = id;
+        this.date =date;
+        this.time = time;
     }
+
 
     public User getProfessor() {
         return professor;

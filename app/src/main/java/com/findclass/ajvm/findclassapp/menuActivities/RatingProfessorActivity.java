@@ -82,7 +82,6 @@ public class RatingProfessorActivity extends AppCompatActivity {
     }
 
     public void getProfessor(){
-
         valueEventListenerP = userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -127,23 +126,23 @@ public class RatingProfessorActivity extends AppCompatActivity {
 
 
     public void verryGoodRating(View view){
-        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue(1);
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+20);
 
     }
 
     public void goodRating(View view){
-        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue(1);
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+10);
     }
 
     public void medioRating( View view){
-        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue(1);
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+1);
     }
 
     public void badRating(View view){
-        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue(1);
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()-2);
     }
 

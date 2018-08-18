@@ -1,6 +1,8 @@
 package com.findclass.ajvm.findclassapp.Model;
 
-public class Subject_Professor {
+import android.support.annotation.NonNull;
+
+public class Subject_Professor implements Comparable<Subject_Professor> {
     private User user;
     private Subject subject;
     private Professor_Subject professorSubject;
@@ -35,5 +37,15 @@ public class Subject_Professor {
 
     public void setProfessorSubject(Professor_Subject professorSubject) {
         this.professorSubject = professorSubject;
+    }
+
+    public int compareTo(@NonNull Subject_Professor subject_professor) {
+        if (this.user.getScore() > subject_professor.getUser().getScore()) {
+            return -1;
+        }
+        if (this.user.getScore() < subject_professor.getUser().getScore()) {
+            return 1;
+        }
+        return 0;
     }
 }

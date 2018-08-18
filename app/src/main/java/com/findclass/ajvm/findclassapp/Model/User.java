@@ -1,12 +1,14 @@
 package com.findclass.ajvm.findclassapp.Model;
 
+import android.support.annotation.NonNull;
+
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.io.Serializable;
 
-public class User implements Serializable {
+public class User implements Serializable,Comparable<User> {
     private String email;
     private String name;
     private String surname;
@@ -135,5 +137,15 @@ public class User implements Serializable {
         this.setBithdate(user.getBirthdate());
         this.setProfessor(user.getProfessor());
         this.setVerified(user.getVerified());
+    }
+
+    public int compareTo(@NonNull User user) {
+        if (this.getScore() > user.getScore()) {
+            return -1;
+        }
+        if (this.getScore() < user.getScore()) {
+            return 1;
+        }
+        return 0;
     }
 }

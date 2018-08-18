@@ -150,6 +150,9 @@ public class MenuAlunoActivity extends AppCompatActivity
         }else if(id == R.id.nav_LevelVariados){
             Intent intent = new Intent(getBaseContext(), SubjectCategoryVariadosActivity.class);
             startActivity(intent);
+        }else if(id == R.id.nav_Ranking){
+            Intent intent = new Intent(getBaseContext(), ProfessorRankingActivity.class);
+            startActivity(intent);
         }
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

@@ -1,6 +1,7 @@
 package com.findclass.ajvm.findclassapp.ScheduleFragments;
 
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -15,9 +16,14 @@ import android.widget.AdapterView;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
+import com.findclass.ajvm.findclassapp.Adapter.MyScheduleStudentAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
+import com.findclass.ajvm.findclassapp.Model.Date_Status;
+import com.findclass.ajvm.findclassapp.Model.Date_Time;
+import com.findclass.ajvm.findclassapp.Model.Schedule;
 import com.findclass.ajvm.findclassapp.Model.ScheduleObject;
 import com.findclass.ajvm.findclassapp.Model.Subject;
+import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.menuActivities.RatingProfessorActivity;
@@ -30,18 +36,20 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class MyScheduleFinishStudentFragment extends Fragment {
     private RecyclerView recyclerViewMyScheduleList;
-    private MyScheduleProfessorAdapter adapter;
+    private MyScheduleStudentAdapter adapter;
     private DatabaseReference schedulesRef;
     private DatabaseReference rootRef;
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
     private ValueEventListener valueEventListener;
+    private ProgressDialog progress;
 
 
     public MyScheduleFinishStudentFragment() {
@@ -61,7 +69,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
+        adapter = new MyScheduleStudentAdapter(myScheduleObjects);
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
@@ -75,14 +83,13 @@ public class MyScheduleFinishStudentFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                if(myScheduleObjects.get(position).getRating().equals("0")){
-                                    Intent intent = new Intent(getContext(),RatingProfessorActivity.class);
+                                if (myScheduleObjects.get(position).getRating().equals("0")) {
+                                    Intent intent = new Intent(getContext(), RatingProfessorActivity.class);
                                     intent.putExtra("user", myScheduleObjects.get(position).getProfessor());
-                                    intent.putExtra("subject",myScheduleObjects.get(position).getSubject());
-                                    intent.putExtra("schedule",myScheduleObjects.get(position));
+                                    intent.putExtra("subject", myScheduleObjects.get(position).getSubject());
+                                    intent.putExtra("schedule", myScheduleObjects.get(position));
                                     startActivity(intent);
-                                }
-                                else{
+                                } else {
                                     Toast.makeText(getActivity(), "Aula já avaliada!", Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -106,118 +113,46 @@ public class MyScheduleFinishStudentFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        retriveMySchedules();
+        retrieveMySchedules();
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        schedulesRef.removeEventListener(valueEventListener);
     }
 
 
-
-    public void retriveMySchedules(){
+    public void retrieveMySchedules(){
+        progress = new ProgressDialog(getActivity());
+        progress.setMessage("Carregando...");
+        progress.show();
 
         myScheduleObjects.clear();
-        final ArrayList<DataSnapshot>  array = new ArrayList<>();
 
-        valueEventListener = schedulesRef.addValueEventListener(
+        final ArrayList<DataSnapshot> myScheduleSnapshots = new ArrayList<>();
+
+        schedulesRef.addListenerForSingleValueEvent(
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                            if (dataSnapshot1.hasChild(auth.getCurrentUser().getUid())) {
-                                for (DataSnapshot dataSnapshot2 : dataSnapshot1.child(auth
-                                        .getCurrentUser()
-                                        .getUid()).getChildren()) {
-                                    array.add(dataSnapshot2);
-                                }
-
-                                for (final DataSnapshot schedule : array) {
-                                    final String key = schedule.getKey();
-
-                                    if(schedule.child("finish").getValue(Integer.class) == 1){
-                                        final String rating = schedule.child("rating").getValue().toString();
-                                        final DatabaseReference usersRef = rootRef.child("users");
-                                        final DatabaseReference subjectRef = rootRef.child("subjects");
-                                        DatabaseReference datatimeRef = rootRef.child("datetime");
-
-                                        final User professor = new User();
-                                        final User student = new User();
-                                        final Subject subject = new Subject();
-
-
-                                        usersRef
-                                                .child(schedule.child("professor_id").getValue(String.class))
-                                                .addValueEventListener(
-                                                        new ValueEventListener() {
-                                                            @Override
-                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                professor.setUser(dataSnapshot.getValue(User.class));
-
-                                                                usersRef
-                                                                        .child(schedule.child("student_id").getValue(String.class))
-                                                                        .addValueEventListener(
-                                                                                new ValueEventListener() {
-                                                                                    @Override
-                                                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                        student.setUser(dataSnapshot.getValue(User.class));
-
-                                                                                        subjectRef
-                                                                                                .child(schedule.child("subject_id").getValue(String.class))
-                                                                                                .addValueEventListener(
-                                                                                                        new ValueEventListener() {
-                                                                                                            @Override
-                                                                                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                                                                subject.setSubject(dataSnapshot.getValue(Subject.class));
-
-                                                                                                                if(professor.getName() != null &&
-                                                                                                                        student.getName() != null &&
-                                                                                                                        subject.getName() != null){
-                                                                                                                    ScheduleObject obj = new ScheduleObject(professor, student, subject, rating,key);
-                                                                                                                    myScheduleObjects.add(obj);
-
-
-
-                                                                                                                }
-                                                                                                                adapter.notifyDataSetChanged();
-                                                                                                            }
-
-                                                                                                            @Override
-                                                                                                            public void onCancelled(DatabaseError databaseError) {
-                                                                                                                //
-                                                                                                            }
-                                                                                                        }
-                                                                                                );
-
-                                                                                    }
-
-
-                                                                                    @Override
-                                                                                    public void onCancelled(DatabaseError databaseError) {
-                                                                                        //
-                                                                                    }
-                                                                                }
-                                                                        );
-
-
-
-                                                            }
-
-                                                            @Override
-                                                            public void onCancelled(DatabaseError databaseError) {
-                                                                //
-                                                            }
-                                                        }
-                                                );
-
+                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                            for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
+                                if(dataSnapshot2.getKey().equals(auth.getCurrentUser().getUid())){
+                                    for (DataSnapshot scheduleSnap: dataSnapshot2.getChildren()){
+                                        if (scheduleSnap.child("finish").getValue(Integer.class).equals(1)){
+                                            myScheduleSnapshots.add(scheduleSnap);
+                                        }
                                     }
-
-
                                 }
                             }
                         }
+
+                        for(DataSnapshot scheduleSnap: myScheduleSnapshots){
+                            Schedule schedule = scheduleSnap.getValue(Schedule.class);
+                            retrieveProfessor(schedule);
+                        }
+
+                        progress.dismiss();
                     }
 
                     @Override
@@ -226,6 +161,133 @@ public class MyScheduleFinishStudentFragment extends Fragment {
                     }
                 }
         );
+    }
+
+    public void retrieveProfessor(final Schedule schedule){
+        DatabaseReference usersRef = rootRef.child("users");
+        usersRef
+                .child(schedule.getProfessor_id())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User professor = dataSnapshot.getValue(User.class);
+                                retrieveStudent(schedule,professor);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
+    }
+
+    public void retrieveStudent(final Schedule schedule, final User professor){
+        Log.e("DEBUG","Here!");
+        DatabaseReference usersRef = rootRef.child("users");
+        usersRef
+                .child(schedule.getStudent_id())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                User student = dataSnapshot.getValue(User.class);
+                                retrieveSubject(schedule,professor,student);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
+    }
+
+    public void retrieveSubject(final Schedule schedule, final User professor, final User student){
+        DatabaseReference subjectsRef = rootRef.child("subjects");
+        subjectsRef
+                .child(schedule.getSubject_id())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Subject subject = dataSnapshot.getValue(Subject.class);
+                                retrieveDatetime(schedule,professor,student,subject);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
+    }
+
+    public void retrieveDatetime(final Schedule schedule, final User professor, final User student, final Subject subject){
+        final DatabaseReference datetimeRef = rootRef.child("availability");
+        final DatabaseReference thisDatetimeRef = datetimeRef.child(schedule.getProfessor_id());
+        thisDatetimeRef
+                .child("dateTimes")
+                .child(schedule.getDatetime_id())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Date_Time date_time = dataSnapshot.getValue(Date_Time.class);
+                                retrieveDate(schedule,professor,student,subject,thisDatetimeRef,date_time);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
+    }
+
+    public void retrieveDate(final Schedule schedule, final User professor, final User student, final Subject subject, final DatabaseReference datetimeRef, final Date_Time date_time){
+        datetimeRef
+                .child("dates")
+                .child(date_time.getDate_id())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Date_Status date = dataSnapshot.getValue(Date_Status.class);
+                                retrieveTime(schedule,professor,student,subject,datetimeRef,date_time,date);
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
+
+    }
+
+    public void retrieveTime(final Schedule schedule, final User professor, final User student, final Subject subject, DatabaseReference datetimeRef, Date_Time date_time, final Date_Status date){
+        datetimeRef
+                .child("times")
+                .child(date_time.getTime_id())
+                .addValueEventListener(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                Time time = dataSnapshot.getValue(Time.class);
+
+                                ScheduleObject scheduleObject = new ScheduleObject(schedule.getRating(), schedule.getId(),professor, student, subject, time, date);
+                                myScheduleObjects.add(scheduleObject);
+                                adapter.notifyDataSetChanged();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
     }
 
 }
