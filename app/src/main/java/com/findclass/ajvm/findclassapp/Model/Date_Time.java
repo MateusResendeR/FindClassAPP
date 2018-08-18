@@ -2,7 +2,7 @@ package com.findclass.ajvm.findclassapp.Model;
 
 import java.io.Serializable;
 
-public class Date_Time {
+public class Date_Time implements Serializable {
     private String time_id;
     private String date_id;
     private String day;

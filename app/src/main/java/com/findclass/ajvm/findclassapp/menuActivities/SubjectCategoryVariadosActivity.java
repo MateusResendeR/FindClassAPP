@@ -123,10 +123,7 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
                             public void onItemClick(View view, int position) {
                                 Intent intent = new Intent(SubjectCategoryVariadosActivity.this,
                                         AvailabilityListAlunoActivity.class);
-                                Log.e("teste", Integer.valueOf(position).toString());
-                                Log.e("teste",Integer.valueOf(listProfessors.size()).toString());
                                 Subject_Professor thisSubjectProfessor = listProfessors.get(position);
-                                Log.e("teste", thisSubjectProfessor.getProfessorSubject().getProfessorUid());
                                 intent.putExtra("professor_uid",thisSubjectProfessor.getProfessorSubject().getProfessorUid());
                                 intent.putExtra("subject_id",thisSubjectProfessor.getSubject().getId());
 
@@ -229,8 +226,6 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
                                                     User user = d.getValue(User.class);
                                                     if (d.getKey().equals(ps.getProfessorUid())) {
                                                         sp.setUser(user);
-
-                                                        Log.e("teste", user.getName());
 
                                                         subjectRef.addValueEventListener(
                                                                 new ValueEventListener() {

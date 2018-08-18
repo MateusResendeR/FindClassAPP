@@ -90,7 +90,6 @@ public class AddSubjectListFragment extends Fragment {
     }
 
     private void addSubjectToMe(Subject subject, String uid) {
-        Log.e("subject",subject.getId());
         professorSubjectsRef
                 .child(uid)
                 .child(subject.getId())
