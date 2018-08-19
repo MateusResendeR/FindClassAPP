@@ -29,6 +29,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class SubjectCategoryMedioActivity extends AppCompatActivity {
@@ -237,6 +238,7 @@ public class SubjectCategoryMedioActivity extends AppCompatActivity {
                                                                             if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals("Médio")) {
                                                                                 sp.setSubject(subject);
                                                                                 listProfessors.add(sp);
+                                                                                Collections.sort(listProfessors);
 
 
                                                                             }

@@ -29,6 +29,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 import static android.app.PendingIntent.getActivity;
@@ -238,10 +240,11 @@ public class SubjectCategoryFundamentalActivity extends AppCompatActivity {
                                                                                 if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals("Fundamental")) {
                                                                                     sp.setSubject(subject);
                                                                                     listProfessors.add(sp);
+                                                                                    Collections.sort(listProfessors);
 
 
                                                                                 }
-                                                                                adapter.notifyDataSetChanged();
+
                                                                             }
                                                                             adapter.notifyDataSetChanged();
                                                                         }

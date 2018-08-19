@@ -1,8 +1,10 @@
 package com.findclass.ajvm.findclassapp.Model;
 
+import android.support.annotation.NonNull;
+
 import java.io.Serializable;
 
-public class Subject implements Serializable {
+public class Subject implements Serializable,Comparable<Subject> {
     private String id;
     private String name;
     private String level;
@@ -44,5 +46,10 @@ public class Subject implements Serializable {
         this.setId(subject.getId());
         this.setLevel(subject.getLevel());
         this.setName(subject.getName());
+    }
+
+    @Override
+    public int compareTo(@NonNull Subject subject) {
+        return 0;
     }
 }

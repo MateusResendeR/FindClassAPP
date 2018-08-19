@@ -29,6 +29,8 @@
     <string name="TOAST_BEM_VINDO">Bem-vindo! victor_s.s.m._15@hotmail.com</string>
     <string name="title_activity_rating_professor">Avaliar Professor</string>
     <string name="title_activity_info_scedule_student">Informações</string>
+    <string name="title_activity_professor_ranking">Melhores professores</string>
+    <string name="title_activity_subject_of_professor">SubjectOfProfessorActivity</string>
 
 
 </resources>

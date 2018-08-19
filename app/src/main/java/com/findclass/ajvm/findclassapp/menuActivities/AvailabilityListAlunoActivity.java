@@ -147,7 +147,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                                 schedule.setStudent_id(auth.getCurrentUser().getUid());
                                 schedule.setSubject_id(subjectId);
                                 schedule.setDatetime_id(thisTimeDate.getDate_time_id());
-                                schedule.setRating(0);
+                                schedule.setRating("0");
 
 
 
@@ -178,12 +178,9 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+        startActivity(intent);
+        finish();
     }
 
 

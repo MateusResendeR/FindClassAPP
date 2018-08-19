@@ -4,7 +4,10 @@
     tools:showIn="navigation_view">
 
     <group android:checkableBehavior="single">
-
+        <item
+            android:id="@+id/nav_Ranking"
+            android:title="Melhores Professores"
+            android:icon="@drawable/ic_menu_medal"/>
         <item android:title="Categorias">
             <menu>
                 <item
@@ -19,6 +22,7 @@
                     android:id="@+id/nav_LevelVariados"
                     android:title="Variados"
                     android:icon="@drawable/ic_menu_guitar"/>
+
 
             </menu>
         </item>
