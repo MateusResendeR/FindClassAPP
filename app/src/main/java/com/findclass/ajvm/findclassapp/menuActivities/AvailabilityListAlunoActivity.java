@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -13,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Adapter.AvailabilityListAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
@@ -29,7 +31,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
+import com.paypal.android.sdk.payments.PayPalConfiguration;
+import com.paypal.android.sdk.payments.PayPalPayment;
+import com.paypal.android.sdk.payments.PayPalService;
+import com.paypal.android.sdk.payments.PaymentActivity;
+import com.paypal.android.sdk.payments.PaymentConfirmation;
 
+import org.json.JSONException;
+
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,6 +59,9 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
     private ValueEventListener valueEventListenerProfessores;
     private MaterialSearchView searchView;
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
+    private static PayPalConfiguration config;
+    private Schedule paypalSchedule;
+    private Time_Date paypalTimeDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +75,14 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         subjectId = (String) data.getSerializable("subject_id");
         professorUid = (String) data.getSerializable("professor_uid");
+
+        config = new PayPalConfiguration()
+                // Start with mock environment (ENVIROMENT_NO_NETWORK).
+                // When ready, switch to sandbox (ENVIRONMENT_SANDBOX)
+                // or live (ENVIRONMENT_PRODUCTION)
+                .environment(PayPalConfiguration.ENVIRONMENT_SANDBOX)
+                .clientId("ATl_uNA7Rar8H-JXwMdRWwvVBC8DcFsPq3FspiwcWmqFqOkOOT2o4m-9KipNIhfMp5PhfPyqcL-5pD2a")
+                .merchantName("FindClass");
 
         recyclerViewAvailability = findViewById(R.id.recycleViewAvailabilityList);
         professorRef = FirebaseDatabase.getInstance().getReference().child("users");
@@ -138,8 +159,6 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getBaseContext(),MenuAlunoActivity.class);
-
 
                                 final Time_Date thisTimeDate = listTimeDates.get(position);
                                 final Schedule schedule = new Schedule();
@@ -149,16 +168,52 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                                 schedule.setDatetime_id(thisTimeDate.getDate_time_id());
                                 schedule.setRating("0");
 
-
-
-
-                                DatabaseReference schedulePush = scheduleRef.child(professorUid).child(auth.getCurrentUser().getUid())
+                                DatabaseReference schedulePush = scheduleRef
+                                        .child(professorUid)
+                                        .child(auth.getCurrentUser().getUid())
                                         .push();
                                 schedule.setId(schedulePush.getKey());
-                                schedulePush.setValue(schedule);
-                                dateTimeRef.child(thisTimeDate.getDate_time_id()).child("status").setValue("sim");
 
-                                startActivity(intent);
+                                paypalSchedule = schedule;
+                                paypalTimeDate = thisTimeDate;
+
+                                // PAYMENT_INTENT_SALE will cause the payment to complete immediately.
+                                // Change PAYMENT_INTENT_SALE to
+                                //   - PAYMENT_INTENT_AUTHORIZE to only authorize payment and capture funds later.
+                                //   - PAYMENT_INTENT_ORDER to create a payment for authorization and capture
+                                //     later via calls from your server.
+
+                                PayPalPayment payment = new PayPalPayment(
+                                        new BigDecimal(
+                                                thisTimeDate.getTime().getPrice().toString()
+                                                        .replace("R$","")
+                                                        .replace(",",".")
+                                        ),
+                                        "BRL",
+                                        ("FindClass/"+schedule.getId()),
+                                        PayPalPayment.PAYMENT_INTENT_SALE
+                                );
+
+                                Intent intent = new Intent(getBaseContext(), PaymentActivity.class);
+
+                                // send the same configuration for restart resiliency
+                                intent.putExtra(PayPalService.EXTRA_PAYPAL_CONFIGURATION, config);
+
+                                intent.putExtra(PaymentActivity.EXTRA_PAYMENT, payment);
+
+                                startActivityForResult(intent, 0);
+
+                                //Intent intent = new Intent(getBaseContext(),MenuAlunoActivity.class);
+
+
+
+//
+//                                schedulePush.setValue(schedule);
+//                                dateTimeRef.child(thisTimeDate.getDate_time_id()).child("status").setValue("sim");
+//
+//                                startActivity(intent);
+
+                                //Toast.makeText(getBaseContext(),"FON",Toast.LENGTH_SHORT).show();
                             }
 
                             @Override
@@ -174,6 +229,52 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                 )
         );
 
+    }
+
+    @Override
+    protected void onActivityResult (int requestCode, int resultCode, Intent data) {
+        String message = "";
+        if (resultCode == Activity.RESULT_OK) {
+            PaymentConfirmation confirm = data.getParcelableExtra(PaymentActivity.EXTRA_RESULT_CONFIRMATION);
+            if (confirm != null) {
+                try {
+                    Log.i("paymentExample", confirm.toJSONObject().toString(4));
+                    message = "Pagamento efetuado com sucesso!";
+
+                    Intent intent = new Intent(getBaseContext(),MenuAlunoActivity.class);
+
+                    scheduleRef
+                            .child(professorUid)
+                            .child(auth.getCurrentUser().getUid())
+                            .child(paypalSchedule.getId())
+                            .setValue(paypalSchedule);
+
+                    dateTimeRef
+                            .child(paypalTimeDate.getDate_time_id())
+                            .child("status")
+                            .setValue("sim");
+
+                    startActivity(intent);
+
+                    // TODO: send 'confirm' to your server for verification.
+                    // see https://developer.paypal.com/webapps/developer/docs/integration/mobile/verify-mobile-payment/
+                    // for more details.
+
+                } catch (JSONException e) {
+                    Log.e("paymentExample", "an extremely unlikely failure occurred: ", e);
+                    message = "Erro...";
+                }
+            }
+        }
+        else if (resultCode == Activity.RESULT_CANCELED) {
+            Log.i("paymentExample", "The user canceled.");
+            message = "Cancelado...";
+        }
+        else if (resultCode == PaymentActivity.RESULT_EXTRAS_INVALID) {
+            Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
+            message = "Erro na API...";
+        }
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -304,5 +405,10 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onDestroy() {
+        stopService(new Intent(this, PayPalService.class));
+        super.onDestroy();
+    }
 }
 
