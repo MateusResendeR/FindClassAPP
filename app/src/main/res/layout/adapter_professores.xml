@@ -13,12 +13,19 @@
         android:visibility="visible">
 
         <TextView
+            android:id="@+id/textViewNomeProfessor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nome"
+            android:textSize="18sp"
+            android:textStyle="bold"/>
+
+        <TextView
             android:id="@+id/textViewMateriaProfessor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Materia"
-            android:textSize="18sp"
-            android:textStyle="bold" />
+            />
 
         <TextView
             android:id="@+id/textViewLevelProfessor"
@@ -26,11 +33,6 @@
             android:layout_height="wrap_content"
             android:text="Level" />
 
-        <TextView
-            android:id="@+id/textViewNomeProfessor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Nome" />
 
         <View
             android:id="@+id/divider"

@@ -142,13 +142,16 @@ public class MenuAlunoActivity extends AppCompatActivity
             Intent intent = new Intent(getBaseContext(), UpdateDataActivity.class);
             startActivity(intent);
         }else if(id == R.id.nav_LevelFundamental){
-            Intent intent = new Intent(getBaseContext(), SubjectCategoryFundamentalActivity.class);
+            Intent intent = new Intent(getBaseContext(), SubjectsOfLevelActivity.class);
+            intent.putExtra("level","Fundamental");
             startActivity(intent);
         }else if(id == R.id.nav_LevelMedio){
-            Intent intent = new Intent(getBaseContext(), SubjectCategoryMedioActivity.class);
+            Intent intent = new Intent(getBaseContext(), SubjectsOfLevelActivity.class);
+            intent.putExtra("level","Médio");
             startActivity(intent);
         }else if(id == R.id.nav_LevelVariados){
-            Intent intent = new Intent(getBaseContext(), SubjectCategoryVariadosActivity.class);
+            Intent intent = new Intent(getBaseContext(), SubjectsOfLevelActivity.class);
+            intent.putExtra("level","Variados");
             startActivity(intent);
         }else if(id == R.id.nav_Ranking){
             Intent intent = new Intent(getBaseContext(), ProfessorRankingActivity.class);
