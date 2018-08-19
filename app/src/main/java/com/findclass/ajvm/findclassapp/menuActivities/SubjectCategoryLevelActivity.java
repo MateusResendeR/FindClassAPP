@@ -2,8 +2,6 @@ package com.findclass.ajvm.findclassapp.menuActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -32,8 +30,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class SubjectCategoryVariadosActivity extends AppCompatActivity {
-    private RecyclerView recyclerViewVariados;
+public class SubjectCategoryLevelActivity extends AppCompatActivity {
+    private RecyclerView recyclerViewMedio;
     private SubjectProfessorAdapter adapter;
     private ArrayList<Subject_Professor> listProfessors = new ArrayList<>();
     private DatabaseReference professorSubjectRef;
@@ -41,17 +39,20 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
     private DatabaseReference subjectRef;
     private ValueEventListener valueEventListenerProfessores;
     private MaterialSearchView searchView;
+    private String nameSubject;
+    private String nameLevel;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subject_category_variados);
+        setContentView(R.layout.activity_subject_category_level);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        recyclerViewVariados = findViewById(R.id.recycleViewListaVariados);
+        recyclerViewMedio = findViewById(R.id.recycleViewListaMedio);
         professorSubjectRef = FirebaseDatabase.getInstance().getReference().child("professorSubjects");
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
         subjectRef = FirebaseDatabase.getInstance().getReference().child("subjects");
@@ -59,11 +60,16 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
         adapter = new SubjectProfessorAdapter(listProfessors, this);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerViewVariados.setLayoutManager(layoutManager);
-        recyclerViewVariados.setHasFixedSize(true);
-        recyclerViewVariados.setAdapter(adapter);
+        recyclerViewMedio.setLayoutManager(layoutManager);
+        recyclerViewMedio.setHasFixedSize(true);
+        recyclerViewMedio.setAdapter(adapter);
 
-
+        Bundle bundle = getIntent().getExtras();
+        if(bundle != null) {
+            nameSubject = (String) bundle.getSerializable("subject");
+            nameLevel = (String)bundle.getSerializable("level");
+        }
+        Log.d("deb654",nameSubject);
         searchView = findViewById(R.id.search_viewProfessor);
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -115,14 +121,14 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
             }
         });
 
-        recyclerViewVariados.addOnItemTouchListener(
+        recyclerViewMedio.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         this,
-                        recyclerViewVariados,
+                        recyclerViewMedio,
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(SubjectCategoryVariadosActivity.this,
+                                Intent intent = new Intent(SubjectCategoryLevelActivity.this,
                                         AvailabilityListAlunoActivity.class);
                                 Subject_Professor thisSubjectProfessor = listProfessors.get(position);
                                 intent.putExtra("professor_uid",thisSubjectProfessor.getProfessorSubject().getProfessorUid());
@@ -179,7 +185,7 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
     public void searchProfessor(String text) {
         List<Subject_Professor> listProfessorSearch = new ArrayList<>();
         for (Subject_Professor professor : listProfessors) {
-            String subject = professor.getSubject().getName().toLowerCase();
+            String subject = professor.getUser().getName().toLowerCase();
             subject = subject.replace('á', 'a');
             subject = subject.replace('ã', 'a');
             subject = subject.replace('é', 'e');
@@ -195,13 +201,13 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
             }
         }
         adapter = new SubjectProfessorAdapter(listProfessorSearch, this);
-        recyclerViewVariados.setAdapter(adapter);
+        recyclerViewMedio.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
     public void reloadList() {
         adapter = new SubjectProfessorAdapter(listProfessors, this);
-        recyclerViewVariados.setAdapter(adapter);
+        recyclerViewMedio.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
@@ -234,7 +240,7 @@ public class SubjectCategoryVariadosActivity extends AppCompatActivity {
                                                                     public void onDataChange(DataSnapshot dataSnapshot) {
                                                                         for (DataSnapshot d : dataSnapshot.getChildren()) {
                                                                             Subject subject = d.getValue(Subject.class);
-                                                                            if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals("Variados")) {
+                                                                            if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals(nameLevel)&& subject.getName().equals(nameSubject)) {
                                                                                 sp.setSubject(subject);
                                                                                 listProfessors.add(sp);
                                                                                 Collections.sort(listProfessors);

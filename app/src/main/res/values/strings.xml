@@ -19,9 +19,8 @@
     <string name="WEAK_PASSWORD_TOAST">Senha fraca, senhas precisam de no mínimo 6 caracteres.</string>
     <string name="INVALID_EMAIL_TOAST">E-mail inválido.</string>
     <string name="TOAST_STRING_EMAIL_NAO_CADASTRADO">E-mail não cadastrado, realize cadastro</string>
-    <string name="title_activity_subject_category">Ensino Fundamental</string>
-    <string name="title_activity_subject_category_medio">Ensino Médio</string>
-    <string name="title_activity_subject_category_variados">Variados</string>
+    <string name="title_activity_subject_category_medio">Professores</string>
+    <string name="title_activity_subject_category_variados">Professores</string>
     <string name="title_activity_availability_list_aluno">Disponibilidade</string>
 
     <!-- TODO: Remove or change this placeholder text -->
@@ -30,7 +29,8 @@
     <string name="title_activity_rating_professor">Avaliar Professor</string>
     <string name="title_activity_info_scedule_student">Informações</string>
     <string name="title_activity_professor_ranking">Melhores professores</string>
-    <string name="title_activity_subject_of_professor">SubjectOfProfessorActivity</string>
+    <string name="title_activity_subject_of_professor">Disciplinas</string>
+    <string name="title_activity_subjects_of_level">Disciplinas</string>
 
 
 </resources>

@@ -125,7 +125,6 @@ public class SubjectOfProfessorActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
-                    final Subject_Professor sp = new Subject_Professor();
                     final Professor_Subject ps = data.getValue(Professor_Subject.class);
                     final Subject subject = new Subject();
                     subjectRef.child(ps.getSubjectId()).addValueEventListener(new ValueEventListener() {
