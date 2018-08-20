@@ -31,7 +31,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:onClick="updateSubjectDate"
-        android:text="Atualizar"
+        android:text="Atualizar Datas"
         android:textColor="@android:color/background_light"
         android:theme="@style/button"
         app:layout_constraintBottom_toBottomOf="parent"
