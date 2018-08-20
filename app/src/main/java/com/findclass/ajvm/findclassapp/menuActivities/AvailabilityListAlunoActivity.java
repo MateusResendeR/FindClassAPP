@@ -167,7 +167,6 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                                 schedule.setSubject_id(subjectId);
                                 schedule.setDatetime_id(thisTimeDate.getDate_time_id());
                                 schedule.setRating("0");
-
                                 DatabaseReference schedulePush = scheduleRef
                                         .child(professorUid)
                                         .child(auth.getCurrentUser().getUid())
@@ -348,7 +347,6 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
                     td.setDate_time_id(dado.getKey());
 
-
                     timeRef.addValueEventListener(
                             new ValueEventListener() {
                                 @Override
@@ -390,6 +388,9 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                                 }
                             }
                     );
+                    if (dado.child("status").getValue().toString().equals("sim")){
+                        listTimeDates.remove(td);
+                    }
                     adapter.notifyDataSetChanged();
                 }
 
