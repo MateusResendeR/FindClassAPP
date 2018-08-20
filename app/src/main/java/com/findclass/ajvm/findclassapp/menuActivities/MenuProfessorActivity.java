@@ -19,6 +19,7 @@ import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActi
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleFinishProfessorFragment;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleProfessorFragment;
 import com.findclass.ajvm.findclassapp.SubjectActivities.MySubjectsActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,7 +105,8 @@ public class MenuProfessorActivity extends AppCompatActivity
         //abas
         final FragmentPagerItemAdapter adapter = new FragmentPagerItemAdapter(
                 getSupportFragmentManager(), FragmentPagerItems.with(this)
-                .add("Aulas Marcadas", MyScheduleProfessorFragment.class)//Colocar activity notificacoes
+                .add("Aulas Marcadas", MyScheduleProfessorFragment.class) //Colocar activity notificacoes
+                .add("Aulas Finalizadas", MyScheduleFinishProfessorFragment.class)
                 .create()
         );
         ViewPager viewPager = findViewById(R.id.viewpager);

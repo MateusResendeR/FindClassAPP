@@ -27,7 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class InfoSceduleStudentActivity extends AppCompatActivity {
+public class InfoScheduleStudentActivity extends AppCompatActivity {
     private User professor;
     private Subject subject;
     private ScheduleObject schedule;

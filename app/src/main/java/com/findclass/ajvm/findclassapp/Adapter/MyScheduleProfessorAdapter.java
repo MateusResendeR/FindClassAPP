@@ -37,22 +37,22 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ScheduleObject schedule = mySchedules.get(position);
 
-//        String dateString = schedule.getDate().getDate();
-//        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-//        Date date = new Date();
-//        try {
-//            date = sdf.parse(dateString);
-//        } catch (ParseException e) {
-//            e.printStackTrace();
-//        }
-//        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        String dateString = schedule.getDate().getDate();
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        Date date = new Date();
+        try {
+            date = sdf.parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
         Log.e("DEBUG","PROFESSOR_ADAPTER");
         holder.subjectName.setText(schedule.getSubject().getName());
         holder.subjectLevel.setText(schedule.getSubject().getLevel());
         holder.studentName.setText(schedule.getStudent().getName());
-//        holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
-//        holder.time.setText(schedule.getTime().getStartTime());
+        holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
+        holder.time.setText(schedule.getTime().getStartTime());
     }
 
     @Override
