@@ -49,7 +49,7 @@ public class AvailabilityListAdapter extends RecyclerView.Adapter<AvailabilityLi
         holder.date.setText( dateFormat.format(date));
         holder.day.setText(dt.getTime().getDay());
         holder.startTime.setText(dt.getTime().getStartTime());
-        holder.endTime.setText(dt.getTime().getStartTime());
+        holder.endTime.setText(dt.getTime().getEndTime());
         holder.price.setText(dt.getTime().getPrice());
 
 

@@ -59,10 +59,6 @@ public class AddTimeActivity extends AppCompatActivity {
 
         try {
 
-            DateFormat sdf = new SimpleDateFormat("hh:mm");
-            Date dateStartTime = sdf.parse(startTime.getText().toString());
-            Date dateEndTime = sdf.parse(endTime.getText().toString());
-
             String[] startTimeWithoutColon = startTime.getText().toString().split(":");
             String[] endTimeWithoutColon = endTime.getText().toString().split(":");
 
@@ -71,11 +67,15 @@ public class AddTimeActivity extends AppCompatActivity {
             } else if (startTime.getText().toString().length() < 5 || endTime.getText().toString().length() < 5
                     || price.getText().toString().length() < 7){
                 throw new FieldLenghtException();
-            } else if (dateEndTime.before(dateStartTime)){
+            } else if (Integer.parseInt(startTimeWithoutColon[0]) > Integer.parseInt(endTimeWithoutColon[0])){
                 throw new TimeFurtherThanOtherException();
-            } else if(Integer.valueOf(startTimeWithoutColon[0]) > 23 || Integer.valueOf(endTimeWithoutColon[0]) > 23) {
+            } else if (Integer.parseInt(startTimeWithoutColon[0]) == Integer.parseInt(endTimeWithoutColon[0])){
+                if (Integer.parseInt(startTimeWithoutColon[1]) >= Integer.parseInt(endTimeWithoutColon[1])) {
+                    throw new TimeFurtherThanOtherException();
+                }
+            } else if(Integer.parseInt(startTimeWithoutColon[0]) > 23 || Integer.parseInt(endTimeWithoutColon[0]) > 23) {
                 throw new InvalidTimeException();
-            } else if(Integer.valueOf(startTimeWithoutColon[1]) > 59 || Integer.valueOf(endTimeWithoutColon[1]) > 59) {
+            } else if(Integer.parseInt(startTimeWithoutColon[1]) == 59 || Integer.parseInt(endTimeWithoutColon[1]) > 59) {
                 throw new InvalidTimeException();
             } else if (isDayOfWeek(day)) {
                 throw new WeekDayException();
@@ -111,7 +111,7 @@ public class AddTimeActivity extends AppCompatActivity {
                                                     Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
                                                     DatabaseReference pushDateTime = professor.child("dateTimes").push();
                                                     pushDateTime.setValue(dt);
-                                                } else if (weekDay[0].equals("Wen")
+                                                } else if (weekDay[0].equals("Wed")
                                                         && time.getDay().equals("qua")) {
                                                     professor.child("dates").child(d.getKey()).child("status").setValue("sim");
                                                     Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
@@ -161,8 +161,6 @@ public class AddTimeActivity extends AppCompatActivity {
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
             }catch(InvalidTimeException e){
                 Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
-            }catch (ParseException e) {
-                e.printStackTrace();
             } catch (Exception e){
                 e.printStackTrace();
             }
