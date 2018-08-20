@@ -12,7 +12,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleStudentAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
@@ -23,7 +25,7 @@ import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.InfoScheduleStudentActivity;
+import com.findclass.ajvm.findclassapp.menuActivities.RatingProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -36,16 +38,18 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyScheduleStudentFragment extends Fragment {
+public class MyScheduleFinishProfessorFragment extends Fragment {
     private RecyclerView recyclerViewMyScheduleList;
-    private MyScheduleStudentAdapter adapter;
+    private MyScheduleProfessorAdapter adapter;
     private DatabaseReference schedulesRef;
     private DatabaseReference rootRef;
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
+    private ValueEventListener valueEventListener;
     private ProgressDialog progress;
 
-    public MyScheduleStudentFragment() {
+
+    public MyScheduleFinishProfessorFragment() {
         // Required empty public constructor
     }
 
@@ -54,8 +58,7 @@ public class MyScheduleStudentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_my_schedule_student, container, false);
-        Log.e("DEBUG","Student");
+        View view = inflater.inflate(R.layout.fragment_my_schedule_professor, container, false);
 
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -63,7 +66,7 @@ public class MyScheduleStudentFragment extends Fragment {
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleStudentAdapter(myScheduleObjects);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
@@ -77,23 +80,17 @@ public class MyScheduleStudentFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getContext(),InfoScheduleStudentActivity.class);
-
-                                Bundle bundle = new Bundle();
-                                bundle.putSerializable("schedule",myScheduleObjects.get(position));
-
-                                intent.putExtras(bundle);
-                                startActivity(intent);
+                                Toast.makeText(getActivity(), "Fon!", Toast.LENGTH_LONG).show();
                             }
 
                             @Override
                             public void onLongItemClick(View view, int position) {
-                                //
+
                             }
 
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                //
+
                             }
                         }
                 )
@@ -113,6 +110,7 @@ public class MyScheduleStudentFragment extends Fragment {
         super.onStop();
     }
 
+
     public void retrieveMySchedules(){
         progress = new ProgressDialog(getActivity());
         progress.setMessage("Carregando...");
@@ -122,36 +120,34 @@ public class MyScheduleStudentFragment extends Fragment {
 
         final ArrayList<DataSnapshot> myScheduleSnapshots = new ArrayList<>();
 
-        schedulesRef.addListenerForSingleValueEvent(
-                new ValueEventListener() {
-                    @Override
-                    public void onDataChange(DataSnapshot dataSnapshot) {
-                        for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
-                            for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
-                                if(dataSnapshot2.getKey().equals(auth.getCurrentUser().getUid())){
-                                    for (DataSnapshot scheduleSnap: dataSnapshot2.getChildren()){
-                                        if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)){
+        schedulesRef
+                .child(auth.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                    for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
+                                        if (scheduleSnap.child("finish").getValue(Integer.class).equals(1)){
                                             myScheduleSnapshots.add(scheduleSnap);
                                         }
                                     }
                                 }
+
+                                for(DataSnapshot scheduleSnap: myScheduleSnapshots){
+                                    Schedule schedule = scheduleSnap.getValue(Schedule.class);
+                                    retrieveProfessor(schedule);
+                                }
+
+                                progress.dismiss();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
                             }
                         }
-
-                        for(DataSnapshot scheduleSnap: myScheduleSnapshots){
-                            Schedule schedule = scheduleSnap.getValue(Schedule.class);
-                            retrieveProfessor(schedule);
-                        }
-
-                        progress.dismiss();
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-                        //
-                    }
-                }
-        );
+                );
     }
 
     public void retrieveProfessor(final Schedule schedule){
@@ -175,7 +171,6 @@ public class MyScheduleStudentFragment extends Fragment {
     }
 
     public void retrieveStudent(final Schedule schedule, final User professor){
-        Log.e("DEBUG","Here!");
         DatabaseReference usersRef = rootRef.child("users");
         usersRef
                 .child(schedule.getStudent_id())
@@ -279,6 +274,4 @@ public class MyScheduleStudentFragment extends Fragment {
                             }
                         }
                 );
-    }
-
-}
+    }    }

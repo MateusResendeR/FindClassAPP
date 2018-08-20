@@ -100,7 +100,9 @@ public class MyScheduleProfessorFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
                             for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
-                                myScheduleSnapshots.add(scheduleSnap);
+                                if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)){
+                                    myScheduleSnapshots.add(scheduleSnap);
+                                }
                             }
                         }
 
