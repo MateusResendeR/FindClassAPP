@@ -11,7 +11,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.Adapter.SubjectProfessorAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Professor_Subject;
@@ -19,6 +21,7 @@ import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.Subject_Professor;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -69,7 +72,7 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
             nameSubject = (String) bundle.getSerializable("subject");
             nameLevel = (String)bundle.getSerializable("level");
         }
-        Log.d("deb654",nameSubject);
+
         searchView = findViewById(R.id.search_viewProfessor);
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
@@ -180,6 +183,27 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
         MenuItem item = menu.findItem(R.id.menuPesquisa);
         searchView.setMenuItem(item);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_logoutAluno) {
+            logout(this.findViewById(R.id.toolbar));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+    public void logout(View view){
+        try{
+            FirebaseAuth.getInstance().signOut();
+        }catch (Exception e){
+            String message = "Erro, você já está delogado";
+            Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(this, "Saiu!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(SubjectCategoryLevelActivity.this,SignInActivity.class));
+        finish();
     }
 
     public void searchProfessor(String text) {

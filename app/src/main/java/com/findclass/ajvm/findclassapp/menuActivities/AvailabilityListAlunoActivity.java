@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.Adapter.AvailabilityListAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
@@ -230,6 +231,15 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         );
 
     }
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_logoutAluno) {
+            logout(this.findViewById(R.id.toolbar));
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onActivityResult (int requestCode, int resultCode, Intent data) {
@@ -403,6 +413,17 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
             }
         });
 
+    }
+    public void logout(View view){
+        try{
+            FirebaseAuth.getInstance().signOut();
+        }catch (Exception e){
+            String message = "Erro, você já está delogado";
+            Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        }
+        Toast.makeText(this, "Saiu!", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(AvailabilityListAlunoActivity.this,SignInActivity.class));
+        finish();
     }
 
     @Override

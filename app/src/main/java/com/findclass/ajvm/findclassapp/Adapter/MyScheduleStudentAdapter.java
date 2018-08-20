@@ -53,7 +53,7 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
         holder.subjectLevel.setText(schedule.getSubject().getLevel());
         holder.professorName.setText(schedule.getProfessor().getName());
         holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
-        holder.time.setText(schedule.getTime().getStartTime());
+        holder.time.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
     }
 
     @Override
