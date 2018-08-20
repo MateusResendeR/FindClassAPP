@@ -3,6 +3,7 @@ package com.findclass.ajvm.findclassapp.menuActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,11 +13,16 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
+import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
+import com.findclass.ajvm.findclassapp.Adapter.MyScheduleStudentAdapter;
+import com.findclass.ajvm.findclassapp.Adapter.SubjectProfessorAdapter;
+import com.findclass.ajvm.findclassapp.Model.Subject_Professor;
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleFinishStudentFragment;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleStudentFragment;
@@ -30,10 +36,14 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MenuAlunoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final FirebaseAuth auth = FirebaseAuth.getInstance();
     private MaterialSearchView searchView;
+    private MyScheduleStudentAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,17 +120,119 @@ public class MenuAlunoActivity extends AppCompatActivity
                 .add("Aulas Finalizadas", MyScheduleFinishStudentFragment.class)
                 .create()
         );
-        ViewPager viewPager = findViewById(R.id.viewpager);
+        final ViewPager viewPager = findViewById(R.id.viewpager);
         viewPager.setAdapter(adapter);
 
         SmartTabLayout viewPagerTab = findViewById(R.id.viewpagertab);
         viewPagerTab.setViewPager(viewPager);
+
+        //search
+        searchView = findViewById(R.id.search_viewSchedule);
+        searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
+            @Override
+            public void onSearchViewShown() {
+
+            }
+
+            @Override
+            public void onSearchViewClosed() {
+                MyScheduleStudentFragment fragment = (MyScheduleStudentFragment) adapter.getPage(0);
+                MyScheduleFinishStudentFragment fragment1 = (MyScheduleFinishStudentFragment) adapter.getPage(1);
+                fragment.reloadList();
+                fragment1.reloadList();
+            }
+        });
+        searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                switch (viewPager.getCurrentItem()){
+                    case 0:
+                        MyScheduleStudentFragment fragment = (MyScheduleStudentFragment) adapter.getPage(0);
+                        query = query.replace('á', 'a');
+                        query = query.replace('ã', 'a');
+                        query = query.replace('é', 'e');
+                        query = query.replace('ê', 'e');
+                        query = query.replace('ó', 'o');
+                        query = query.replace('õ', 'o');
+                        query = query.replace('ú', 'u');
+                        query = query.replace('í', 'i');
+
+                        if (query != null && !query.isEmpty()) {
+                            fragment.searchSchedule(query.toLowerCase());
+                        }
+                        break;
+                    case 1:
+                        MyScheduleFinishStudentFragment fragment1 = (MyScheduleFinishStudentFragment) adapter.getPage(1);
+                        query = query.replace('á', 'a');
+                        query = query.replace('ã', 'a');
+                        query = query.replace('é', 'e');
+                        query = query.replace('ê', 'e');
+                        query = query.replace('ó', 'o');
+                        query = query.replace('õ', 'o');
+                        query = query.replace('ú', 'u');
+                        query = query.replace('í', 'i');
+
+                        if (query != null && !query.isEmpty()) {
+                            fragment1.searchSchedule(query.toLowerCase());
+                        }
+
+
+                }
+
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                switch (viewPager.getCurrentItem()){
+                    case 0:
+                        MyScheduleStudentFragment fragment = (MyScheduleStudentFragment) adapter.getPage(0);
+                        newText = newText.replace('á', 'a');
+                        newText = newText.replace('ã', 'a');
+                        newText = newText.replace('é', 'e');
+                        newText = newText.replace('ê', 'e');
+                        newText = newText.replace('ó', 'o');
+                        newText = newText.replace('õ', 'o');
+                        newText = newText.replace('ú', 'u');
+                        newText = newText.replace('í', 'i');
+
+                        if (newText != null && !newText.isEmpty()) {
+                            fragment.searchSchedule(newText.toLowerCase());
+                        }
+                        break;
+                    case 1:
+                        MyScheduleFinishStudentFragment fragment1 = (MyScheduleFinishStudentFragment) adapter.getPage(1);
+                        newText = newText.replace('á', 'a');
+                        newText = newText.replace('ã', 'a');
+                        newText = newText.replace('é', 'e');
+                        newText = newText.replace('ê', 'e');
+                        newText = newText.replace('ó', 'o');
+                        newText = newText.replace('õ', 'o');
+                        newText = newText.replace('ú', 'u');
+                        newText = newText.replace('í', 'i');
+
+                        if (newText != null && !newText.isEmpty()) {
+                            fragment1.searchSchedule(newText.toLowerCase());
+                        }
+
+
+                }
+
+
+                return true;
+            }
+        });
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_aluno, menu);
+        MenuItem item = menu.findItem(R.id.menuPesquisa);
+        searchView.setMenuItem(item);
         return true;
     }
 

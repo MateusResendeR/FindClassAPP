@@ -45,7 +45,6 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
     private DatabaseReference rootRef;
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
-    private ValueEventListener valueEventListener;
     private ProgressDialog progress;
 
 
