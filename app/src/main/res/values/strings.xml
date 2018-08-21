@@ -28,9 +28,20 @@
     <string name="TOAST_BEM_VINDO">Bem-vindo! victor_s.s.m._15@hotmail.com</string>
     <string name="title_activity_rating_professor">Avaliar Professor</string>
     <string name="title_activity_info_scedule_student">Informações</string>
+    <string name="title_activity_info_scedule_teacher">Informações</string>
     <string name="title_activity_professor_ranking">Melhores professores</string>
     <string name="title_activity_subject_of_professor">Disciplinas</string>
     <string name="title_activity_subjects_of_level">Disciplinas</string>
+
+    <string-array name="day_arrays">
+        <item>dom</item>
+        <item>seg</item>
+        <item>ter</item>
+        <item>qua</item>
+        <item>qui</item>
+        <item>sex</item>
+        <item>sab</item>
+    </string-array>
 
 
 </resources>

@@ -15,7 +15,7 @@ import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.findclass.ajvm.findclassapp.AccountActivities.MyCalendarProfessorActivity;
+import com.findclass.ajvm.findclassapp.CalendarActivities.MyCalendarProfessorActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
 import com.findclass.ajvm.findclassapp.R;
