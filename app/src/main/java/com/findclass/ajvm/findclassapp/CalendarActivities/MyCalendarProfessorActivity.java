@@ -167,7 +167,7 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
 
                 }
             }
-            Intent intent = new Intent(this, MenuProfessorActivity.class);
+            Intent intent = new Intent(this, AddTimeActivity.class);
             startActivity(intent);
 
 
