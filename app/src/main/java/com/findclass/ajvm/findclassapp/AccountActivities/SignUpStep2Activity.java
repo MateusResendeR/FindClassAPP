@@ -77,13 +77,9 @@ public class SignUpStep2Activity extends AppCompatActivity {
                     db.child("users").child(uid).setValue(user);
                 }
 
-                if (!auth.getCurrentUser().isEmailVerified()){
-                    auth.signOut();
-                }
-
-                Intent intent = new Intent(this, SignInActivity.class);
+                Intent intent = new Intent(this, SignUpStep3Activity.class);
                 startActivity(intent);
-                Toast.makeText(this, "Cadastro realizado com sucesso.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_SHORT).show();
             }
         } catch (EmptyFieldException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();

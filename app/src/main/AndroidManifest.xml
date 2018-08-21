@@ -105,6 +105,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
         </activity>
+        <activity android:name=".AccountActivities.SignUpStep3Activity"></activity>
     </application>
 
 </manifest>
