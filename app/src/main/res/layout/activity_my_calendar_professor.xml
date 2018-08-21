@@ -1,71 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="16dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="16dp"
-    tools:context=".CalendarActivities.MyCalendarProfessorActivity">
-
-    <fragment
-        android:id="@+id/fragment"
-        android:name="com.findclass.ajvm.findclassapp.TimeFragments.MyTimeListFragment"
-        android:layout_width="0dp"
-        android:layout_height="260dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/calendarView"
-        tools:context=".CalendarActivities.MyTimesActivity" />
-
-    <Button
-        android:id="@+id/updateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="updateSubjectDate"
-        android:text="Atualizar Datas"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/addButton"
-        app:layout_constraintTop_toBottomOf="@+id/fragment" />
-
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:onClick="addSubjectTime"
-        android:text="Adicionar Horário"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/updateButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"/>
+    android:orientation="horizontal"
+    android:padding="5dp">
 
     <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calendarView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:mcv_calendarMode="week"
         app:mcv_selectionColor="#00F" />
+</LinearLayout>
 
-</android.support.constraint.ConstraintLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <Button
+        android:id="@+id/updateButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="addSubjectDates"
+        android:text="Adicionar Datas"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/button"
+        android:layout_weight="2"
+        tools:context=".CalendarActivities.MyCalendarProfessorActivity" />
+
+    <Button
+        android:id="@+id/addButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="myTimes"
+        android:text="Meus Horários"
+        android:textColor="@android:color/background_light"
+        android:theme="@style/button"
+        android:layout_weight="2"
+        tools:context=".CalendarActivities.MyCalendarProfessorActivity"/>
+</LinearLayout>
+
+<View
+    android:id="@+id/divider4"
+    android:layout_width="match_parent"
+    android:layout_height="3dp"
+    android:layout_weight="3"
+    android:background="?android:attr/listDivider" />
+</LinearLayout>

@@ -17,7 +17,7 @@ public class MyTimesActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_times);
 
-        addTime = findViewById(R.id.addSubjectFloatingActionButton);
+        addTime = findViewById(R.id.addTimeFloatingActionButton);
 
         addTime
                 .setOnClickListener(

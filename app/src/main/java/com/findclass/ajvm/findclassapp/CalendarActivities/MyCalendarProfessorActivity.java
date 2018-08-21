@@ -9,6 +9,7 @@ import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Date_Time;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -95,7 +96,7 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
 
     }
 
-    public void updateSubjectDate(View view){
+    public void addSubjectDates(View view){
         try {
             auth = FirebaseAuth.getInstance();
             db = FirebaseDatabase.getInstance().getReference();
@@ -166,6 +167,8 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
 
                 }
             }
+            Intent intent = new Intent(this, MenuProfessorActivity.class);
+            startActivity(intent);
 
 
         }catch (Exception e){
@@ -173,8 +176,8 @@ public class MyCalendarProfessorActivity extends AppCompatActivity{
         }
     }
 
-    public void addSubjectTime(View view){
-        Intent intent = new Intent(this, AddTimeActivity.class);
+    public void myTimes(View view){
+        Intent intent = new Intent(this, MyTimesActivity.class);
         startActivity(intent);
     }
 }

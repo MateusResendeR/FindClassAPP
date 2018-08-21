@@ -11,7 +11,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
-import com.findclass.ajvm.findclassapp.CalendarActivities.MyCalendarProfessorActivity;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.InvalidTimeException;
 import com.findclass.ajvm.findclassapp.Exception.TimeFurtherThanOtherException;
@@ -35,7 +34,6 @@ public class AddTimeActivity extends AppCompatActivity {
     private DatabaseReference db;
     private DatabaseReference professor;
     private FirebaseAuth auth;
-    private Spinner days;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -171,7 +169,7 @@ public class AddTimeActivity extends AppCompatActivity {
 
                         );
 
-                    Intent intent = new Intent(this, MyCalendarProfessorActivity.class);
+                    Intent intent = new Intent(this, MyTimesActivity.class);
                     startActivity(intent);
                     Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_SHORT).show();
                 }
