@@ -32,6 +32,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -100,6 +101,12 @@ public class MyScheduleStudentFragment extends Fragment {
         );
 
         return view;
+    }
+
+    public void reloadList() {
+        adapter = new MyScheduleStudentAdapter(myScheduleObjects);
+        recyclerViewMyScheduleList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -279,6 +286,29 @@ public class MyScheduleStudentFragment extends Fragment {
                             }
                         }
                 );
+    }
+
+    public void searchSchedule(String text) {
+        List<ScheduleObject> listScheduleSearch = new ArrayList<>();
+        for (ScheduleObject scheduleObject : myScheduleObjects) {
+            String subject = scheduleObject.getSubject().getName().toLowerCase();
+            subject = subject.replace('á', 'a');
+            subject = subject.replace('ã', 'a');
+            subject = subject.replace('é', 'e');
+            subject = subject.replace('ê', 'e');
+            subject = subject.replace('ó', 'o');
+            subject = subject.replace('õ', 'o');
+            subject = subject.replace('ú', 'u');
+            subject = subject.replace('í', 'i');
+
+            if (subject.contains(text)) {
+                listScheduleSearch.add(scheduleObject);
+
+            }
+        }
+        adapter = new MyScheduleStudentAdapter(listScheduleSearch);
+        recyclerViewMyScheduleList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
 }
