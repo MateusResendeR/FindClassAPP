@@ -4,11 +4,14 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Exception.CanNotCancelException;
+import com.findclass.ajvm.findclassapp.Model.Address;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Schedule;
 import com.findclass.ajvm.findclassapp.Model.ScheduleObject;
@@ -56,6 +59,10 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     private TextView textViewTime;
     private Date_Status dateStatus;
     private ValueEventListener valueEventListenerD;
+    private TextView cityUfTextView;
+    private TextView districtTextView;
+    private TextView addressTextView;
+    private TextView numberComplementTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,6 +80,10 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
         textViewDate = findViewById(R.id.infoDateTextView);
         textViewTime = findViewById(R.id.infoTimeTextView);
 
+        cityUfTextView = findViewById(R.id.cityUfTextView);
+        districtTextView = findViewById(R.id.districtTextView);
+        addressTextView = findViewById(R.id.addressTextView);
+        numberComplementTextView = findViewById(R.id.numberComplementTextView);
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
@@ -93,6 +104,22 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             textViewSubject.setText(subject.getName());
             textViewLevel.setText(subject.getLevel());
             textViewTime.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
+
+            Address scheduleAddress = professor.getAddress();
+            String cityUf = (scheduleAddress.getCity()+"/"+scheduleAddress.getState());
+            String district = (scheduleAddress.getDistrict());
+            String address = (scheduleAddress.getAddress());
+            String numberComplement = (String.valueOf(scheduleAddress.getNumber()));
+            if(!TextUtils.isEmpty(scheduleAddress.getComplement())){
+                numberComplement+=(", "+scheduleAddress.getComplement());
+            }
+
+            Log.e("FON",cityUf);
+
+            cityUfTextView.setText(cityUf);
+            districtTextView.setText(district);
+            addressTextView.setText(address);
+            numberComplementTextView.setText(numberComplement);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
