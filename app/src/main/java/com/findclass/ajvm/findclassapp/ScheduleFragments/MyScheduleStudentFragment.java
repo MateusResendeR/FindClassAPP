@@ -137,8 +137,10 @@ public class MyScheduleStudentFragment extends Fragment {
                             for (DataSnapshot dataSnapshot2: dataSnapshot1.getChildren()){
                                 if(dataSnapshot2.getKey().equals(auth.getCurrentUser().getUid())){
                                     for (DataSnapshot scheduleSnap: dataSnapshot2.getChildren()){
-                                        if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)){
-                                            myScheduleSnapshots.add(scheduleSnap);
+                                        if (scheduleSnap.child("cancel").getValue(Integer.class).equals(0)){
+                                            if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)) {
+                                                myScheduleSnapshots.add(scheduleSnap);
+                                            }
                                         }
                                     }
                                 }
