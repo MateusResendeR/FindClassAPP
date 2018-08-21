@@ -1,17 +1,14 @@
-package com.findclass.ajvm.findclassapp.AccountActivities;
+package com.findclass.ajvm.findclassapp.CalendarActivities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Date_Time;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.TimeActivities.AddTimeActivity;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;

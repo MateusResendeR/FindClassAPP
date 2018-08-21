@@ -8,7 +8,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context=".AccountActivities.MyCalendarProfessorActivity">
+    tools:context=".CalendarActivities.MyCalendarProfessorActivity">
 
     <fragment
         android:id="@+id/fragment"
@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView"
-        tools:context=".TimeActivities.MyTimesActivity" />
+        tools:context=".CalendarActivities.MyTimesActivity" />
 
     <Button
         android:id="@+id/updateButton"

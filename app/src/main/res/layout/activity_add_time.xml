@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".TimeActivities.AddTimeActivity">
+    tools:context=".CalendarActivities.AddTimeActivity">
 
     <TextView
         android:id="@+id/textView2"
@@ -49,12 +49,11 @@
         android:inputType="number"
         app:mask="R$##,##" />
 
-    <EditText
-        android:id="@+id/dayEditText"
-        android:layout_width="wrap_content"
+    <Spinner
+        android:id="@+id/daySpinner"
+        android:layout_width="215dp"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="Dia da semana (seg)" />
+        android:entries="@array/day_arrays" />
 
     <Button
         android:id="@+id/addButton"
