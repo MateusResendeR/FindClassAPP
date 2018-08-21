@@ -8,7 +8,7 @@
     android:padding="5dp">
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/imageViewIconPosition"
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_gravity="center"
@@ -28,6 +28,11 @@
             android:text="Nome"
             android:textColor="@android:color/background_dark"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewPosition"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
         <TextView
             android:id="@+id/textViewScoreProfessorRanking"

@@ -71,29 +71,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
         recyclerViewMyScheduleList.setHasFixedSize(true);
         recyclerViewMyScheduleList.setAdapter(adapter);
-        //clique
-        recyclerViewMyScheduleList.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getActivity(),
-                        recyclerViewMyScheduleList,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Toast.makeText(getActivity(), "Fon!", Toast.LENGTH_LONG).show();
-                            }
 
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-
-                            }
-
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
-                            }
-                        }
-                )
-        );
 
         return view;
     }

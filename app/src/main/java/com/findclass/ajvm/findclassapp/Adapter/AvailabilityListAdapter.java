@@ -46,10 +46,8 @@ public class AvailabilityListAdapter extends RecyclerView.Adapter<AvailabilityLi
             e.printStackTrace();
         }
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-        holder.date.setText( dateFormat.format(date));
-        holder.day.setText(dt.getTime().getDay());
-        holder.startTime.setText(dt.getTime().getStartTime());
-        holder.endTime.setText(dt.getTime().getEndTime());
+        holder.date.setText( dateFormat.format(date)+"("+dt.getDate_time().getDay()+")");
+        holder.time.setText(dt.getTime().getStartTime()+" - "+dt.getTime().getEndTime());
         holder.price.setText(dt.getTime().getPrice());
 
 
@@ -62,14 +60,13 @@ public class AvailabilityListAdapter extends RecyclerView.Adapter<AvailabilityLi
     }
 
     public  class MyViewHolder extends RecyclerView.ViewHolder{
-        TextView date, day, startTime, endTime, price;
+        TextView date, time, price;
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
-            startTime = itemView.findViewById(R.id.textViewStartTime);
-            endTime = itemView.findViewById(R.id.textViewEndTime);
+            time = itemView.findViewById(R.id.textViewTime);
             price = itemView.findViewById(R.id.textViewPrice);
             date = itemView.findViewById(R.id.textViewDate);
-            day = itemView.findViewById(R.id.textViewDay);
+
         }
     }
 }

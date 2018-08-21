@@ -59,33 +59,6 @@ public class MySubjectListFragment extends Fragment {
         recyclerViewMySubjectsList.setHasFixedSize(true);
         recyclerViewMySubjectsList.setAdapter(adapter);
 
-        recyclerViewMySubjectsList.addOnItemTouchListener(
-                new RecyclerItemClickListener(
-                        getActivity(),
-                        recyclerViewMySubjectsList,
-                        new RecyclerItemClickListener.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(getActivity(),MySubjectInfoActivity.class);
-
-                                Subject thisSubject = mySubjectsList.get(position);
-                                intent.putExtra("subject",thisSubject);
-
-                                startActivity(intent);
-                            }
-
-                            @Override
-                            public void onLongItemClick(View view, int position) {
-                                //
-                            }
-
-                            @Override
-                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                                //
-                            }
-                        }
-                )
-        );
 
         return view;
     }
