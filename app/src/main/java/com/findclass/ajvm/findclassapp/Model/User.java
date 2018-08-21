@@ -2,10 +2,6 @@ package com.findclass.ajvm.findclassapp.Model;
 
 import android.support.annotation.NonNull;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-
 import java.io.Serializable;
 
 public class User implements Serializable,Comparable<User> {
