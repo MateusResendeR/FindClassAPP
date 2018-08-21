@@ -31,6 +31,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 /**
@@ -44,7 +45,7 @@ public class MyScheduleProfessorFragment extends Fragment {
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
     private ProgressDialog progress;
-    private Schedule schedule;
+    private ArrayList<Schedule> mySchedules = new ArrayList<>();
 
     public MyScheduleProfessorFragment() {
         // Required empty public constructor
@@ -66,7 +67,7 @@ public class MyScheduleProfessorFragment extends Fragment {
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -136,6 +137,8 @@ public class MyScheduleProfessorFragment extends Fragment {
                             for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
                                 if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)){
                                     myScheduleSnapshots.add(scheduleSnap);
+                                    mySchedules.add(scheduleSnap.getValue(Schedule.class));
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         }

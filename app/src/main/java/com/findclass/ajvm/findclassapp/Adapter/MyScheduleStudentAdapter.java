@@ -6,8 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.findclass.ajvm.findclassapp.Model.Schedule;
 import com.findclass.ajvm.findclassapp.Model.ScheduleObject;
 import com.findclass.ajvm.findclassapp.R;
 
@@ -20,9 +22,15 @@ import java.util.Locale;
 
 public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStudentAdapter.MyViewHolder> {
     private List<ScheduleObject> mySchedules;
+    private List<Schedule> schedules;
 
     public MyScheduleStudentAdapter(List<ScheduleObject> mySchedules) {
         this.mySchedules = mySchedules;
+    }
+
+    public MyScheduleStudentAdapter(List<ScheduleObject> mySchedules, List<Schedule> schedules) {
+        this.mySchedules = mySchedules;
+        this.schedules = schedules;
     }
 
     @NonNull
@@ -36,6 +44,7 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ScheduleObject schedule = mySchedules.get(position);
+        Schedule schedule1 = schedules.get(position);
 
         Log.e("DEBUG","Student Adapter");
 
@@ -54,6 +63,9 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
         holder.professorName.setText(schedule.getProfessor().getName());
         holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
         holder.time.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
+        if (schedule1.getCancel() == 1) {
+            holder.cancel.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
@@ -63,6 +75,7 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         TextView subjectName, subjectLevel, professorName, date, time;
+        LinearLayout cancel;
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -71,6 +84,7 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
             professorName = itemView.findViewById(R.id.professorNameTextView);
             date = itemView.findViewById(R.id.dateTextView);
             time = itemView.findViewById(R.id.timeTextView);
+            cancel = itemView.findViewById(R.id.cancelLinearLayout);
         }
     }
 }

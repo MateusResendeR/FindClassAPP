@@ -39,6 +39,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     private User professor;
     private Subject subject;
     private ScheduleObject schedule;
+    private int cancel = 0;
     private DatabaseReference userRef;
     private DatabaseReference availabilityRef;
     private DatabaseReference scheduleRef;
@@ -111,6 +112,31 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
         availabilityRef.removeEventListener(valueEventListenerD);
     }
 
+    public void retrieveCancel(final String schedule_id){
+
+        scheduleRef.child(userP.getId())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                    for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
+                                        if(scheduleSnap.getKey().equals(schedule_id)){
+                                            cancel = scheduleSnap.getValue(Schedule.class).getCancel();
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        }
+                );
+    }
+
     public void getProfessor(){
 
         valueEventListenerP = userRef.addValueEventListener(new ValueEventListener() {
@@ -119,6 +145,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
                     if(data.getValue(User.class).getId().equals(professor.getId())){
                         userP = data.getValue(User.class);
+                        retrieveCancel(schedule.getId());
                     }
                 }
             }
@@ -197,7 +224,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             String today = myFormat.format(CalendarDay.today().getDate());
             long diff = (myFormat.parse(MyDateString).getTime()) - (myFormat.parse(today).getTime());
             long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            if (days >= 2) {
+            if (days >= 2 && cancel == 0) {
                 scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("cancel").setValue(1);
                 availabilityRef.child(userP.getId()).child("dateTimes").child(dateTime).child("status").setValue("não");
                 Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
@@ -223,7 +250,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        if(date.before(date2)){
+        if(date.before(date2) || cancel == 1){
             scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
             Intent intent = new Intent(getBaseContext(), RatingProfessorActivity.class);
             intent.putExtra("user", professor);

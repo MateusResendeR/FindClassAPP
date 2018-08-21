@@ -45,6 +45,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
     private DatabaseReference rootRef;
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
+    private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private ProgressDialog progress;
 
 
@@ -65,7 +66,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
@@ -107,6 +108,8 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
                                     for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
                                         if (scheduleSnap.child("finish").getValue(Integer.class).equals(1)){
                                             myScheduleSnapshots.add(scheduleSnap);
+                                            mySchedules.add(scheduleSnap.getValue(Schedule.class));
+                                            adapter.notifyDataSetChanged();
                                         }
                                     }
                                 }
