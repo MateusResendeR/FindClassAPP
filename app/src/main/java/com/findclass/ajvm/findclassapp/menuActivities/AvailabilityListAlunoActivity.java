@@ -356,55 +356,52 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                     td.setDate_time(dt);
 
                     td.setDate_time_id(dado.getKey());
+                    if (dado.child("status").getValue(String.class).equals("não")){
+                        timeRef.addValueEventListener(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                            Time time = d.getValue(Time.class);
+                                            if (d.getKey().equals(dado.child("time_id").getValue())) {
+                                                td.setTime(time);
 
-                    timeRef.addValueEventListener(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                        Time time = d.getValue(Time.class);
-                                        if (d.getKey().equals(dado.child("time_id").getValue())) {
-                                            td.setTime(time);
-
+                                            }adapter.notifyDataSetChanged();
                                         }adapter.notifyDataSetChanged();
-                                    }adapter.notifyDataSetChanged();
 
+                                    }
+
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        //
+                                    }
                                 }
-
-
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    //
-                                }
-                            }
-                    );
-                    dateRef.addValueEventListener(
-                            new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                        Date_Status ds = d.getValue(Date_Status.class);
-                                        if (d.getKey().equals(dado.child("date_id").getValue())) {
-                                            td.setDate_status(ds);
-                                            listTimeDates.add(td);
+                        );
+                        dateRef.addValueEventListener(
+                                new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                            Date_Status ds = d.getValue(Date_Status.class);
+                                            if (d.getKey().equals(dado.child("date_id").getValue())) {
+                                                td.setDate_status(ds);
+                                                listTimeDates.add(td);
+                                                adapter.notifyDataSetChanged();
+                                            }adapter.notifyDataSetChanged();
                                         }adapter.notifyDataSetChanged();
-                                    }adapter.notifyDataSetChanged();
-                                }
+                                    }
 
 
-                                @Override
-                                public void onCancelled(DatabaseError databaseError) {
-                                    //
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+                                        //
+                                    }
                                 }
-                            }
-                    );
-                    if (dado.child("status").getValue().toString().equals("sim")){
-                        listTimeDates.remove(td);
+                        );
                     }
-                    adapter.notifyDataSetChanged();
+
                 }
-
-
 
             }
 

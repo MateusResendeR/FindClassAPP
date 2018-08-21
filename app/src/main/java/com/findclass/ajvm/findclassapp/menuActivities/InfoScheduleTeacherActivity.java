@@ -24,18 +24,14 @@ import com.prolificinteractive.materialcalendarview.CalendarDay;
 
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
-
-public class InfoScheduleStudentActivity extends AppCompatActivity {
+public class InfoScheduleTeacherActivity extends AppCompatActivity {
+    private User student;
     private User professor;
     private Subject subject;
     private ScheduleObject schedule;
@@ -44,22 +40,23 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     private DatabaseReference scheduleRef;
     private User userP;
     private User userS;
-    private Date date;
+    private Date_Status date;
     private String dateTime;
-    private ValueEventListener valueEventListenerP;
-    private ValueEventListener valueEventListenerS;
+    private int cancel = 0;
+    private Date realDate;
     private TextView textViewSubject;
     private TextView textViewLevel;
-    private TextView textViewProfessor;
+    private TextView textViewAluno;
     private TextView textViewDate;
     private TextView textViewTime;
-    private Date_Status dateStatus;
+    private ValueEventListener valueEventListenerP;
+    private ValueEventListener valueEventListenerS;
     private ValueEventListener valueEventListenerD;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_info_scedule_student);
+        setContentView(R.layout.activity_info_scedule_teacher);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         availabilityRef = FirebaseDatabase.getInstance().getReference().child("availability");
@@ -68,27 +65,27 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
 
         textViewSubject = findViewById(R.id.infoSubjectNameTextView);
         textViewLevel = findViewById(R.id.infoSubjectLevelTextView);
-        textViewProfessor = findViewById(R.id.infoProfessorNameTextView);
+        textViewAluno = findViewById(R.id.infoAlunoNameTextView);
         textViewDate = findViewById(R.id.infoDateTextView);
         textViewTime = findViewById(R.id.infoTimeTextView);
-
 
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             schedule = (ScheduleObject)bundle.getSerializable("schedule");
             String dateString = schedule.getDate().getDate();
             SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-            date = new Date();
+            realDate = new Date();
             try {
-                date = sdf.parse(dateString);
+                realDate = sdf.parse(dateString);
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            student = schedule.getStudent();
             professor = schedule.getProfessor();
             subject = schedule.getSubject();
-            textViewDate.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
-            textViewProfessor.setText(professor.getName());
+            textViewDate.setText(dateFormat.format(realDate)+" ("+schedule.getTime().getDay()+")");
+            textViewAluno.setText(student.getName());
             textViewSubject.setText(subject.getName());
             textViewLevel.setText(subject.getLevel());
             textViewTime.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
@@ -111,6 +108,31 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
         availabilityRef.removeEventListener(valueEventListenerD);
     }
 
+    public void retrieveCancel(final String schedule_id){
+
+        scheduleRef.child(userP.getId())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                for (DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                    for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
+                                        if(scheduleSnap.getKey().equals(schedule_id)){
+                                            cancel = scheduleSnap.getValue(Schedule.class).getCancel();
+                                        }
+                                    }
+                                }
+
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        }
+                );
+    }
+
     public void getProfessor(){
 
         valueEventListenerP = userRef.addValueEventListener(new ValueEventListener() {
@@ -119,6 +141,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
                     if(data.getValue(User.class).getId().equals(professor.getId())){
                         userP = data.getValue(User.class);
+                        retrieveCancel(schedule.getId());
                     }
                 }
             }
@@ -156,7 +179,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data: dataSnapshot.child(userP.getId()).child("dates").getChildren()){
                     if(data.child("date").getValue(String.class).equals(schedule.getDate().getDate())){
-                        dateStatus = data.getValue(Date_Status.class);
+                        date = data.getValue(Date_Status.class);
                     }
                 }
             }
@@ -172,35 +195,35 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     public void getDateTimeId(){
         scheduleRef.child(userP.getId()).child(userS.getId())
                 .addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot data: dataSnapshot.getChildren()){
-                    if(data.getKey().equals(schedule.getId())){
-                        dateTime = data.getValue(Schedule.class).getDatetime_id();
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for(DataSnapshot data: dataSnapshot.getChildren()){
+                            if(data.getKey().equals(schedule.getId())){
+                                dateTime = data.getValue(Schedule.class).getDatetime_id();
+                            }
+                        }
                     }
-                }
-            }
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-            }
-        });
+                    }
+                });
     }
 
-    public void cancel(View view){
+    public void cancelTeacher(View view){
         try {
             DateFormat myFormat = new SimpleDateFormat("dd MM yyyy");
             SimpleDateFormat oldFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-            Date MyDate = oldFormat.parse(dateStatus.getDate());
+            Date MyDate = oldFormat.parse(date.getDate());
             String MyDateString = myFormat.format(MyDate);
             String today = myFormat.format(CalendarDay.today().getDate());
             long diff = (myFormat.parse(MyDateString).getTime()) - (myFormat.parse(today).getTime());
             long days = TimeUnit.DAYS.convert(diff, TimeUnit.MILLISECONDS);
-            if (days >= 2) {
+            if (days >= 2 && cancel == 0) {
                 scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("cancel").setValue(1);
                 availabilityRef.child(userP.getId()).child("dateTimes").child(dateTime).child("status").setValue("não");
-                Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+                Intent intent = new Intent(getBaseContext(), MenuProfessorActivity.class);
                 startActivity(intent);
             } else {
                 throw new CanNotCancelException();
@@ -216,24 +239,9 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     }
 
     public void finish(View view){
-        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-        Date date2 = new Date();
-        try {
-            date2 = sdf.parse(String.valueOf(date2));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        if(date.before(date2)){
-            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
-            Intent intent = new Intent(getBaseContext(), RatingProfessorActivity.class);
-            intent.putExtra("user", professor);
-            intent.putExtra("subject", subject);
-            intent.putExtra("schedule", schedule);
-            startActivity(intent);
-        }else {
-            Toast.makeText(this, "Aula ainda não foi realizada!", Toast.LENGTH_LONG).show();
-        }
-
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
+        Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+        startActivity(intent);
     }
 
 

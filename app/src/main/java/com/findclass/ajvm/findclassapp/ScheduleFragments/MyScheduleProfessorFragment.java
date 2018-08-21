@@ -2,6 +2,7 @@ package com.findclass.ajvm.findclassapp.ScheduleFragments;
 
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
+import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Date_Time;
 import com.findclass.ajvm.findclassapp.Model.Schedule;
@@ -20,6 +23,7 @@ import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.menuActivities.InfoScheduleTeacherActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -40,6 +44,7 @@ public class MyScheduleProfessorFragment extends Fragment {
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
     private ProgressDialog progress;
+    private Schedule schedule;
 
     public MyScheduleProfessorFragment() {
         // Required empty public constructor
@@ -68,6 +73,35 @@ public class MyScheduleProfessorFragment extends Fragment {
         recyclerViewMyScheduleList.setLayoutManager(layoutManager);
         recyclerViewMyScheduleList.setHasFixedSize(true);
         recyclerViewMyScheduleList.setAdapter(adapter);
+
+        recyclerViewMyScheduleList.addOnItemTouchListener(
+                new RecyclerItemClickListener(
+                        getActivity(),
+                        recyclerViewMyScheduleList,
+                        new RecyclerItemClickListener.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(View view, int position) {
+                                    Intent intent = new Intent(getContext(), InfoScheduleTeacherActivity.class);
+
+                                    Bundle bundle = new Bundle();
+                                    bundle.putSerializable("schedule", myScheduleObjects.get(position));
+
+                                    intent.putExtras(bundle);
+                                    startActivity(intent);
+                            }
+
+                            @Override
+                            public void onLongItemClick(View view, int position) {
+                                //
+                            }
+
+                            @Override
+                            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                                //
+                            }
+                        }
+                )
+        );
 
         return view;
     }

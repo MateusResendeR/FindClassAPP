@@ -1,81 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:padding="8dp">
+
+<LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="100dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
-    <LinearLayout
-        android:id="@+id/constraintLayout"
+    <TextView
+        android:id="@+id/textView16"
         android:layout_width="match_parent"
-        android:layout_height="95dp"
-        android:orientation="vertical"
-        app:layout_constraintBottom_toBottomOf="@+id/timeEndTimeTextView"
-        app:layout_constraintTop_toBottomOf="@+id/timeEndTimeTextView">
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Horário inicial"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/timeStartTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="StartTime"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/timeEndTimeTextView"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+    <TextView
+        android:id="@+id/timeStartTimeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="StartTime" />
+</LinearLayout>
 
-        <TextView
-            android:id="@+id/timeEndTimeTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="EndTime"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/timePriceTextView"
-            app:layout_constraintTop_toBottomOf="@+id/timeStartTimeTextView"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_weight="1"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
-        <TextView
-            android:id="@+id/timePriceTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Price"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/timeDayTextView"
-            app:layout_constraintTop_toBottomOf="@+id/timeEndTimeTextView"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+    <TextView
+        android:id="@+id/textView17"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Horário final"
+        android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/timeDayTextView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Day"
-            android:textSize="17sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@+id/divider"
-            app:layout_constraintTop_toBottomOf="@+id/timePriceTextView"
-            tools:layout_conversion_absoluteHeight="23dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="79dp" />
+    <TextView
+        android:id="@+id/timeEndTimeTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="EndTime" />
+</LinearLayout>
 
-        <View
-            android:id="@+id/divider"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="?android:attr/listDivider"
-            android:visibility="visible"
-            tools:layout_conversion_absoluteHeight="1dp"
-            tools:layout_conversion_absoluteWidth="384dp"
-            tools:layout_editor_absoluteX="0dp"
-            tools:layout_editor_absoluteY="92dp" />
-    </LinearLayout>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dp">
 
+    <TextView
+        android:id="@+id/textView19"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Preço"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/timePriceTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Price" />
+</LinearLayout>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal"
+    android:padding="5dp">
+
+    <TextView
+        android:id="@+id/textView21"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Dia"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/timeDayTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:text="Day" />
+</LinearLayout>
+
+<View
+    android:id="@+id/divider4"
+    android:layout_width="match_parent"
+    android:layout_height="3dp"
+    android:layout_weight="3"
+    android:background="?android:attr/listDivider" />
 </LinearLayout>
