@@ -2,10 +2,6 @@ package com.findclass.ajvm.findclassapp.Model;
 
 import android.support.annotation.NonNull;
 
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-
-
 import java.io.Serializable;
 
 public class User implements Serializable,Comparable<User> {
@@ -13,12 +9,13 @@ public class User implements Serializable,Comparable<User> {
     private String name;
     private String surname;
     private String cpf;
-    private String telephone;
+    private String telephony;
     private String bithdate;
     private String professor;
     private String verified;
     private int score;
     private String id;
+    private Address address;
 
     public User() {
     }
@@ -30,7 +27,7 @@ public class User implements Serializable,Comparable<User> {
         this.name = name;
         this.surname = surname;
         this.cpf = cpf;
-        this.telephone = telephone;
+        this.telephony = telephone;
         this.bithdate = bithdate;
         if (professor==true){
             this.professor = "true";
@@ -40,91 +37,92 @@ public class User implements Serializable,Comparable<User> {
         this.verified = "false";
     }
 
-    public int getScore() {
-        return score;
-    }
-
-    public void setScore(int score) {
-        this.score = this.score + score;
-    }
-
-    public String getEmail(){
-        return this.email;
-    }
-
-    public String getName(){
-        return this.name;
-    }
-
-    public String getSurname(){
-        return this.surname;
-    }
-
-    public String getTelephony(){
-        return this.telephone;
-    }
-
-    public String getBirthdate(){
-        return this.bithdate;
-    }
-
-    public String getProfessor(){
-        return this.professor;
-    }
-
-    public String getVerified(){
-        return this.verified;
-    }
-
-    public String getCpf(){
-        return this.cpf;
-    }
-
-    public String getId() {
-        return this.id;
+    public String getEmail() {
+        return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
+    public String getName() {
+        return name;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getSurname() {
+        return surname;
     }
 
     public void setSurname(String surname) {
         this.surname = surname;
     }
 
+    public String getCpf() {
+        return cpf;
+    }
+
     public void setCpf(String cpf) {
         this.cpf = cpf;
     }
 
+    public String getTelephony() {
+        return telephony;
+    }
+
     public void setTelephone(String telephone) {
-        this.telephone = telephone;
+        this.telephony = telephone;
+    }
+
+    public String getBirthdate() {
+        return bithdate;
     }
 
     public void setBithdate(String bithdate) {
         this.bithdate = bithdate;
     }
 
+    public String getProfessor() {
+        return professor;
+    }
+
     public void setProfessor(String professor) {
         this.professor = professor;
+    }
+
+    public String getVerified() {
+        return verified;
     }
 
     public void setVerified(String verified) {
         this.verified = verified;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public String getId() {
+        return id;
+    }
+
     public void setId(String id) {
         this.id = id;
     }
 
-    public boolean isNotNull(){
-        if(this.getName() == null){
-            return false;
-        }
-        return true;
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public void setUser(User user){

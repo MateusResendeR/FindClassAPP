@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -193,16 +194,22 @@ public class SignInActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if(auth.getCurrentUser() != null) {
                             if(dataSnapshot.hasChild(auth.getCurrentUser().getUid().toString())){
-                                if((dataSnapshot.child(auth.getCurrentUser().getUid()).child("professor").getValue(String.class).toString()).equals("true")){
-                                    startActivity(new Intent(SignInActivity.this,MenuProfessorActivity.class));
-                                    Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
-                                            Toast.LENGTH_LONG).show();
-                                    finish();
-                                }else {
-                                    startActivity(new Intent(SignInActivity.this,MenuAlunoActivity.class));
-                                    Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
-                                            Toast.LENGTH_LONG).show();
-                                    finish();
+                                Log.e("DEBUG",String.valueOf(dataSnapshot.child(auth.getCurrentUser().getUid().toString()).hasChild("address")));
+                                if(dataSnapshot.child(auth.getCurrentUser().getUid().toString()).hasChild("address")){
+                                    if((dataSnapshot.child(auth.getCurrentUser().getUid()).child("professor").getValue(String.class).toString()).equals("true")){
+                                        startActivity(new Intent(SignInActivity.this,MenuProfessorActivity.class));
+                                        Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
+                                                Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }else {
+                                        startActivity(new Intent(SignInActivity.this,MenuAlunoActivity.class));
+                                        Toast.makeText(SignInActivity.this,"Bem-vindo! "+auth.getCurrentUser().getEmail(),
+                                                Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                }
+                                else {
+                                    startActivity(new Intent(SignInActivity.this,SignUpStep3Activity.class));
                                 }
 
                             }else {

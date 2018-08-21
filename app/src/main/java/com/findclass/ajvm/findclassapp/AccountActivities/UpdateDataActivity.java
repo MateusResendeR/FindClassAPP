@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
+import com.findclass.ajvm.findclassapp.Model.Address;
+import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
@@ -21,41 +23,54 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
+
 
 public class UpdateDataActivity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private DatabaseReference db;
+    private DatabaseReference usersRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         auth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_update_data);
 
-        db.child("users").addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                try {
-                    String name = dataSnapshot.child(auth.getCurrentUser().getUid()).child("name").getValue(String.class);
-                    String surname = dataSnapshot.child(auth.getCurrentUser().getUid()).child("surname").getValue(String.class);
-                    String phone = dataSnapshot.child(auth.getCurrentUser().getUid()).child("telephony").getValue(String.class);
-                    ((TextView) findViewById(R.id.nameEditText)).setText(name);
-                    ((TextView) findViewById(R.id.surnameEditText)).setText(surname);
-                    ((TextView) findViewById(R.id.phoneEditText)).setText(phone);
-                }catch (Exception e){
-                    Toast.makeText(UpdateDataActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
+        usersRef
+                .child(auth.getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(
+                        new ValueEventListener() {
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                try {
+                                    User user = dataSnapshot.getValue(User.class);
+                                    Address userAddress = user.getAddress();
 
-            }
+                                    ((TextView) findViewById(R.id.nameEditText)).setText(user.getName());
+                                    ((TextView) findViewById(R.id.surnameEditText)).setText(user.getSurname());
+                                    ((TextView) findViewById(R.id.phoneEditText)).setText(user.getTelephony());
 
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
+                                    ((TextView) findViewById(R.id.cepEditText)).setText(userAddress.getCep());
+                                    ((TextView) findViewById(R.id.stateEditText)).setText(userAddress.getState());
+                                    ((TextView) findViewById(R.id.cityEditText)).setText(userAddress.getCity());
+                                    ((TextView) findViewById(R.id.districtEditText)).setText(userAddress.getDistrict());
+                                    ((TextView) findViewById(R.id.addressEditText)).setText(userAddress.getAddress());
+                                    ((TextView) findViewById(R.id.numberEditText)).setText(String.valueOf(userAddress.getNumber()));
+                                    ((TextView) findViewById(R.id.complementEditText)).setText(userAddress.getComplement());
 
-            }
-        });
+                                }catch (Exception e){
+                                    Toast.makeText(getBaseContext(),e.getMessage(),Toast.LENGTH_LONG).show();
+                                }
+                            }
 
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+                                //
+                            }
+                        }
+                );
 
     }
 
@@ -63,19 +78,57 @@ public class UpdateDataActivity extends AppCompatActivity {
         EditText name = findViewById(R.id.nameEditText);
         EditText surname = findViewById(R.id.surnameEditText);
         EditText phone = findViewById(R.id.phoneEditText);
+
+        EditText cep = findViewById(R.id.cepEditText);
+        EditText state = findViewById(R.id.stateEditText);
+        EditText city = findViewById(R.id.cityEditText);
+        EditText district = findViewById(R.id.districtEditText);
+        EditText address = findViewById(R.id.addressEditText);
+        EditText number = findViewById(R.id.numberEditText);
+        EditText complement = findViewById(R.id.complementEditText);
+
+        ArrayList<EditText> editTexts = new ArrayList<>();
+
+        editTexts.add(name);
+        editTexts.add(surname);
+        editTexts.add(phone);
+
+        editTexts.add(cep);
+        editTexts.add(state);
+        editTexts.add(city);
+        editTexts.add(district);
+        editTexts.add(address);
+        editTexts.add(number);
+
         try{
-            if (thereAreEmptyFields(name, surname, phone)) {
+            if (thereAreEmptyFields(editTexts)) {
                 throw new EmptyFieldException();
             } else if (phone.getText().length() < 14) {
                 throw new PhoneLenghtException();
             } else {
-                db.child("users").child(auth.getCurrentUser().getUid()).child("name").setValue(name.getText().toString());
-                db.child("users").child(auth.getCurrentUser().getUid()).child("surname").setValue(surname.getText().toString());
-                db.child("users").child(auth.getCurrentUser().getUid()).child("telephony").setValue(phone.getText().toString());
+                DatabaseReference thisUserRef = usersRef.child(auth.getCurrentUser().getUid());
+
+                thisUserRef.child("name").setValue(name.getText().toString());
+                thisUserRef.child("surname").setValue(surname.getText().toString());
+                thisUserRef.child("telephony").setValue(phone.getText().toString());
+
+                Address thisUserAddress = new Address(
+                        cep.getText().toString(),
+                        state.getText().toString(),
+                        city.getText().toString(),
+                        district.getText().toString(),
+                        address.getText().toString(),
+                        Integer.valueOf(number.getText().toString()),
+                        complement.getText().toString()
+                );
+
+                DatabaseReference thisUserAddressRef = thisUserRef.child("address");
+
+                thisUserAddressRef.setValue(thisUserAddress);
 
                 Toast.makeText(this, "Alteração de dados realizada com sucesso.", Toast.LENGTH_SHORT).show();
 
-                db.child("users").addValueEventListener(new ValueEventListener() {
+                usersRef.addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         try {
@@ -99,17 +152,18 @@ public class UpdateDataActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         } catch (PhoneLenghtException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+        } catch (Exception e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
         }
 
     }
 
-    private boolean thereAreEmptyFields(EditText name, EditText surname, EditText phone) {
-        if (TextUtils.isEmpty(name.getText()) || TextUtils.isEmpty(surname.getText()) ||
-                TextUtils.isEmpty(phone.getText())) {
-            return true;
-        } else {
-            return false;
+    private boolean thereAreEmptyFields(ArrayList<EditText> editTexts) {
+        for (EditText editText : editTexts) {
+            if (TextUtils.isEmpty(editText.getText())) {
+                return true;
+            }
         }
+        return false;
     }
-
 }
