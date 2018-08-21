@@ -8,96 +8,101 @@
     tools:layout_editor_absoluteY="81dp">
 
 
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/googleButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="Google"
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:gravity="center_vertical|center_horizontal"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/orTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:text="Ou"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/googleButton" />
+        <com.google.android.gms.common.SignInButton
+            android:id="@+id/googleButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:foregroundGravity="center_horizontal"
+            android:text="Google"
+            tools:layout_editor_absoluteX="98dp"
+            tools:layout_editor_absoluteY="27dp" />
 
-    <EditText
-        android:id="@+id/emailEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:ems="10"
-        android:hint="E-mail"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/orTextView" />
+        <TextView
+            android:id="@+id/orTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="Ou"
+            tools:layout_editor_absoluteX="183dp"
+            tools:layout_editor_absoluteY="93dp" />
 
-    <EditText
-        android:id="@+id/passwordEditText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:ems="10"
-        android:hint="Senha"
-        android:inputType="textPassword"
-        app:layout_constraintStart_toStartOf="@+id/emailEditText"
-        app:layout_constraintTop_toBottomOf="@+id/emailEditText" />
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:ems="15"
+            android:hint="E-mail"
+            android:inputType="textPersonName"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="130dp" />
 
-    <TextView
-        android:id="@+id/forgotPasswordTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="9dp"
-        android:clickable="true"
-        android:text="Esqueci minha senha"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordEditText" />
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:ems="15"
+            android:hint="Senha"
+            android:inputType="textPassword"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="185dp" />
 
-    <Button
-        android:id="@+id/signinButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="21dp"
-        android:layout_marginStart="21dp"
-        android:layout_marginTop="7dp"
-        android:onClick="signIn"
-        android:text="Entrar"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"
-        app:layout_constraintStart_toStartOf="@+id/forgotPasswordTextView"
-        app:layout_constraintTop_toBottomOf="@+id/forgotPasswordTextView" />
+        <TextView
+            android:id="@+id/forgotPasswordTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:clickable="true"
+            android:text="Esqueci minha senha"
+            android:textAllCaps="false"
+            tools:layout_editor_absoluteX="32dp"
+            tools:layout_editor_absoluteY="233dp" />
 
-    <TextView
-        android:id="@+id/notUserYetTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="11dp"
-        android:text="Ainda não é nosso usuário?"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signinButton" />
+        <Button
+            android:id="@+id/signinButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:onClick="signIn"
+            android:text="Entrar"
+            android:textColor="@android:color/background_light"
+            android:theme="@style/button"
+            tools:layout_editor_absoluteX="122dp"
+            tools:layout_editor_absoluteY="271dp" />
 
-    <Button
-        android:id="@+id/signUpButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="26dp"
-        android:layout_marginStart="26dp"
-        android:layout_marginTop="16dp"
-        android:onClick="signUpIntent"
-        android:text="Cadastre-se"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"
-        app:layout_constraintStart_toStartOf="@+id/notUserYetTextView"
-        app:layout_constraintTop_toBottomOf="@+id/notUserYetTextView" />
+        <TextView
+            android:id="@+id/notUserYetTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Ainda não é nosso usuário?"
+            tools:layout_editor_absoluteX="108dp"
+            tools:layout_editor_absoluteY="385dp" />
+
+        <Button
+            android:id="@+id/signUpButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="signUpIntent"
+            android:text="Cadastre-se"
+            android:textColor="@android:color/background_light"
+            android:theme="@style/button"
+            tools:layout_editor_absoluteX="122dp"
+            tools:layout_editor_absoluteY="420dp" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
