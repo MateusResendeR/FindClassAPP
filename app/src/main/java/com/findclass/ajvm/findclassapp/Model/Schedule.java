@@ -8,6 +8,7 @@ public class Schedule implements Serializable {
     String subject_id;
     String student_id;
     int finish;
+    int cancel;
     String id;
     String rating;
 
@@ -20,10 +21,17 @@ public class Schedule implements Serializable {
         this.finish = 0;
         this.id = id;
         this.rating = "0";
+        this.cancel = 0;
     }
 
     public Schedule() {
     }
+
+    public int getCancel() {
+        return cancel;
+    }
+
+    public void setCancel(int cancel) { this.cancel = cancel; }
 
     public String getRating() {
         return rating;
