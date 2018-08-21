@@ -90,6 +90,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
                                     intent.putExtra("user", myScheduleObjects.get(position).getProfessor());
                                     intent.putExtra("subject", myScheduleObjects.get(position).getSubject());
                                     intent.putExtra("schedule", myScheduleObjects.get(position));
+                                    intent.putExtra("schedule1", mySchedules.get(position));
                                     startActivity(intent);
                                 } else {
                                     Toast.makeText(getActivity(), "Aula já avaliada!", Toast.LENGTH_LONG).show();
@@ -301,6 +302,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
 
     public void searchSchedule(String text) {
         List<ScheduleObject> listScheduleSearch = new ArrayList<>();
+        List<Schedule> listRealScheduleSearch = new ArrayList<>();
         for (ScheduleObject scheduleObject : myScheduleObjects) {
             String subject = scheduleObject.getSubject().getName().toLowerCase();
             subject = subject.replace('á', 'a');
@@ -317,7 +319,16 @@ public class MyScheduleFinishStudentFragment extends Fragment {
 
             }
         }
-        adapter = new MyScheduleStudentAdapter(listScheduleSearch);
+        for (ScheduleObject scheduleObject : listScheduleSearch){
+            String subject_id = scheduleObject.getId();
+            for (Schedule schedule : mySchedules) {
+                if (subject_id.equals(schedule.getId())) {
+                    listRealScheduleSearch.add(schedule);
+                    break;
+                }
+            }
+        }
+        adapter = new MyScheduleStudentAdapter(listScheduleSearch, listRealScheduleSearch);
         recyclerViewMyScheduleList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
