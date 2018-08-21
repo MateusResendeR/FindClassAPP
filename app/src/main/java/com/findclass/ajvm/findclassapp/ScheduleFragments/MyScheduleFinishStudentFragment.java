@@ -295,7 +295,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
                 );
     }
     public void reloadList() {
-        adapter = new MyScheduleStudentAdapter(myScheduleObjects);
+        adapter = new MyScheduleStudentAdapter(myScheduleObjects,mySchedules);
         recyclerViewMyScheduleList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
