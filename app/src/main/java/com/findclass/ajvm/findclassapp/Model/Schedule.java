@@ -31,9 +31,7 @@ public class Schedule implements Serializable {
         return cancel;
     }
 
-    public void setCancel(int cancel) {
-        this.cancel = cancel;
-    }
+    public void setCancel(int cancel) { this.cancel = cancel; }
 
     public String getRating() {
         return rating;

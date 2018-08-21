@@ -70,7 +70,7 @@
                 android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity" />
         </activity>
         <activity
-            android:name=".menuActivities.InfoSceduleTeacherActivity"
+            android:name=".menuActivities.InfoScheduleTeacherActivity"
             android:label="@string/title_activity_info_scedule_teacher"
             android:parentActivityName=".menuActivities.MenuProfessorActivity"
             android:theme="@style/AppTheme.NoActionBar">

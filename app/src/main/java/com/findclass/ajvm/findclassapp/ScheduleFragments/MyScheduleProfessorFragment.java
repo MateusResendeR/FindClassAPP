@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
@@ -24,7 +23,7 @@ import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.InfoSceduleTeacherActivity;
+import com.findclass.ajvm.findclassapp.menuActivities.InfoScheduleTeacherActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -82,7 +81,7 @@ public class MyScheduleProfessorFragment extends Fragment {
                         new RecyclerItemClickListener.OnItemClickListener() {
                             @Override
                             public void onItemClick(View view, int position) {
-                                    Intent intent = new Intent(getContext(), InfoSceduleTeacherActivity.class);
+                                    Intent intent = new Intent(getContext(), InfoScheduleTeacherActivity.class);
 
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("schedule", myScheduleObjects.get(position));
