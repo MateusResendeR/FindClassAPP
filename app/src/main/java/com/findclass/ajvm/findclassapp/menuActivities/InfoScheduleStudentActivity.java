@@ -252,11 +252,17 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
         }
         if(date.before(date2) || cancel == 1){
             scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
-            Intent intent = new Intent(getBaseContext(), RatingProfessorActivity.class);
-            intent.putExtra("user", professor);
-            intent.putExtra("subject", subject);
-            intent.putExtra("schedule", schedule);
-            startActivity(intent);
+            if(cancel == 0){
+                Intent intent = new Intent(getBaseContext(), RatingProfessorActivity.class);
+                intent.putExtra("user", professor);
+                intent.putExtra("subject", subject);
+                intent.putExtra("schedule", schedule);
+                startActivity(intent);
+            }else {
+                scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
+                Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+                startActivity(intent);
+            }
         }else {
             Toast.makeText(this, "Aula ainda não foi realizada!", Toast.LENGTH_LONG).show();
         }
