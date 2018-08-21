@@ -43,10 +43,11 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        ScheduleObject schedule = mySchedules.get(position);
-        Schedule schedule1 = schedules.get(position);
 
-        Log.e("DEBUG","Student Adapter");
+        ScheduleObject schedule = mySchedules.get(position);
+
+
+        Log.e("DEBUG", "Student Adapter");
 
         String dateString = schedule.getDate().getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
@@ -61,10 +62,15 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
         holder.subjectName.setText(schedule.getSubject().getName());
         holder.subjectLevel.setText(schedule.getSubject().getLevel());
         holder.professorName.setText(schedule.getProfessor().getName());
-        holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
-        holder.time.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
-        if (schedule1.getCancel() == 1) {
-            holder.cancel.setVisibility(View.VISIBLE);
+        holder.date.setText(dateFormat.format(date) + " (" + schedule.getTime().getDay() + ")");
+        holder.time.setText(schedule.getTime().getStartTime() + " - " + schedule.getTime().getEndTime());
+        try {
+            Schedule schedule1 = schedules.get(position);
+            if (schedule1.getCancel() == 1) {
+                holder.cancel.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 

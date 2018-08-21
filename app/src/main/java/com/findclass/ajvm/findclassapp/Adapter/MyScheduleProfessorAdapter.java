@@ -44,7 +44,6 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ScheduleObject schedule = mySchedules.get(position);
-        Schedule schedule1 = schedules.get(position);
 
         String dateString = schedule.getDate().getDate();
         SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
@@ -62,8 +61,13 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
         holder.studentName.setText(schedule.getStudent().getName());
         holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
         holder.time.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
-        if (schedule1.getCancel() == 1) {
-            holder.cancel.setVisibility(View.VISIBLE);
+        try {
+            Schedule schedule1 = schedules.get(position);
+            if (schedule1.getCancel() == 1) {
+                holder.cancel.setVisibility(View.VISIBLE);
+            }
+        } catch (Exception e){
+            e.printStackTrace();
         }
     }
 
