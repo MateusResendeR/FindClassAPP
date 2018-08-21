@@ -1,6 +1,8 @@
 package com.findclass.ajvm.findclassapp.Model;
 
-public class Address {
+import java.io.Serializable;
+
+public class Address implements Serializable{
     private String cep;
     private String state;
     private String city;
