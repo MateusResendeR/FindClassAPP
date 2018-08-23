@@ -43,7 +43,7 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     mAuth.getCurrentUser().sendEmailVerification();
-                                    Toast.makeText(SignUpActivity.this, "E-mail de confirmação enviado.", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignUpActivity.this, "E-mail de confirmação enviado.", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(getBaseContext(), SignUpStep2Activity.class);
                                     startActivity(intent);
                                 }else{
@@ -67,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity {
                 throw new EmptyFieldException();
             }
         }catch (EmptyFieldException e){
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 }

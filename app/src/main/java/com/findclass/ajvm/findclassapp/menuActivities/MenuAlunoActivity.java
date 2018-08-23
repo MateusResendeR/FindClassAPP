@@ -279,9 +279,9 @@ public class MenuAlunoActivity extends AppCompatActivity
             FirebaseAuth.getInstance().signOut();
         }catch (Exception e){
             String message = "Erro, você já está delogado";
-            Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,message,Toast.LENGTH_LONG).show();
         }
-        Toast.makeText(this, "Saiu!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Você foi deslogado!", Toast.LENGTH_LONG).show();
         startActivity(new Intent(MenuAlunoActivity.this,SignInActivity.class));
         finish();
     }

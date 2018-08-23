@@ -34,7 +34,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        Toast.makeText(this,"Conclua seu cadastro, por favor.",Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,"Conclua seu cadastro, por favor.",Toast.LENGTH_LONG).show();
 
         auth = FirebaseAuth.getInstance();
         db = FirebaseDatabase.getInstance().getReference();
@@ -79,16 +79,16 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
                 Intent intent = new Intent(this, SignUpStep3Activity.class);
                 startActivity(intent);
-                Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_LONG).show();
             }
         } catch (EmptyFieldException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (CPFLenghtException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (DateLenghtException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (PhoneLenghtException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 

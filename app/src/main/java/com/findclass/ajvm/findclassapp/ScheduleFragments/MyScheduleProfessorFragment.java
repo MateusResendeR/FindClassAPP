@@ -341,7 +341,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
             }
         }
         catch (Exception e){
-            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
     @Override
