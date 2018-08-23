@@ -37,6 +37,9 @@ public class SignUpStep3Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_SHORT).show();
+
         setContentView(R.layout.activity_sign_up_step3);
 
         finishButton = findViewById(R.id.buttonFinish);
@@ -114,6 +117,17 @@ public class SignUpStep3Activity extends AppCompatActivity {
         } catch (LenghtException e) {
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        try {
+            auth.signOut();
+        }catch (Exception e){
+            //Does not need any other action.
+        }
+        startActivity(new Intent(this,SignInActivity.class));
+        finish();
     }
 
     private boolean thereAreEmptyFields(ArrayList<EditText> editTexts) {
