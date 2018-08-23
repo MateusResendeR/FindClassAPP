@@ -18,8 +18,8 @@ public class MySubjectInfoActivity extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         subject = (Subject) data.getSerializable("subject");
 
-        Toast.makeText(this, subject.getId(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, subject.getName(), Toast.LENGTH_SHORT).show();
-        Toast.makeText(this, subject.getLevel(), Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, subject.getId(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, subject.getName(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, subject.getLevel(), Toast.LENGTH_LONG).show();
     }
 }
