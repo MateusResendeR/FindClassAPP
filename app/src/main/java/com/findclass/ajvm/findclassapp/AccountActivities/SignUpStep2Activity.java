@@ -127,7 +127,7 @@ public class SignUpStep2Activity extends AppCompatActivity {
         } catch (PhoneLenghtException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (ParseException e) {
-             Toast.makeText(this, "Data de nascimento invalida!", Toast.LENGTH_SHORT).show();
+             Toast.makeText(this, "Data de nascimento invalida!", Toast.LENGTH_LONG).show();
         } catch (MaxAgeException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (MinAgeException e) {

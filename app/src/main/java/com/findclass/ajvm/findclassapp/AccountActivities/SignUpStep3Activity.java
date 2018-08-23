@@ -38,7 +38,7 @@ public class SignUpStep3Activity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_LONG).show();
 
         setContentView(R.layout.activity_sign_up_step3);
 
