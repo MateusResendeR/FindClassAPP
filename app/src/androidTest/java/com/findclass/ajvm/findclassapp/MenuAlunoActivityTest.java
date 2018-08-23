@@ -1,6 +1,5 @@
 package com.findclass.ajvm.findclassapp;
 
-import android.support.test.espresso.Espresso;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -13,21 +12,16 @@ import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
-import org.hamcrest.core.IsInstanceOf;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.action.ViewActions.closeSoftKeyboard;
-import static android.support.test.espresso.action.ViewActions.replaceText;
-import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withClassName;
 import static android.support.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.is;
 
@@ -43,6 +37,50 @@ public class MenuAlunoActivityTest {
         Thread.sleep(1500);
         onView(withId(R.id.toolbar)).check(matches(isDisplayed()));
         onView(withId(R.id.menuPesquisa)).check(matches(isDisplayed()));
+    }
+
+    /*@Test
+    public void whenActivityIsLaunched_andClickAulasMarcadas_shouldShowClassesSchedule() throws InterruptedException {
+        Thread.sleep(1500);
+        ViewInteraction textView = onView(
+                allOf(withText("Aulas Marcadas"),
+                        childAtPosition(
+                                childAtPosition(
+                                        withId(R.id.viewpagertab),
+                                        0),
+                                0),
+                        isDisplayed()));
+        textView.perform(click());
+
+        onView(withId(R.id.recyclerViewMySchedule)).check(matches(isDisplayed()));
+    }*/
+
+    @Test
+    public void whenOpenMenuAluno_andClickMelhoresProfessores_shouldOpenProfessorRankingActivity() throws InterruptedException {
+        Thread.sleep(1500);
+        ViewInteraction appCompatImageButton = onView(
+                allOf(withContentDescription("Open navigation drawer"),
+                        childAtPosition(
+                                allOf(withId(R.id.toolbar),
+                                        childAtPosition(
+                                                withClassName(is("android.support.design.widget.AppBarLayout")),
+                                                0)),
+                                2),
+                        isDisplayed()));
+        appCompatImageButton.perform(click());
+
+        ViewInteraction navigationMenuItemView = onView(
+                allOf(childAtPosition(
+                        allOf(withId(R.id.design_navigation_view),
+                                childAtPosition(
+                                        withId(R.id.nav_view),
+                                        0)),
+                        1),
+                        isDisplayed()));
+        navigationMenuItemView.perform(click());
+
+        onView(withId(R.id.recyclerViewProfessorRanking)).check(matches(isDisplayed()));
+
     }
 
     @Test
@@ -65,13 +103,20 @@ public class MenuAlunoActivityTest {
                                 childAtPosition(
                                         withId(R.id.nav_view),
                                         0)),
-                        7),
+                        9),
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
         onView(withId(R.id.nameEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.surnameEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.phoneEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.cepEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.stateEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.cityEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.districtEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.addressEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.numberEditText)).check(matches(isDisplayed()));
+        onView(withId(R.id.complementEditText)).check(matches(isDisplayed()));
         onView(withId(R.id.finishUpdateData)).check(matches(isDisplayed()));
 
     }
@@ -96,11 +141,11 @@ public class MenuAlunoActivityTest {
                                 childAtPosition(
                                         withId(R.id.nav_view),
                                         0)),
-                        2),
+                        4),
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        onView(withId(R.id.recycleViewListaMedio)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerViewSubjectsOfLevel)).check(matches(isDisplayed()));
 
     }
 
@@ -124,11 +169,11 @@ public class MenuAlunoActivityTest {
                                 childAtPosition(
                                         withId(R.id.nav_view),
                                         0)),
-                        3),
+                        5),
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        onView(withId(R.id.recycleViewListaFundamental)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerViewSubjectsOfLevel)).check(matches(isDisplayed()));
 
     }
 
@@ -152,11 +197,11 @@ public class MenuAlunoActivityTest {
                                 childAtPosition(
                                         withId(R.id.nav_view),
                                         0)),
-                        4),
+                        6),
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        onView(withId(R.id.recycleViewListaVariados)).check(matches(isDisplayed()));
+        onView(withId(R.id.recyclerViewSubjectsOfLevel)).check(matches(isDisplayed()));
 
     }
 
