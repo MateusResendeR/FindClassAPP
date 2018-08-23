@@ -26,7 +26,6 @@ import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.menuActivities.InfoScheduleTeacherActivity;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -34,7 +33,6 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -329,7 +327,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            SimpleDateFormat sdf3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
             Date dataAtual = new Date();
             try {
                 dataAtual = sdf.parse(String.valueOf(dataAtual));
