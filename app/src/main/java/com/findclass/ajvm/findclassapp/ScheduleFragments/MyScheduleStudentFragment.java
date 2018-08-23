@@ -5,6 +5,8 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,8 +14,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleStudentAdapter;
+import com.findclass.ajvm.findclassapp.Exception.CanNotCancelException;
 import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Date_Time;
@@ -30,14 +34,22 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.prolificinteractive.materialcalendarview.CalendarDay;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyScheduleStudentFragment extends Fragment {
+public class MyScheduleStudentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerViewMyScheduleList;
     private MyScheduleStudentAdapter adapter;
     private DatabaseReference schedulesRef;
@@ -46,6 +58,7 @@ public class MyScheduleStudentFragment extends Fragment {
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
     private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private ProgressDialog progress;
+    private SwipeRefreshLayout mSwipeToRefresh;
 
     public MyScheduleStudentFragment() {
         // Required empty public constructor
@@ -71,6 +84,9 @@ public class MyScheduleStudentFragment extends Fragment {
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
         recyclerViewMyScheduleList.setHasFixedSize(true);
         recyclerViewMyScheduleList.setAdapter(adapter);
+
+        mSwipeToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_container);
+        mSwipeToRefresh.setOnRefreshListener(this);
         //clique
         recyclerViewMyScheduleList.addOnItemTouchListener(
                 new RecyclerItemClickListener(
@@ -278,10 +294,17 @@ public class MyScheduleStudentFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Time time = dataSnapshot.getValue(Time.class);
+                                finish(date,time,professor,student,schedule);
+                                if(schedule.getFinish()==1){
+                                    myScheduleObjects.clear();
+                                    retrieveMySchedules();
+                                }else{
+                                    ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId());
+                                    myScheduleObjects.add(scheduleObject);
+                                    adapter.notifyDataSetChanged();
 
-                                ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId());
-                                myScheduleObjects.add(scheduleObject);
-                                adapter.notifyDataSetChanged();
+                                }
+
                             }
 
                             @Override
@@ -290,6 +313,46 @@ public class MyScheduleStudentFragment extends Fragment {
                             }
                         }
                 );
+    }
+
+    public void finish(Date_Status date,Time time,User professor,User student, Schedule schedule){
+        try {
+            String dateString = date.getDate();
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            Date data = new Date();
+            try {
+                data = sdf.parse(dateString);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+            String oldData = dateFormat.format(data)+"-"+time.getEndTime();
+            SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yy-HH:mm");
+
+
+            Date dataTime = new Date();
+            try {
+                dataTime = sdf2.parse(oldData);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            SimpleDateFormat sdf3 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+            Date dataAtual = new Date();
+            try {
+                dataAtual = sdf.parse(String.valueOf(dataAtual));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (dataAtual.after(dataTime)) {
+                schedule.setFinish(1);
+                schedulesRef.child(professor.getId()).child(student.getId()).child(schedule.getId()).child("finish").setValue(1);
+
+
+            }
+        }
+        catch (Exception e){
+            Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void searchSchedule(String text) {
@@ -323,6 +386,11 @@ public class MyScheduleStudentFragment extends Fragment {
         adapter = new MyScheduleStudentAdapter(listScheduleSearch, listRealScheduleSearch);
         recyclerViewMyScheduleList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+    }
+    @Override
+    public void onRefresh() {
+        retrieveMySchedules();
+        mSwipeToRefresh.setRefreshing(false);
     }
 
 }
