@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -38,7 +39,7 @@ import java.util.ArrayList;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyScheduleFinishProfessorFragment extends Fragment {
+public class MyScheduleFinishProfessorFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerViewMyScheduleList;
     private MyScheduleProfessorAdapter adapter;
     private DatabaseReference schedulesRef;
@@ -47,6 +48,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
     private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private ProgressDialog progress;
+    private SwipeRefreshLayout mSwipeToRefresh;
 
 
     public MyScheduleFinishProfessorFragment() {
@@ -72,6 +74,8 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
         recyclerViewMyScheduleList.setHasFixedSize(true);
         recyclerViewMyScheduleList.setAdapter(adapter);
+        mSwipeToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_container);
+        mSwipeToRefresh.setOnRefreshListener(this);
 
 
         return view;
@@ -80,6 +84,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        myScheduleObjects.clear();
         retrieveMySchedules();
     }
 
@@ -237,7 +242,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
         datetimeRef
                 .child("times")
                 .child(date_time.getTime_id())
-                .addValueEventListener(
+                .addListenerForSingleValueEvent(
                         new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -254,4 +259,11 @@ public class MyScheduleFinishProfessorFragment extends Fragment {
                             }
                         }
                 );
-    }    }
+    }
+
+    @Override
+    public void onRefresh() {
+        retrieveMySchedules();
+        mSwipeToRefresh.setRefreshing(false);
+    }
+}
