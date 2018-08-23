@@ -1,13 +1,6 @@
 package com.findclass.ajvm.findclassapp.Model;
 
-import android.widget.Toast;
-
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class ScheduleObject implements Serializable {
     private User professor;
@@ -36,36 +29,6 @@ public class ScheduleObject implements Serializable {
         this.date =date;
         this.time = time;
     }
-
-    public Date dateTimeUnion(String dateString,String time){
-        Date data = new Date();
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
-            data = new Date();
-            try {
-                data = sdf.parse(dateString);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-            String oldData = dateFormat.format(data)+"-"+time;
-            SimpleDateFormat sdf2 = new SimpleDateFormat("dd/MM/yy-HH:mm");
-            Date dataTime = new Date();
-            try {
-                dataTime = sdf2.parse(oldData);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-
-
-        }
-        catch (Exception e){
-            e.getStackTrace();
-        }
-        return data;
-    }
-
-
 
     public User getProfessor() {
         return professor;
