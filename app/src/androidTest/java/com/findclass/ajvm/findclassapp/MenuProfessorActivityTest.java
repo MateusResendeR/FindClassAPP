@@ -87,7 +87,8 @@ public class MenuProfessorActivityTest {
                         isDisplayed()));
         navigationMenuItemView.perform(click());
 
-        onView(withId(R.id.fragment)).check(matches(isDisplayed()));
+        onView(withId(R.id.addButton)).check(matches(isDisplayed()));
+        onView(withId(R.id.updateButton)).check(matches(isDisplayed()));
 
     }
 
