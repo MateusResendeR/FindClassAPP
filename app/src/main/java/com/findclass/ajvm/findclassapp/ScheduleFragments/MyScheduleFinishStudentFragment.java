@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -42,7 +43,7 @@ import java.util.List;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class MyScheduleFinishStudentFragment extends Fragment {
+public class MyScheduleFinishStudentFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recyclerViewMyScheduleList;
     private MyScheduleStudentAdapter adapter;
     private DatabaseReference schedulesRef;
@@ -52,6 +53,7 @@ public class MyScheduleFinishStudentFragment extends Fragment {
     private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private ValueEventListener valueEventListener;
     private ProgressDialog progress;
+    private SwipeRefreshLayout mSwipeToRefresh;
 
 
     public MyScheduleFinishStudentFragment() {
@@ -77,6 +79,9 @@ public class MyScheduleFinishStudentFragment extends Fragment {
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
         recyclerViewMyScheduleList.setHasFixedSize(true);
         recyclerViewMyScheduleList.setAdapter(adapter);
+
+        mSwipeToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_container);
+        mSwipeToRefresh.setOnRefreshListener(this);
         //clique
         recyclerViewMyScheduleList.addOnItemTouchListener(
                 new RecyclerItemClickListener(
@@ -333,4 +338,9 @@ public class MyScheduleFinishStudentFragment extends Fragment {
         adapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void onRefresh() {
+        retrieveMySchedules();
+        mSwipeToRefresh.setRefreshing(false);
+    }
 }
