@@ -126,7 +126,7 @@ public class UpdateDataActivity extends AppCompatActivity {
 
                 thisUserAddressRef.setValue(thisUserAddress);
 
-                Toast.makeText(this, "Alteração de dados realizada com sucesso.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Dados alterados com sucesso.", Toast.LENGTH_LONG).show();
 
                 usersRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -138,7 +138,9 @@ public class UpdateDataActivity extends AppCompatActivity {
                                 startActivity(new Intent(UpdateDataActivity.this,MenuAlunoActivity.class));
                             }
                         }catch (Exception e){
-                            Toast.makeText(UpdateDataActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(UpdateDataActivity.this, "Problemas no sistema, você será deslogado.", Toast.LENGTH_LONG).show();
+                            auth.signOut();
+
                         }
 
                     }
@@ -149,11 +151,11 @@ public class UpdateDataActivity extends AppCompatActivity {
                 });
             }
         } catch (EmptyFieldException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (PhoneLenghtException e) {
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
 
     }

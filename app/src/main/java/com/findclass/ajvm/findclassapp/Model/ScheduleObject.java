@@ -30,7 +30,6 @@ public class ScheduleObject implements Serializable {
         this.time = time;
     }
 
-
     public User getProfessor() {
         return professor;
     }

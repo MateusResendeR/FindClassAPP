@@ -157,7 +157,7 @@ public class AddTimeActivity extends AppCompatActivity {
                                                 }
                                             }
                                         } catch (Exception e){
-                                            Toast.makeText(AddTimeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();;
+                                            Toast.makeText(AddTimeActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();;
                                         }
 
                                     }
@@ -171,16 +171,16 @@ public class AddTimeActivity extends AppCompatActivity {
 
                     Intent intent = new Intent(this, MyTimesActivity.class);
                     startActivity(intent);
-                    Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_LONG).show();
                 }
             } catch(EmptyFieldException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             } catch(FieldLenghtException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             } catch(TimeFurtherThanOtherException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             }catch(InvalidTimeException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
             } catch (Exception e){
                 e.printStackTrace();
             }

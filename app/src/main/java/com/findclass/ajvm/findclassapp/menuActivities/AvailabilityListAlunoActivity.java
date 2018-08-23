@@ -213,7 +213,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 //
 //                                startActivity(intent);
 
-                                //Toast.makeText(getBaseContext(),"FON",Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(getBaseContext(),"FON",Toast.LENGTH_LONG).show();
                             }
 
                             @Override
@@ -283,7 +283,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
             Log.i("paymentExample", "An invalid Payment or PayPalConfiguration was submitted. Please see the docs.");
             message = "Erro na API...";
         }
-        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+        Toast.makeText(this,message,Toast.LENGTH_LONG).show();
     }
 
     @Override
@@ -417,9 +417,9 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
             FirebaseAuth.getInstance().signOut();
         }catch (Exception e){
             String message = "Erro, você já está delogado";
-            Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,message,Toast.LENGTH_LONG).show();
         }
-        Toast.makeText(this, "Saiu!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Saiu!", Toast.LENGTH_LONG).show();
         startActivity(new Intent(AvailabilityListAlunoActivity.this,SignInActivity.class));
         finish();
     }

@@ -91,14 +91,14 @@ public class SignInActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
                     if(task.isSuccessful()){
-                        Toast.makeText(SignInActivity.this,"E-mail de redefinição de senha enviado.",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this,"E-mail de redefinição de senha enviado.",Toast.LENGTH_LONG).show();
                     }else{
-                        Toast.makeText(SignInActivity.this,"E-mail inválido!",Toast.LENGTH_SHORT).show();
+                        Toast.makeText(SignInActivity.this,"E-mail inválido!",Toast.LENGTH_LONG).show();
                     }
                 }
             });
         } catch (Exception e){
-            Toast.makeText(SignInActivity.this,"Campo de e-mail vazio.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(SignInActivity.this,"Campo de e-mail vazio.",Toast.LENGTH_LONG).show();
         }
 
     }
@@ -156,8 +156,8 @@ public class SignInActivity extends AppCompatActivity {
                                     }else{
                                         auth.getCurrentUser().sendEmailVerification();
                                         auth.signOut();
-                                        String message = "Verifique o e-mail, por favor";
-                                        Toast.makeText(SignInActivity.this, message, Toast.LENGTH_SHORT).show();
+                                        String message = "Verifique seu e-mail, por favor";
+                                        Toast.makeText(SignInActivity.this, message, Toast.LENGTH_LONG).show();
                                     }
                                 }else{
                                     String message;
@@ -172,13 +172,13 @@ public class SignInActivity extends AppCompatActivity {
                                     } catch (Exception e){
                                         message = "Erro";
                                     }
-                                    Toast.makeText(SignInActivity.this,message,Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignInActivity.this,message,Toast.LENGTH_LONG).show();
                                 }
                             }
                         });
             }
         } catch (EmptyFieldException e){
-            Toast.makeText(this,e.getMessage(),Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
 
@@ -237,7 +237,7 @@ public class SignInActivity extends AppCompatActivity {
                 GoogleSignInAccount account = task.getResult(ApiException.class);
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                Toast.makeText(this,"Falha no Login!",Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"Falha ao realizar Login com o Google!",Toast.LENGTH_LONG).show();
             }
         }
     }
@@ -251,7 +251,7 @@ public class SignInActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             updateIntent();
                         } else {
-                            Toast.makeText(SignInActivity.this,"Erro durante Login",Toast.LENGTH_LONG)
+                            Toast.makeText(SignInActivity.this,"Falha ao realizar Login com o Google!",Toast.LENGTH_LONG)
                                     .show();
                         }
                     }
@@ -262,7 +262,7 @@ public class SignInActivity extends AppCompatActivity {
         if (auth.getCurrentUser() != null){
             checkUserInDatabase();
         } else {
-            Toast.makeText(this,"Erro.",Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,"Erro.",Toast.LENGTH_LONG).show();
         }
     }
 
