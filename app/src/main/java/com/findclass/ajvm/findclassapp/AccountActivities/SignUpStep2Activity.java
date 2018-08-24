@@ -12,12 +12,21 @@ import android.widget.Toast;
 import com.findclass.ajvm.findclassapp.Exception.CPFLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.DateLenghtException;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
+import com.findclass.ajvm.findclassapp.Exception.MaxAgeException;
+import com.findclass.ajvm.findclassapp.Exception.MinAgeException;
 import com.findclass.ajvm.findclassapp.Exception.PhoneLenghtException;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 public class SignUpStep2Activity extends AppCompatActivity {
     private FirebaseAuth auth;
@@ -59,8 +68,18 @@ public class SignUpStep2Activity extends AppCompatActivity {
         EditText phone = findViewById(R.id.phoneEditText);
         CheckBox professor = findViewById(R.id.professorCheckBox);
 
+        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+        df.setLenient(false);
+
         try {
-            if (thereAreEmptyFields(name, surname, cpf, birthdate, phone)) {
+            ArrayList<EditText> editTexts = new ArrayList<>();
+            editTexts.add(name);
+            editTexts.add(surname);
+            editTexts.add(cpf);
+            editTexts.add(birthdate);
+            editTexts.add(phone);
+
+            if (thereAreEmptyFields(editTexts)) {
                 throw new EmptyFieldException();
             } else if (cpf.getText().length() < 14) {
                 throw new CPFLenghtException();
@@ -69,6 +88,25 @@ public class SignUpStep2Activity extends AppCompatActivity {
             } else if (phone.getText().length() < 14) {
                 throw new PhoneLenghtException();
             } else {
+                String birthdateTest = birthdate.getText().toString();
+                Date thisBirthdate = df.parse(birthdateTest);
+
+                Calendar calendar = Calendar.getInstance();
+
+                calendar.add(Calendar.YEAR,-100);
+                Date minimunDate = calendar.getTime();
+
+                calendar.add(Calendar.YEAR,90);
+                Date maximumDate = calendar.getTime();
+
+                if(thisBirthdate.after(maximumDate)){
+                    throw new MinAgeException();
+                }
+
+                if(thisBirthdate.before(minimunDate)){
+                    throw new MaxAgeException();
+                }
+
                 User user = new User(uid, email, name.getText().toString(),
                         surname.getText().toString(), cpf.getText().toString(), birthdate.getText().toString(),
                         phone.getText().toString(), professor.isChecked());
@@ -79,7 +117,6 @@ public class SignUpStep2Activity extends AppCompatActivity {
 
                 Intent intent = new Intent(this, SignUpStep3Activity.class);
                 startActivity(intent);
-                Toast.makeText(this, "Insira seu endereço.", Toast.LENGTH_LONG).show();
             }
         } catch (EmptyFieldException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -89,17 +126,33 @@ public class SignUpStep2Activity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (PhoneLenghtException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (ParseException e) {
+             Toast.makeText(this, "Data de nascimento invalida!", Toast.LENGTH_LONG).show();
+        } catch (MaxAgeException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (MinAgeException e) {
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
-    private boolean thereAreEmptyFields(EditText name, EditText surname, EditText cpf, EditText birthdate, EditText phone) {
-        if (TextUtils.isEmpty(name.getText()) || TextUtils.isEmpty(surname.getText()) ||
-                TextUtils.isEmpty(cpf.getText()) || TextUtils.isEmpty(birthdate.getText()) ||
-                TextUtils.isEmpty(phone.getText())) {
-            return true;
-        } else {
-            return false;
+    @Override
+    public void onBackPressed() {
+        try {
+            auth.signOut();
+        }catch (Exception e){
+            //Does not need any other action.
         }
+        startActivity(new Intent(this,SignInActivity.class));
+        finish();
+    }
+
+    private boolean thereAreEmptyFields(ArrayList<EditText> editTexts) {
+        for (EditText field: editTexts){
+            if(TextUtils.isEmpty(field.getText())){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
