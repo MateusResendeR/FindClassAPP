@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.AccountActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -20,20 +21,28 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException;
 
 public class SignUpActivity extends AppCompatActivity {
-
+    //Atributos do Firebase;
     private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        mAuth = FirebaseAuth.getInstance();
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        //Atribuir ao o FirebaseAuth à nossa variável;
+        mAuth = FirebaseAuth.getInstance();
     }
 
+    //Função que executa a primeira etapa do cadastro;
     public void signUp(View view){
-        EditText email = (EditText) findViewById(R.id.emailEditText);
-        EditText password = (EditText) findViewById(R.id.passwordEditText);
+        //ProgressDialog
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Verificando e-mail e senha...");
+        progressDialog.show();
+
+        //Pegar os campos;
+        EditText email = findViewById(R.id.emailEditText);
+        EditText password = findViewById(R.id.passwordEditText);
 
         try{
             if(!(TextUtils.isEmpty(email.getText())) && !(TextUtils.isEmpty(password.getText()))){
@@ -43,6 +52,7 @@ public class SignUpActivity extends AppCompatActivity {
                             public void onComplete(@NonNull Task<AuthResult> task) {
                                 if(task.isSuccessful()){
                                     mAuth.getCurrentUser().sendEmailVerification();
+                                    progressDialog.dismiss();
                                     Toast.makeText(SignUpActivity.this, "E-mail de confirmação enviado.", Toast.LENGTH_LONG).show();
                                     Intent intent = new Intent(getBaseContext(), SignUpStep2Activity.class);
                                     startActivity(intent);
@@ -50,15 +60,16 @@ public class SignUpActivity extends AppCompatActivity {
                                     String message = "";
                                     try {
                                         throw task.getException();
+                                    } catch (FirebaseAuthUserCollisionException e) {
+                                        message = "Esse e-mail já está sendo utilizado, tente fazer login.";
                                     }catch (FirebaseAuthWeakPasswordException e){
                                         message = "Senha fraca, senhas precisam de no mínimo 6 caracteres.";
                                     } catch (FirebaseAuthInvalidCredentialsException e) {
                                         message = "E-mail inválido.";
-                                    } catch (FirebaseAuthUserCollisionException e) {
-                                        message = "Esse e-mail já está sendo utilizado, tente fazer login.";
                                     } catch (Exception e) {
                                         message = "Erro ao efetuar o cadastro!";
                                     }
+                                    progressDialog.dismiss();
                                     Toast.makeText(SignUpActivity.this, message, Toast.LENGTH_LONG).show();
                                 }
                             }
@@ -67,6 +78,7 @@ public class SignUpActivity extends AppCompatActivity {
                 throw new EmptyFieldException();
             }
         }catch (EmptyFieldException e){
+            progressDialog.dismiss();
             Toast.makeText(this,e.getMessage(),Toast.LENGTH_LONG).show();
         }
     }
