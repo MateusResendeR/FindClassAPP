@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.AccountActivities;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,7 +31,7 @@ import java.util.Calendar;
 
 public class SignUpStep2Activity extends AppCompatActivity {
     private FirebaseAuth auth;
-    private DatabaseReference db;
+    private DatabaseReference usersRef;
     private String uid;
     private String email;
 
@@ -43,13 +44,19 @@ public class SignUpStep2Activity extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        //Mensagem para situar o usuário;
         Toast.makeText(this,"Conclua seu cadastro, por favor.",Toast.LENGTH_LONG).show();
 
+        //Elementos do Firebase instanciados;
         auth = FirebaseAuth.getInstance();
-        db = FirebaseDatabase.getInstance().getReference();
+        usersRef = FirebaseDatabase.getInstance().getReference().child("users");
 
+        //Dados do usuário disponíveis;
         uid = auth.getCurrentUser().getUid().toString();
         email = auth.getCurrentUser().getEmail().toString();
+
+        //Recuperar dados que o Google dá para facilitar o cadastro do Usuário;
         String completeName = auth.getCurrentUser().getDisplayName();
         if(completeName != null){
             String[] splitedName = completeName.split(" ");
@@ -61,6 +68,12 @@ public class SignUpStep2Activity extends AppCompatActivity {
     }
 
     public void finishSignUp(View view) {
+        //ProgressDialog
+        ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.setMessage("Salvando...");
+        progressDialog.show();
+
+        //Recupero os elementos da Activity;
         EditText name = findViewById(R.id.nameEditText);
         EditText surname = findViewById(R.id.surnameEditText);
         EditText cpf = findViewById(R.id.cpfEditText);
@@ -68,10 +81,8 @@ public class SignUpStep2Activity extends AppCompatActivity {
         EditText phone = findViewById(R.id.phoneEditText);
         CheckBox professor = findViewById(R.id.professorCheckBox);
 
-        DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
-        df.setLenient(false);
-
         try {
+            //Crio um arraylist para validação de elementos do cadastro;
             ArrayList<EditText> editTexts = new ArrayList<>();
             editTexts.add(name);
             editTexts.add(surname);
@@ -79,6 +90,11 @@ public class SignUpStep2Activity extends AppCompatActivity {
             editTexts.add(birthdate);
             editTexts.add(phone);
 
+            //Crio um DateFormat para validação de data de nascimento;
+            DateFormat df = new SimpleDateFormat("dd/MM/yyyy");
+            df.setLenient(false);
+
+            //Verifico as possíveis exceções;
             if (thereAreEmptyFields(editTexts)) {
                 throw new EmptyFieldException();
             } else if (cpf.getText().length() < 14) {
@@ -88,37 +104,46 @@ public class SignUpStep2Activity extends AppCompatActivity {
             } else if (phone.getText().length() < 14) {
                 throw new PhoneLenghtException();
             } else {
+                //Pego a data de nascimento;
                 String birthdateTest = birthdate.getText().toString();
                 Date thisBirthdate = df.parse(birthdateTest);
 
+                //Datas mínimas e máximas para validação;
                 Calendar calendar = Calendar.getInstance();
-
                 calendar.add(Calendar.YEAR,-100);
                 Date minimunDate = calendar.getTime();
-
                 calendar.add(Calendar.YEAR,90);
                 Date maximumDate = calendar.getTime();
 
+                //Verificar se a data é válida;
                 if(thisBirthdate.after(maximumDate)){
                     throw new MinAgeException();
                 }
 
+                //Verificar se a data é válida;
                 if(thisBirthdate.before(minimunDate)){
                     throw new MaxAgeException();
                 }
 
+                //Criação do objeto de Usuário que será salva no banco;
                 User user = new User(uid, email, name.getText().toString(),
                         surname.getText().toString(), cpf.getText().toString(), birthdate.getText().toString(),
                         phone.getText().toString(), professor.isChecked());
 
-                if (db != null) {
-                    db.child("users").child(uid).setValue(user);
+                //Salvar dado no banco;
+                if (usersRef != null) {
+                    usersRef.child(uid).setValue(user);
                 }
 
+                //Chamo a tela para cadastro de endereço;
+                progressDialog.dismiss();
                 Intent intent = new Intent(this, SignUpStep3Activity.class);
                 startActivity(intent);
             }
-        } catch (EmptyFieldException e) {
+
+        }
+        //Tratamento das exceções;
+        catch (EmptyFieldException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         } catch (CPFLenghtException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
@@ -133,10 +158,12 @@ public class SignUpStep2Activity extends AppCompatActivity {
         } catch (MinAgeException e) {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
+        progressDialog.dismiss();
     }
 
     @Override
     public void onBackPressed() {
+        //Caso o botão de voltar seja precionado, retornamos o usuário à tela de Login;
         try {
             auth.signOut();
         }catch (Exception e){
