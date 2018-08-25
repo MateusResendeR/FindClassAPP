@@ -1,6 +1,5 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -42,7 +41,6 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
     //Elementos gráficos
     private MaterialSearchView searchView;
     private RecyclerView recyclerViewMedio;
-    private ProgressDialog progress;
     //Elementos auxiliares
     private String nameSubject;
     private String nameLevel;
