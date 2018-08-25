@@ -112,7 +112,7 @@ public class RatingProfessorActivity extends AppCompatActivity {
     }
 
     //Método para avaliar o professor como muito bom
-    public void verryGoodRating(View view){
+    public void veryGoodRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+20);
         Toast.makeText(this, "Professor avaliado com sucesso!", Toast.LENGTH_LONG).show();
@@ -128,7 +128,7 @@ public class RatingProfessorActivity extends AppCompatActivity {
     }
 
     //Método para avaliar o professor como médio
-    public void medioRating( View view){
+    public void averageRating( View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+1);
         Toast.makeText(this, "Professor avaliado com sucesso!", Toast.LENGTH_LONG).show();
