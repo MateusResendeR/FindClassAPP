@@ -292,7 +292,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void isProfessorOrStudent(DataSnapshot userSnap, ProgressDialog progressDialog){
         //Verifico se o usuário atual é professor ou aluno;
-        if(userSnap.child("professor").getValue(String.class) == "true"){
+        if(userSnap.child("professor").getValue(String.class).equals("true")){
             //Abre menu de professor;
             startActivity(new Intent(this,MenuProfessorActivity.class));
         }else{
