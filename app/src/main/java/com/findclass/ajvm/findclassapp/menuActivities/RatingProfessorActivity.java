@@ -1,11 +1,8 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -20,13 +17,11 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class RatingProfessorActivity extends AppCompatActivity {
-    private TextView textViewNome;
-    private TextView textViewLevel;
-    private TextView textViewSubject;
-    private User professor;
-    private Subject subject;
+    //Elemenetos do firebase
     private DatabaseReference userRef;
     private DatabaseReference scheduleRef;
+    //Elementos auxiliares
+    private User professor;
     private User userP;
     private User userS;
     private ScheduleObject schedule;
@@ -41,39 +36,35 @@ public class RatingProfessorActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rating_professor);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //setando atributos do firebase
         userRef = FirebaseDatabase.getInstance().getReference().child("users");
         scheduleRef = FirebaseDatabase.getInstance().getReference().child("schedule");
-
-        //configuracao
-
-        textViewNome = findViewById(R.id.textViewNameProfessorRating);
-        textViewLevel = findViewById(R.id.textViewLevelProfessorRating);
-        textViewSubject = findViewById(R.id.textViewSubjectProfessorRating);
-
-        //recuperar dados
+        //Setando atributos gráficos
+        TextView textViewNome = findViewById(R.id.textViewNameProfessorRating);
+        TextView textViewLevel = findViewById(R.id.textViewLevelProfessorRating);
+        TextView textViewSubject = findViewById(R.id.textViewSubjectProfessorRating);
+        //Recuperando dados da Activity passada
         Bundle bundle = getIntent().getExtras();
         if(bundle != null){
             professor = (User) bundle.getSerializable("user");
-            subject = (Subject) bundle.getSerializable("subject");
+            Subject subject = (Subject) bundle.getSerializable("subject");
             schedule = (ScheduleObject)bundle.getSerializable("schedule");
             textViewNome.setText(professor.getName());
             textViewSubject.setText(subject.getName());
             textViewLevel.setText(subject.getLevel());
         }
-
-
-
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    //Método que define as ações que devem ser executadas ao iniciar a Activity
     @Override
     protected void onStart() {
         super.onStart();
-        getProfessor();
-        getStudent();
+        retriverProfessor();
+        retriverStudent();
     }
 
+    //Método que define as ações que devem ser executadas ao abandonar a Activity
     @Override
     protected void onStop() {
         super.onStop();
@@ -81,66 +72,62 @@ public class RatingProfessorActivity extends AppCompatActivity {
         userRef.removeEventListener(valueEventListenerS);
     }
 
-    public void getProfessor(){
+    //Método para buscar no banco de dados o professor da aula
+    public void retriverProfessor(){
         valueEventListenerP = userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
                     if(data.getValue(User.class).getId().equals(professor.getId())){
                         userP = data.getValue(User.class);
-
                     }
-
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //
             }
         });
-
     }
 
-    public void getStudent(){
-
+    //Método para buscar no banco de dados o aluno da aula
+    public void retriverStudent(){
         valueEventListenerS = userRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot data: dataSnapshot.getChildren()){
                     if(data.getValue(User.class).getId().equals(schedule.getStudent().getId())){
                         userS = data.getValue(User.class);
-
                     }
-
                 }
             }
-
             @Override
             public void onCancelled(DatabaseError databaseError) {
-
+                //
             }
         });
 
     }
 
-
+    //Método para avaliar o professor como muito bom
     public void verryGoodRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+20);
-
     }
 
+    //Método para avaliar o professor como bom
     public void goodRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+10);
     }
 
+    //Método para avaliar o professor como médio
     public void medioRating( View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+1);
     }
 
+    //Método para avaliar o professor como ruim
     public void badRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()-2);
