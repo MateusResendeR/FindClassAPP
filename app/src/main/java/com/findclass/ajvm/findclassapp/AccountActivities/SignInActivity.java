@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.aboutActivities.AboutActivity;
 import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -74,6 +75,17 @@ public class SignInActivity extends AppCompatActivity {
                 forgotPassword();
             }
         });
+
+        //Configuramos o link de Sobre;
+        TextView about = findViewById(R.id.aboutButton);
+        about.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(getBaseContext(), AboutActivity.class));
+                    }
+                }
+        );
 
         //Configuração do botão do Google para Login;
         googleSignInButton = findViewById(R.id.googleButton);
