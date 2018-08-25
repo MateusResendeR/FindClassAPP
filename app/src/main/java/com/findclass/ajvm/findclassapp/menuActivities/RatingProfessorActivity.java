@@ -1,10 +1,12 @@
 package com.findclass.ajvm.findclassapp.menuActivities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Model.ScheduleObject;
 import com.findclass.ajvm.findclassapp.Model.Subject;
@@ -110,27 +112,35 @@ public class RatingProfessorActivity extends AppCompatActivity {
     }
 
     //Método para avaliar o professor como muito bom
-    public void verryGoodRating(View view){
+    public void veryGoodRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+20);
+        Toast.makeText(this, "Professor avaliado com sucesso!", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MenuAlunoActivity.class));
     }
 
     //Método para avaliar o professor como bom
     public void goodRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+10);
+        Toast.makeText(this, "Professor avaliado com sucesso!", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MenuAlunoActivity.class));
     }
 
     //Método para avaliar o professor como médio
-    public void medioRating( View view){
+    public void averageRating( View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()+1);
+        Toast.makeText(this, "Professor avaliado com sucesso!", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MenuAlunoActivity.class));
     }
 
     //Método para avaliar o professor como ruim
     public void badRating(View view){
         scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
         userRef.child(userP.getId()).child("score").setValue(userP.getScore()-2);
+        Toast.makeText(this, "Professor avaliado com sucesso!", Toast.LENGTH_LONG).show();
+        startActivity(new Intent(this, MenuAlunoActivity.class));
     }
 
 }
