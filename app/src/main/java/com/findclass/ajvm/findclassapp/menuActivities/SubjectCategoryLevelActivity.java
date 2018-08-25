@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,21 +28,27 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.miguelcatalan.materialsearchview.MaterialSearchView;
 
+import java.text.Normalizer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 public class SubjectCategoryLevelActivity extends AppCompatActivity {
-    private RecyclerView recyclerViewMedio;
-    private SubjectProfessorAdapter adapter;
-    private ArrayList<Subject_Professor> listProfessors = new ArrayList<>();
+    //Elemnetos do firebase
     private DatabaseReference professorSubjectRef;
     private DatabaseReference userRef;
     private DatabaseReference subjectRef;
-    private ValueEventListener valueEventListenerProfessores;
+    //Elementos gráficos
     private MaterialSearchView searchView;
+    private RecyclerView recyclerViewMedio;
+    //Elementos auxiliares
     private String nameSubject;
     private String nameLevel;
+    private SubjectProfessorAdapter adapter;
+    private ArrayList<Subject_Professor> listProfessors = new ArrayList<>();
+    private ValueEventListener valueEventListenerProfessores;
+
+
 
 
     @Override
@@ -52,99 +57,82 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
         setContentView(R.layout.activity_subject_category_level);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        recyclerViewMedio = findViewById(R.id.recycleViewListaMedio);
-        professorSubjectRef = FirebaseDatabase.getInstance().getReference().child("professorSubjects");
-        userRef = FirebaseDatabase.getInstance().getReference().child("users");
-        subjectRef = FirebaseDatabase.getInstance().getReference().child("subjects");
-
-        adapter = new SubjectProfessorAdapter(listProfessors, this);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerViewMedio.setLayoutManager(layoutManager);
-        recyclerViewMedio.setHasFixedSize(true);
-        recyclerViewMedio.setAdapter(adapter);
-
+        //Recuperando dados da Activity passada
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             nameSubject = (String) bundle.getSerializable("subject");
             nameLevel = (String)bundle.getSerializable("level");
         }
-
+        //setando atributos
+        adapter = new SubjectProfessorAdapter(listProfessors, this);
+        //setando atributos do firebase
+        professorSubjectRef = FirebaseDatabase.getInstance().getReference().child("professorSubjects");
+        userRef = FirebaseDatabase.getInstance().getReference().child("users");
+        subjectRef = FirebaseDatabase.getInstance().getReference().child("subjects");
+        //Setando atributos gráficos
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerViewMedio = findViewById(R.id.recycleViewListaMedio);
+        recyclerViewMedio.setLayoutManager(layoutManager);
+        recyclerViewMedio.setHasFixedSize(true);
+        recyclerViewMedio.setAdapter(adapter);
         searchView = findViewById(R.id.search_viewProfessor);
+        //Criação da barra de pesquisa
         searchView.setOnSearchViewListener(new MaterialSearchView.SearchViewListener() {
             @Override
             public void onSearchViewShown() {
-
+                //
             }
 
+            //Voltar a lista com todos os professores quando fechar a busca
             @Override
             public void onSearchViewClosed() {
                 reloadList();
             }
         });
 
-
+        //Metodos para busca
         searchView.setOnQueryTextListener(new MaterialSearchView.OnQueryTextListener() {
+            //Realiza a busca quando o botão de buscar é pressionado.
             @Override
             public boolean onQueryTextSubmit(String query) {
-                query = query.replace('á', 'a');
-                query = query.replace('ã', 'a');
-                query = query.replace('é', 'e');
-                query = query.replace('ê', 'e');
-                query = query.replace('ó', 'o');
-                query = query.replace('õ', 'o');
-                query = query.replace('ú', 'u');
-                query = query.replace('í', 'i');
-
                 if (query != null && !query.isEmpty()) {
-                    searchProfessor(query.toLowerCase());
+                    searchProfessor(treatText(query));
                 }
                 return true;
             }
 
+            //Realiza buscas enquanto o texto é digitado
             @Override
             public boolean onQueryTextChange(String newText) {
-                newText = newText.replace('á', 'a');
-                newText = newText.replace('ã', 'a');
-                newText = newText.replace('é', 'e');
-                newText = newText.replace('ê', 'e');
-                newText = newText.replace('ó', 'o');
-                newText = newText.replace('õ', 'o');
-                newText = newText.replace('ú', 'u');
-                newText = newText.replace('í', 'i');
-
                 if (newText != null && !newText.isEmpty()) {
-                    searchProfessor(newText.toLowerCase());
+                    searchProfessor(treatText(newText));
                 }
 
                 return true;
             }
         });
 
+
+        //Adição do evento de clique aos itens da lista
         recyclerViewMedio.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         this,
                         recyclerViewMedio,
                         new RecyclerItemClickListener.OnItemClickListener() {
+                            //Definição da ação do clique.
                             @Override
                             public void onItemClick(View view, int position) {
-                                Intent intent = new Intent(SubjectCategoryLevelActivity.this,
-                                        AvailabilityListAlunoActivity.class);
+                                Intent intent = new Intent(SubjectCategoryLevelActivity.this,AvailabilityListAlunoActivity.class);
                                 Subject_Professor thisSubjectProfessor = listProfessors.get(position);
                                 intent.putExtra("professor_uid",thisSubjectProfessor.getProfessorSubject().getProfessorUid());
                                 intent.putExtra("subject_id",thisSubjectProfessor.getSubject().getId());
-
                                 startActivity(intent);
                             }
-
                             @Override
                             public void onLongItemClick(View view, int position) {
                                 //
                             }
-
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 //
@@ -155,6 +143,7 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
 
     }
 
+    //Método que define a ação do botão voltar do hardware
     @Override
     public void onBackPressed() {
         Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
@@ -162,13 +151,14 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
         finish();
     }
 
-
+    //Método que define as ações que devem ser executadas ao iniciar a Activity
     @Override
     protected void onStart() {
         super.onStart();
         retrieveProfessors();
     }
 
+    //Método que define as ações que devem ser executadas ao abandonar a Activity
     @Override
     protected void onStop() {
         super.onStop();
@@ -177,6 +167,7 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
         userRef.removeEventListener(valueEventListenerProfessores);
     }
 
+    //Método para aplicação do menu (searchView)
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_aluno, menu);
@@ -185,6 +176,7 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
         return true;
     }
 
+    //Método que seleciona qual opção do menu foi escolhida
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -194,34 +186,28 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+    //Método para deslogar do aplicativo
     public void logout(View view){
-        try{
-            FirebaseAuth.getInstance().signOut();
-        }catch (Exception e){
-            String message = "Erro, você já está delogado";
-            Toast.makeText(this,message,Toast.LENGTH_LONG).show();
-        }
+        FirebaseAuth.getInstance().signOut();
         Toast.makeText(this, "Você foi deslogado!", Toast.LENGTH_LONG).show();
         startActivity(new Intent(SubjectCategoryLevelActivity.this,SignInActivity.class));
         finish();
     }
 
+    //Método para tratar strings acentuadas e com letras maiúsculas
+    public static String treatText(String text){
+        return Normalizer.normalize(text, Normalizer.Form.NFD).replaceAll("[^\\p{ASCII}]", "").toLowerCase();
+    }
+
+    //Método de buscar professor por nome
     public void searchProfessor(String text) {
         List<Subject_Professor> listProfessorSearch = new ArrayList<>();
         for (Subject_Professor professor : listProfessors) {
-            String subject = professor.getUser().getName().toLowerCase();
-            subject = subject.replace('á', 'a');
-            subject = subject.replace('ã', 'a');
-            subject = subject.replace('é', 'e');
-            subject = subject.replace('ê', 'e');
-            subject = subject.replace('ó', 'o');
-            subject = subject.replace('õ', 'o');
-            subject = subject.replace('ú', 'u');
-            subject = subject.replace('í', 'i');
-
-            if (subject.contains(text)) {
+            String prof = professor.getUser().getName().toLowerCase();
+            prof = treatText(prof);
+            if (prof.contains(text)) {
                 listProfessorSearch.add(professor);
-
             }
         }
         adapter = new SubjectProfessorAdapter(listProfessorSearch, this);
@@ -229,85 +215,36 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    //Método para recarregar lista completa de professores
     public void reloadList() {
         adapter = new SubjectProfessorAdapter(listProfessors, this);
         recyclerViewMedio.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
+    //Método para buscar no banco de dados lista de professores e suas disciplinas
     public void retrieveProfessors (){
         listProfessors.clear();
         valueEventListenerProfessores = professorSubjectRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-
                 for (final DataSnapshot dados : dataSnapshot.getChildren()) {
                     professorSubjectRef.child(dados.getKey()).addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
                             for (final DataSnapshot dado : dataSnapshot.getChildren()) {
-                                final Subject_Professor sp = new Subject_Professor();
-                                final Professor_Subject ps = dado.getValue(Professor_Subject.class);
-                                sp.setProfessorSubject(ps);
-                                userRef.addValueEventListener(
-                                        new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                                    User user = d.getValue(User.class);
-                                                    if (d.getKey().equals(ps.getProfessorUid())) {
-                                                        sp.setUser(user);
-
-                                                        subjectRef.addValueEventListener(
-                                                                new ValueEventListener() {
-                                                                    @Override
-                                                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                                                            Subject subject = d.getValue(Subject.class);
-                                                                            if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals(nameLevel)&& subject.getName().equals(nameSubject)) {
-                                                                                sp.setSubject(subject);
-                                                                                listProfessors.add(sp);
-                                                                                Collections.sort(listProfessors);
-
-
-                                                                            }
-                                                                            adapter.notifyDataSetChanged();
-                                                                        }
-                                                                        adapter.notifyDataSetChanged();
-                                                                    }
-
-                                                                    @Override
-                                                                    public void onCancelled(DatabaseError databaseError) {
-                                                                        //
-                                                                    }
-                                                                }
-                                                        );
-
-
-                                                    }
-                                                }
-                                            }
-
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                                //
-                                            }
-                                        }
-                                );
+                                Subject_Professor subject_professor = new Subject_Professor();
+                                Professor_Subject ps = dado.getValue(Professor_Subject.class);
+                                subject_professor.setProfessorSubject(ps);
+                                retriveUser(ps,subject_professor);
                             }
-
                         }
-
                         @Override
                         public void onCancelled(DatabaseError databaseError) {
                             //
                         }
                     });
-
-
                 }
-
             }
 
             @Override
@@ -315,6 +252,51 @@ public class SubjectCategoryLevelActivity extends AppCompatActivity {
                 //
             }
         });
+    }
+    //Método para buscar no banco de dados os usuarios
+    public void retriveUser(final Professor_Subject ps,final Subject_Professor subject_professor){
+        userRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            User user = d.getValue(User.class);
+                            if (d.getKey().equals(ps.getProfessorUid())) {
+                                subject_professor.setUser(user);
+                                retriveSubject(ps, subject_professor);
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
+    }
+
+    //Método para buscar no banco de dados as subjects dos usuarios
+    public void retriveSubject(final Professor_Subject ps, final Subject_Professor subject_professor){
+        subjectRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Subject subject = d.getValue(Subject.class);
+                            if (d.getKey().equals(ps.getSubjectId()) && subject.getLevel().equals(nameLevel)&& subject.getName().equals(nameSubject)) {
+                                subject_professor.setSubject(subject);
+                                listProfessors.add(subject_professor);
+                                Collections.sort(listProfessors);
+                            }
+                            adapter.notifyDataSetChanged();
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
     }
 
 }
