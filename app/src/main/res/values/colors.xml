@@ -7,4 +7,5 @@
     <color name="colorGood">#ADFF2F</color>
     <color name="colorMedio">#FFFF00</color>
     <color name="colorBad">#FF4500</color>
+    <color name="colorWhite">#FFFFFF</color>
 </resources>
