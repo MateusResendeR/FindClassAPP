@@ -16,8 +16,10 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0">
 
         <com.google.android.gms.common.SignInButton
             android:id="@+id/googleButton"
@@ -102,6 +104,13 @@
             android:theme="@style/button"
             tools:layout_editor_absoluteX="122dp"
             tools:layout_editor_absoluteY="420dp" />
+
+        <TextView
+            android:id="@+id/aboutButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Sobre" />
 
     </LinearLayout>
 
