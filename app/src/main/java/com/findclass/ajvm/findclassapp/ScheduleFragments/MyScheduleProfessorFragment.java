@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,68 +43,61 @@ import java.util.Locale;
  * A simple {@link Fragment} subclass.
  */
 public class MyScheduleProfessorFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
-    private RecyclerView recyclerViewMyScheduleList;
-    private MyScheduleProfessorAdapter adapter;
+    //Elemenetos do firebase
     private DatabaseReference schedulesRef;
     private DatabaseReference rootRef;
     private FirebaseAuth auth;
-    private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
+    //Elementos gráficos
+    private RecyclerView recyclerViewMyScheduleList;
     private ProgressDialog progress;
-    private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private SwipeRefreshLayout mSwipeToRefresh;
+    //Elementos auxiliares
+    private MyScheduleProfessorAdapter adapter;
+    private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
+    private ArrayList<Schedule> mySchedules = new ArrayList<>();
 
     public MyScheduleProfessorFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_schedule_professor, container, false);
-
-        Log.e("DEBUG","Professor");
-
+        //setando atributos
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
+        //setando atributos do firebase
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
         schedulesRef = rootRef.child("schedule");
-
-
+        //Setando atributos gráficos
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
-
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
-
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager);
         recyclerViewMyScheduleList.setHasFixedSize(true);
         recyclerViewMyScheduleList.setAdapter(adapter);
-
         mSwipeToRefresh = (SwipeRefreshLayout) view.findViewById(R.id.swipe_refresh_container);
         mSwipeToRefresh.setOnRefreshListener(this);
-
+        //Adição do evento de clique aos itens da lista
         recyclerViewMyScheduleList.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         getActivity(),
                         recyclerViewMyScheduleList,
                         new RecyclerItemClickListener.OnItemClickListener() {
+                            //Definição da ação do clique.
                             @Override
                             public void onItemClick(View view, int position) {
                                     Intent intent = new Intent(getContext(), InfoScheduleTeacherActivity.class);
-
                                     Bundle bundle = new Bundle();
                                     bundle.putSerializable("schedule", myScheduleObjects.get(position));
-
                                     intent.putExtras(bundle);
                                     startActivity(intent);
                             }
-
                             @Override
                             public void onLongItemClick(View view, int position) {
                                 //
                             }
-
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                                 //
@@ -117,23 +109,20 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
         return view;
     }
 
+    //Método que define as ações que devem ser executadas ao iniciar o Fragment
     @Override
     public void onStart() {
         super.onStart();
         retrieveMySchedules();
     }
 
+    //Método que define as ações que devem ser executadas ao abandonar o Fragment
     @Override
     public void onStop() {
         super.onStop();
     }
 
-    public void reloadList() {
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
-        recyclerViewMyScheduleList.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-    }
-
+    //Método para buscar no banco de dados minha lista de aulas marcadas
     public void retrieveMySchedules(){
         progress = new ProgressDialog(getActivity());
         progress.setMessage("Carregando...");
@@ -142,7 +131,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
         myScheduleObjects.clear();
 
         final ArrayList<DataSnapshot> myScheduleSnapshots = new ArrayList<>();
-
         schedulesRef
                 .child(auth.getCurrentUser().getUid())
                 .addListenerForSingleValueEvent(
@@ -158,15 +146,12 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                 }
                             }
                         }
-
                         for(DataSnapshot scheduleSnap: myScheduleSnapshots){
                             Schedule schedule = scheduleSnap.getValue(Schedule.class);
                             retrieveProfessor(schedule);
                         }
-
                         progress.dismiss();
                     }
-
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
                         //
@@ -175,6 +160,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
         );
     }
 
+    //Método para buscar no banco de dados os professores das aulas marcadas
     public void retrieveProfessor(final Schedule schedule){
         DatabaseReference usersRef = rootRef.child("users");
         usersRef
@@ -186,7 +172,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                 User professor = dataSnapshot.getValue(User.class);
                                 retrieveStudent(schedule,professor);
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 //
@@ -195,6 +180,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                 );
     }
 
+    //Método para buscar no banco de dados o aluno das aulas marcadas
     public void retrieveStudent(final Schedule schedule, final User professor){
         DatabaseReference usersRef = rootRef.child("users");
         usersRef
@@ -206,7 +192,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                 User student = dataSnapshot.getValue(User.class);
                                 retrieveSubject(schedule,professor,student);
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 //
@@ -215,6 +200,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                 );
     }
 
+    //Método para buscar no banco de dados as disciplinas das aulas
     public void retrieveSubject(final Schedule schedule, final User professor, final User student){
         DatabaseReference subjectsRef = rootRef.child("subjects");
         subjectsRef
@@ -235,6 +221,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                 );
     }
 
+    //Método para buscar no banco de dados a data da aula
     public void retrieveDatetime(final Schedule schedule, final User professor, final User student, final Subject subject){
         final DatabaseReference datetimeRef = rootRef.child("availability");
         final DatabaseReference thisDatetimeRef = datetimeRef.child(schedule.getProfessor_id());
@@ -248,7 +235,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                 Date_Time date_time = dataSnapshot.getValue(Date_Time.class);
                                 retrieveDate(schedule,professor,student,subject,thisDatetimeRef,date_time);
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 //
@@ -257,6 +243,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                 );
     }
 
+    //Método para buscar no banco de dados a data da aula
     public void retrieveDate(final Schedule schedule, final User professor, final User student, final Subject subject, final DatabaseReference datetimeRef, final Date_Time date_time){
         datetimeRef
                 .child("dates")
@@ -268,16 +255,15 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                 Date_Status date = dataSnapshot.getValue(Date_Status.class);
                                 retrieveTime(schedule,professor,student,subject,datetimeRef,date_time,date);
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
                                 //
                             }
                         }
                 );
-
     }
 
+    //Método para buscar no banco de dados a hora da aula
     public void retrieveTime(final Schedule schedule, final User professor, final User student, final Subject subject, DatabaseReference datetimeRef, Date_Time date_time, final Date_Status date){
         datetimeRef
                 .child("times")
@@ -306,8 +292,11 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                         }
                 );
     }
+
+    //Método para finalizar a aula automaticamente quando passar da data
     public void finish(Date_Status date,Time time,User professor,User student, Schedule schedule){
         try {
+            //transformando string do banco de dados em Date
             String dateString = date.getDate();
             SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
             Date data = new Date();
@@ -327,6 +316,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            //Pegando a data atual
             Date dataAtual = new Date();
             try {
                 dataAtual = sdf.parse(String.valueOf(dataAtual));
@@ -336,14 +326,14 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
             if (dataAtual.after(dataTime)) {
                 schedule.setFinish(1);
                 schedulesRef.child(professor.getId()).child(student.getId()).child(schedule.getId()).child("finish").setValue(1);
-
-
             }
         }
         catch (Exception e){
             Toast.makeText(getContext(), e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
+
+    //Método para atualizar a lista
     @Override
     public void onRefresh() {
         retrieveMySchedules();
