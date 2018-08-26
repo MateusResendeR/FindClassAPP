@@ -9,175 +9,302 @@
     tools:layout_editor_absoluteY="81dp">
 
 
-    <EditText
-        android:id="@+id/nameEditText"
+    <LinearLayout
+        android:id="@+id/linearLayout9"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:ems="15"
-        android:hint="Nome"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/surnameEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
-
-    <EditText
-        android:id="@+id/surnameEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:ems="15"
-        android:hint="Sobrenome"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/phoneEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameEditText" />
-
-    <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/phoneEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:ems="15"
-        android:hint="Telefone"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/cepEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/surnameEditText"
-        app:mask="(##)#####-####" />
-
-    <com.vicmikhailau.maskededittext.MaskedEditText
-        android:id="@+id/cepEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Cep"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/stateEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/phoneEditText"
-        app:mask="#####-###" />
-
-    <EditText
-        android:id="@+id/stateEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="2dp"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Estado"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/cityEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cepEditText" />
-
-    <EditText
-        android:id="@+id/cityEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Cidade"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/districtEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stateEditText" />
-
-    <EditText
-        android:id="@+id/districtEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Bairro"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/addressEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/cityEditText" />
-
-    <EditText
-        android:id="@+id/addressEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Endereço"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/numberEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/districtEditText" />
-
-    <EditText
-        android:id="@+id/numberEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Número"
-        android:inputType="number"
-        app:layout_constraintBottom_toTopOf="@+id/complementEditText"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/addressEditText" />
-
-    <EditText
-        android:id="@+id/complementEditText"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="31dp"
-        android:layout_marginLeft="31dp"
-        android:layout_marginRight="31dp"
-        android:layout_marginStart="31dp"
-        android:hint="Complemento (Opcional)"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/finishUpdateData"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/numberEditText" />
-
-    <Button
-        android:id="@+id/finishUpdateData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="1dp"
-        android:onClick="finishUpdateData"
-        android:text="Alterar Dados"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/complementEditText" />
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView13"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Nome:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/nameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="15"
+                android:hint="Nome"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="3dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView14"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Sobrenome:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/surnameEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="15"
+                android:hint="Sobrenome"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="48dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView15"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Telefone:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.vicmikhailau.maskededittext.MaskedEditText
+                android:id="@+id/phoneEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="15"
+                android:hint="Telefone"
+                android:inputType="number"
+                app:mask="(##)#####-####"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="94dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView18"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Cep:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.vicmikhailau.maskededittext.MaskedEditText
+                android:id="@+id/cepEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Cep"
+                android:inputType="number"
+                app:mask="#####-###"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="139dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView20"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Estado:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/stateEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Estado"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="185dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Cidade:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/cityEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Cidade"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="232dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView24"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Bairro:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/districtEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Bairro"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="278dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView25"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Endereço:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/addressEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Endereço"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="323dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView26"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Número:"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/numberEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Número"
+                android:inputType="number"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="369dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView27"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="Complemento:"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/complementEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Complemento (Opcional)"
+                android:inputType="textPersonName"
+                tools:layout_editor_absoluteX="31dp"
+                tools:layout_editor_absoluteY="414dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/finishUpdateData"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="finishUpdateData"
+                android:text="Alterar Dados"
+                android:textColor="@android:color/background_light"
+                android:theme="@style/button"
+                tools:layout_editor_absoluteX="125dp"
+                tools:layout_editor_absoluteY="460dp" />
+        </LinearLayout>
+
+
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
