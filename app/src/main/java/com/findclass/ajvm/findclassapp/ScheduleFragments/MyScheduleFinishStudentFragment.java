@@ -8,7 +8,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -191,7 +190,6 @@ public class MyScheduleFinishStudentFragment extends Fragment implements SwipeRe
 
     //Método para buscar no banco de dados o aluno das aulas finalizadas
     public void retrieveStudent(final Schedule schedule, final User professor){
-        Log.e("DEBUG","Here!");
         DatabaseReference usersRef = rootRef.child("users");
         usersRef
                 .child(schedule.getStudent_id())
