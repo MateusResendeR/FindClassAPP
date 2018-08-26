@@ -145,6 +145,15 @@
                 android:text="Cancelar Aula"
                 android:textColor="@android:color/background_light"
                 android:theme="@style/button" />
+
+            <Button
+                android:id="@+id/button2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:onClick="finish"
+                android:text="Finalizar Aula"
+                android:textColor="@android:color/background_light"
+                android:theme="@style/button" />
         </LinearLayout>
 
     </LinearLayout>
@@ -264,5 +273,7 @@
         </LinearLayout>
 
     </LinearLayout>
+
+
 
 </LinearLayout>

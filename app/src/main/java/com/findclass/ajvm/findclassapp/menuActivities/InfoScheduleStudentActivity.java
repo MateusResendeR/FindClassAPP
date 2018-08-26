@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.Exception.CanNotCancelACancelScheduleException;
 import com.findclass.ajvm.findclassapp.Exception.CanNotCancelException;
 import com.findclass.ajvm.findclassapp.Model.Address;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
@@ -63,6 +64,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     private TextView districtTextView;
     private TextView addressTextView;
     private TextView numberComplementTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -241,6 +243,16 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             }
         });
     }
+    public void finish(View view){
+        if (cancel == 1){
+            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
+            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
+            Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "Você só pode finalizar uma aula cancelada!", Toast.LENGTH_LONG).show();
+        }
+    }
 
     public void cancel(View view){
         try {
@@ -256,7 +268,9 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
                 availabilityRef.child(userP.getId()).child("dateTimes").child(dateTime).child("status").setValue("não");
                 Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
                 startActivity(intent);
-            } else {
+            } else if (cancel == 1){
+                throw new CanNotCancelACancelScheduleException();
+            }else {
                 throw new CanNotCancelException();
             }
         }
