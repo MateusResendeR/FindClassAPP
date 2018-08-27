@@ -33,13 +33,11 @@
             android:text="Nome" />
 
         <View
-            android:id="@+id/divider5"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
-            android:id="@+id/textViewSubjectsOfProfessor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
