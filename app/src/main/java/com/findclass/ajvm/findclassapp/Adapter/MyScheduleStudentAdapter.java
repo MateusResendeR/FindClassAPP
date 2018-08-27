@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.Adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -67,7 +68,12 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
         try {
             Schedule schedule1 = schedules.get(position);
             if (schedule1.getCancel() == 1) {
-                holder.cancel.setVisibility(View.VISIBLE);
+                holder.date.setText("Cancelada");
+                holder.time.setText("Cancelada");
+                holder.date.setTextColor(Color.RED);
+                holder.time.setTextColor(Color.RED);
+                holder.cancel.setBackgroundColor(Color.parseColor("#FFC0CB"));
+
             }
         } catch (Exception e){
             e.printStackTrace();
@@ -90,7 +96,7 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
             professorName = itemView.findViewById(R.id.professorNameTextView);
             date = itemView.findViewById(R.id.dateTextView);
             time = itemView.findViewById(R.id.timeTextView);
-            cancel = itemView.findViewById(R.id.cancelLinearLayout);
+            cancel = itemView.findViewById(R.id.LinearLayoutSchedule);
         }
     }
 }

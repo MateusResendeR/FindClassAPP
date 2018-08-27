@@ -25,6 +25,7 @@ import com.findclass.ajvm.findclassapp.Model.Schedule;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.Time_Date;
 import com.findclass.ajvm.findclassapp.R;
+import com.findclass.ajvm.findclassapp.aboutActivities.StudentAboutActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -235,6 +236,8 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         int id = item.getItemId();
         if (id == R.id.action_logoutAluno) {
             logout(this.findViewById(R.id.toolbar));
+        }if(id == R.id.action_aboutStudent){
+            startActivity(new Intent(this, StudentAboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);
