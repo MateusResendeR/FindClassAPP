@@ -1,9 +1,6 @@
 <resources>
     <string name="app_name">FindClass</string>
-    <string name="signin">Entrar</string>
-    <string name="signup">Cadastrar</string>
     <string name="email">E-mail</string>
-    <string name="password">Senha</string>
     <string name="next">Continuar</string>
     <string name="title_activity_menu_professor">FindClass</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
@@ -11,7 +8,6 @@
     <string name="nav_header_title">Android Studio</string>
     <string name="nav_header_subtitle">android.studio@android.com</string>
     <string name="nav_header_desc">Navigation header</string>
-    <string name="action_settings">Settings</string>
     <string name="action_logoutProfessor">Sair</string>
     <string name="title_activity_menu_aluno">FindClass</string>
     <string name="action_logoutAluno">Sair</string>
@@ -20,7 +16,6 @@
     <string name="INVALID_EMAIL_TOAST">E-mail inválido.</string>
     <string name="TOAST_STRING_EMAIL_NAO_CADASTRADO">E-mail não cadastrado, realize cadastro</string>
     <string name="title_activity_subject_category_medio">Professores</string>
-    <string name="title_activity_subject_category_variados">Professores</string>
     <string name="title_activity_availability_list_aluno">Disponibilidade</string>
     <string name="about_info">
         O FindClass é uma aplicação móvel que busca unir professores e alunos para aulas particulares. Agimos como mediadores do contato e transações.
@@ -31,7 +26,6 @@
     </string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="TOAST_BEM_VINDO">Bem-vindo! victor_s.s.m._15@hotmail.com</string>
     <string name="title_activity_rating_professor">Avaliar Professor</string>
     <string name="title_activity_info_scedule_student">Informações</string>

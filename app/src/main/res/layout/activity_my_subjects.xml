@@ -8,7 +8,6 @@
     tools:layout_editor_absoluteY="81dp">
 
     <LinearLayout
-        android:id="@+id/linearLayout7"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
