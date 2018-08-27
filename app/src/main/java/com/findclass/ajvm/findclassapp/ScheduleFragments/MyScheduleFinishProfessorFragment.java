@@ -2,22 +2,16 @@ package com.findclass.ajvm.findclassapp.ScheduleFragments;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
-import com.findclass.ajvm.findclassapp.Adapter.MyScheduleStudentAdapter;
-import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
 import com.findclass.ajvm.findclassapp.Model.Date_Time;
 import com.findclass.ajvm.findclassapp.Model.Schedule;
@@ -26,7 +20,6 @@ import com.findclass.ajvm.findclassapp.Model.Subject;
 import com.findclass.ajvm.findclassapp.Model.Time;
 import com.findclass.ajvm.findclassapp.Model.User;
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.menuActivities.RatingProfessorActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,6 +28,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -46,7 +40,6 @@ public class MyScheduleFinishProfessorFragment extends Fragment implements Swipe
     private DatabaseReference rootRef;
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
-    private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private ProgressDialog progress;
     private SwipeRefreshLayout mSwipeToRefresh;
 
@@ -68,7 +61,7 @@ public class MyScheduleFinishProfessorFragment extends Fragment implements Swipe
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
 
         RecyclerView.LayoutManager layoutManager1 = new LinearLayoutManager(getActivity());
         recyclerViewMyScheduleList.setLayoutManager(layoutManager1);
@@ -113,8 +106,6 @@ public class MyScheduleFinishProfessorFragment extends Fragment implements Swipe
                                     for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
                                         if (scheduleSnap.child("finish").getValue(Integer.class).equals(1)){
                                             myScheduleSnapshots.add(scheduleSnap);
-                                            mySchedules.add(scheduleSnap.getValue(Schedule.class));
-                                            adapter.notifyDataSetChanged();
                                         }
                                     }
                                 }
@@ -248,9 +239,10 @@ public class MyScheduleFinishProfessorFragment extends Fragment implements Swipe
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 Time time = dataSnapshot.getValue(Time.class);
 
-                                ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId());
+                                ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId(),schedule.getCancel());
                                 myScheduleObjects.add(scheduleObject);
                                 adapter.notifyDataSetChanged();
+                                sortMySchedules();
                             }
 
                             @Override
@@ -266,4 +258,28 @@ public class MyScheduleFinishProfessorFragment extends Fragment implements Swipe
         retrieveMySchedules();
         mSwipeToRefresh.setRefreshing(false);
     }
+
+    public void sortMySchedules(){
+        Collections.sort(myScheduleObjects);
+        Collections.reverse(myScheduleObjects);
+
+        ArrayList<ScheduleObject> canceledScheduleObjects = new ArrayList<>();
+        ArrayList<ScheduleObject> notCanceledScheduleObjects = new ArrayList<>();
+        ArrayList<ScheduleObject> scheduleObjects = new ArrayList<>();
+
+        for (ScheduleObject scheduleObject : myScheduleObjects){
+            if (scheduleObject.getCancel() == 1){
+                canceledScheduleObjects.add(scheduleObject);
+            }
+            else{
+                notCanceledScheduleObjects.add(scheduleObject);
+            }
+        }
+        scheduleObjects.addAll(notCanceledScheduleObjects);
+        scheduleObjects.addAll(canceledScheduleObjects);
+        myScheduleObjects = scheduleObjects;
+
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
+        recyclerViewMyScheduleList.setAdapter(adapter);
+        adapter.notifyDataSetChanged();    }
 }

@@ -37,6 +37,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -51,7 +52,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
     private FirebaseAuth auth;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
     private ProgressDialog progress;
-    private ArrayList<Schedule> mySchedules = new ArrayList<>();
     private SwipeRefreshLayout mSwipeToRefresh;
 
     public MyScheduleProfessorFragment() {
@@ -74,7 +74,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
 
         recyclerViewMyScheduleList = view.findViewById(R.id.recyclerViewMySchedule);
 
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
 
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
@@ -129,7 +129,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
     }
 
     public void reloadList() {
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
         recyclerViewMyScheduleList.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
@@ -153,8 +153,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                             for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
                                 if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)){
                                     myScheduleSnapshots.add(scheduleSnap);
-                                    mySchedules.add(scheduleSnap.getValue(Schedule.class));
-                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         }
@@ -292,9 +290,10 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                     retrieveMySchedules();
 
                                 }else{
-                                    ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId());
+                                    ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId(),schedule.getCancel());
                                     myScheduleObjects.add(scheduleObject);
                                     adapter.notifyDataSetChanged();
+                                    sortMySchedules();
 
                                 }
                             }
@@ -336,7 +335,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
             if (dataAtual.after(dataTime)) {
                 schedule.setFinish(1);
                 schedulesRef.child(professor.getId()).child(student.getId()).child(schedule.getId()).child("finish").setValue(1);
-
+                reloadList();
 
             }
         }
@@ -348,6 +347,29 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
     public void onRefresh() {
         retrieveMySchedules();
         mSwipeToRefresh.setRefreshing(false);
+    }
+
+    public void sortMySchedules(){
+        Collections.sort(myScheduleObjects);
+
+        ArrayList<ScheduleObject> canceledScheduleObjects = new ArrayList<>();
+        ArrayList<ScheduleObject> notCanceledScheduleObjects = new ArrayList<>();
+        ArrayList<ScheduleObject> scheduleObjects = new ArrayList<>();
+
+        for (ScheduleObject scheduleObject : myScheduleObjects){
+            if (scheduleObject.getCancel() == 1){
+                canceledScheduleObjects.add(scheduleObject);
+            }
+            else{
+                notCanceledScheduleObjects.add(scheduleObject);
+            }
+        }
+
+        scheduleObjects.addAll(notCanceledScheduleObjects);
+        scheduleObjects.addAll(canceledScheduleObjects);
+        myScheduleObjects.addAll(canceledScheduleObjects);
+
+        adapter.notifyDataSetChanged();
     }
 
 }
