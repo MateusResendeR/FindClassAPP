@@ -6,4 +6,10 @@
         android:orderInCategory="100"
         android:title="@string/action_logoutProfessor"
         app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_aboutProfessor"
+        android:title="Sobre">
+        app:showAsAction="never"
+    </item>
 </menu>

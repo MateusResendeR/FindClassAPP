@@ -1,5 +1,6 @@
 package com.findclass.ajvm.findclassapp.Adapter;
 
+import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -58,6 +59,7 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
         try {
             if (schedule.getCancel() == 1) {
                 holder.cancel.setVisibility(View.VISIBLE);
+
             }
             else{
                 holder.cancel.setVisibility(View.GONE);
@@ -80,10 +82,10 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
             super(itemView);
             subjectName = itemView.findViewById(R.id.subjectNameTextView);
             subjectLevel = itemView.findViewById(R.id.subjectLevelTextView);
-            studentName = itemView.findViewById(R.id.studentNameTextView);
+            studentName = itemView.findViewById(R.id.professorNameTextView);
             date = itemView.findViewById(R.id.dateTextView);
             time = itemView.findViewById(R.id.timeTextView);
-            cancel = itemView.findViewById(R.id.cancelLinearLayout);
+            cancel = itemView.findViewById(R.id.LinearLayoutSchedule);
         }
     }
 }

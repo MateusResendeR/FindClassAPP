@@ -26,6 +26,7 @@ import com.findclass.ajvm.findclassapp.Model.Subject_Professor;
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleFinishStudentFragment;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleStudentFragment;
+import com.findclass.ajvm.findclassapp.aboutActivities.StudentAboutActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -241,6 +242,8 @@ public class MenuAlunoActivity extends AppCompatActivity
         int id = item.getItemId();
         if (id == R.id.action_logoutAluno) {
             logout(this.findViewById(R.id.toolbar));
+        }if(id == R.id.action_aboutStudent){
+            startActivity(new Intent(this, StudentAboutActivity.class));
         }
 
         return super.onOptionsItemSelected(item);

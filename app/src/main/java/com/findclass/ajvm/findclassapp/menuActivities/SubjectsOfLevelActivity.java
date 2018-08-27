@@ -14,7 +14,9 @@ import com.findclass.ajvm.findclassapp.Helper.RecyclerItemClickListener;
 import com.findclass.ajvm.findclassapp.R;
 
 public class SubjectsOfLevelActivity extends AppCompatActivity {
+    //Elementos gráficos
     private RecyclerView recyclerViewSubjectOfLevel;
+    //Elementos auxiliares
     private SubjectOfLevelAdapter adapter;
     private String nameLevel;
 
@@ -26,32 +28,34 @@ public class SubjectsOfLevelActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+        //Array que irá receber as disciplinas do seu respectivo level.
         final String[] subjects;
-
+        //Recuperando dados da Activity passada
         Bundle bundle = getIntent().getExtras();
         if(bundle != null) {
             nameLevel = (String) bundle.getSerializable("level");
         }
+        //Preenchendo array com as disciplinas do seu respectivo level.
         if(nameLevel.equals("Variados")){
             subjects= new String[]{"Inglês", "Espanhol", "Alemão", "Italiano", "Francês", "Violão", "Guitarra", "Flauta", "Bateria", "Canto"};
         }else {
             subjects= new String[]{"Matemática", "História", "Geografia", "Português", "Inglês", "Espanhol", "Física", "Química"};
         }
-        recyclerViewSubjectOfLevel = findViewById(R.id.recyclerViewSubjectsOfLevel);
-
+        //Setando atributos
         adapter = new SubjectOfLevelAdapter(subjects,this);
-
+        //Setando atributos gráficos
+        recyclerViewSubjectOfLevel = findViewById(R.id.recyclerViewSubjectsOfLevel);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerViewSubjectOfLevel.setLayoutManager(layoutManager);
         recyclerViewSubjectOfLevel.setHasFixedSize(true);
         recyclerViewSubjectOfLevel.setAdapter(adapter);
-
+        //Adição do evento de clique aos itens da lista
         recyclerViewSubjectOfLevel.addOnItemTouchListener(
                 new RecyclerItemClickListener(
                         this,
                         recyclerViewSubjectOfLevel,
                         new RecyclerItemClickListener.OnItemClickListener() {
+                            //Definição da ação do clique.
                             @Override
                             public void onItemClick(View view, int position) {
                                 Intent intent = new Intent(getBaseContext(),SubjectCategoryLevelActivity.class);
@@ -62,12 +66,12 @@ public class SubjectsOfLevelActivity extends AppCompatActivity {
 
                             @Override
                             public void onLongItemClick(View view, int position) {
-
+                                //
                             }
 
                             @Override
                             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-
+                                //
                             }
                         }
                 )

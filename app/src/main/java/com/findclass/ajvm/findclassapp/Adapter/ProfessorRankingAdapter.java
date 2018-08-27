@@ -15,16 +15,15 @@ import com.findclass.ajvm.findclassapp.R;
 import java.util.List;
 
 public class ProfessorRankingAdapter extends RecyclerView.Adapter<ProfessorRankingAdapter.MyViewHolder> {
+    //Elementos auxiliares
     private List<User> professors;
     private Context context;
-    private int position;
+
 
     public ProfessorRankingAdapter(List<User> listProfessors, Context context) {
         this.professors = listProfessors;
         this.context = context;
-        this.position = 0;
-
-    }
+        }
 
     @NonNull
     @Override
@@ -34,21 +33,24 @@ public class ProfessorRankingAdapter extends RecyclerView.Adapter<ProfessorRanki
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position ) {
+        //Pegando dados da lista para os itens do adapter
         User professor = professors.get(position);
-        this.position = this.position +1;
+        int place = position+1;
         holder.name.setText(professor.getName());
         if(professor.getScore() < 0){
             holder.score.setText("Pontuação: 0");
         }else {
             holder.score.setText("Pontuação: "+professor.getScore());
         }
-        holder.positionTextView.setText(this.position+"º lugar");
-        if (this.position == 1){
+        //Definição de posição do professor
+        holder.positionTextView.setText(place+"º lugar");
+        //Atribuição de icone por posição
+        if (place == 1){
             holder.icon.setImageResource(R.drawable.ic_1position);
-        }else if (this.position == 2){
+        }else if (place == 2){
             holder.icon.setImageResource(R.drawable.ic_2position);
-        }else if (this.position == 3){
+        }else if (place == 3){
             holder.icon.setImageResource(R.drawable.ic_3position);
         }
     }
@@ -59,6 +61,7 @@ public class ProfessorRankingAdapter extends RecyclerView.Adapter<ProfessorRanki
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder{
+        //Elementos gráficos
         private TextView name;
         private TextView score;
         private TextView positionTextView;
@@ -66,6 +69,7 @@ public class ProfessorRankingAdapter extends RecyclerView.Adapter<ProfessorRanki
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);
+            //Setando elementos gráficos
             name = itemView.findViewById(R.id.textViewNomeProfessorRanking);
             score = itemView.findViewById(R.id.textViewScoreProfessorRanking);
             positionTextView = itemView.findViewById(R.id.textViewPosition);

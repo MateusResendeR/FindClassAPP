@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.Exception.CanNotCancelACancelScheduleException;
 import com.findclass.ajvm.findclassapp.Exception.CanNotCancelException;
 import com.findclass.ajvm.findclassapp.Model.Address;
 import com.findclass.ajvm.findclassapp.Model.Date_Status;
@@ -74,7 +75,7 @@ public class InfoScheduleTeacherActivity extends AppCompatActivity {
 
         textViewSubject = findViewById(R.id.infoSubjectNameTextView);
         textViewLevel = findViewById(R.id.infoSubjectLevelTextView);
-        textViewAluno = findViewById(R.id.infoAlunoNameTextView);
+        textViewAluno = findViewById(R.id.infoProfessorNameTextView);
         textViewDate = findViewById(R.id.infoDateTextView);
         textViewTime = findViewById(R.id.infoTimeTextView);
 
@@ -255,6 +256,8 @@ public class InfoScheduleTeacherActivity extends AppCompatActivity {
                 availabilityRef.child(userP.getId()).child("dateTimes").child(dateTime).child("status").setValue("não");
                 Intent intent = new Intent(getBaseContext(), MenuProfessorActivity.class);
                 startActivity(intent);
+            } else if (cancel == 1){
+                throw new CanNotCancelACancelScheduleException();
             } else {
                 throw new CanNotCancelException();
             }
@@ -269,9 +272,14 @@ public class InfoScheduleTeacherActivity extends AppCompatActivity {
     }
 
     public void finish(View view){
-        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
-        Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
-        startActivity(intent);
+        if (cancel == 1){
+            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
+            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
+            Intent intent = new Intent(getBaseContext(), MenuProfessorActivity.class);
+            startActivity(intent);
+        }else{
+            Toast.makeText(this, "Você só pode finalizar uma aula cancelada!", Toast.LENGTH_LONG).show();
+        }
     }
 
 
