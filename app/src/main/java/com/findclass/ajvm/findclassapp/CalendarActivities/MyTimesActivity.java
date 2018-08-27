@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 
 import com.findclass.ajvm.findclassapp.R;
@@ -15,6 +16,8 @@ public class MyTimesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_times);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         addTime = findViewById(R.id.addTimeFloatingActionButton);
 
@@ -28,5 +31,6 @@ public class MyTimesActivity extends AppCompatActivity {
                             }
                         }
                 );
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 }
