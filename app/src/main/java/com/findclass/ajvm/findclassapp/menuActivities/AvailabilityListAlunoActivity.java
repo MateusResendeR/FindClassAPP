@@ -360,52 +360,10 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
                     td.setDate_time_id(dado.getKey());
                     if (dado.child("status").getValue(String.class).equals("não")){
-                        timeRef.addValueEventListener(
-                                new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                            Time time = d.getValue(Time.class);
-                                            if (d.getKey().equals(dado.child("time_id").getValue())) {
-                                                td.setTime(time);
-
-                                            }adapter.notifyDataSetChanged();
-                                        }adapter.notifyDataSetChanged();
-
-                                    }
-
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        //
-                                    }
-                                }
-                        );
-                        dateRef.addValueEventListener(
-                                new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                            Date_Status ds = d.getValue(Date_Status.class);
-                                            if (d.getKey().equals(dado.child("date_id").getValue())) {
-                                                td.setDate_status(ds);
-                                                listTimeDates.add(td);
-                                                adapter.notifyDataSetChanged();
-                                            }adapter.notifyDataSetChanged();
-                                        }adapter.notifyDataSetChanged();
-                                    }
-
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        //
-                                    }
-                                }
-                        );
+                        addTime(td, dado.child("time_id").getValue().toString());
+                        addDate(td,dado.child("date_id").getValue().toString());
                     }
-
                 }
-
             }
 
             @Override
@@ -414,6 +372,53 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    public void addTime(final Time_Date td, final String time_id){
+        timeRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Time time = d.getValue(Time.class);
+                            if (d.getKey().equals(time_id)) {
+                                td.setTime(time);
+
+                            }adapter.notifyDataSetChanged();
+                        }adapter.notifyDataSetChanged();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
+    }
+
+    public void addDate(final Time_Date td, final String date_id){
+        dateRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Date_Status ds = d.getValue(Date_Status.class);
+                            if (d.getKey().equals(date_id)) {
+                                td.setDate_status(ds);
+                                listTimeDates.add(td);
+                                adapter.notifyDataSetChanged();
+                            }adapter.notifyDataSetChanged();
+                        }adapter.notifyDataSetChanged();
+                    }
+
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
     }
     public void logout(View view){
         try{

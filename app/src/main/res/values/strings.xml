@@ -22,6 +22,7 @@
     <string name="title_activity_subject_category_medio">Professores</string>
     <string name="title_activity_subject_category_variados">Professores</string>
     <string name="title_activity_availability_list_aluno">Disponibilidade</string>
+
     <string name="about_info">
         O FindClass é uma aplicação móvel que busca unir professores e alunos para aulas particulares. Agimos como mediadores do contato e transações.
     </string>
@@ -29,6 +30,8 @@
         Qualquer dúvida:
         findclass.contato@gmail.com
     </string>
+    <string name="title_activity_my_calendar_professor">Meu Calendário</string>
+    <string name="title_activity_my_times">Meus Horários</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

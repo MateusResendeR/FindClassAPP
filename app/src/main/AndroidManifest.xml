@@ -29,10 +29,26 @@
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".SubjectActivities.MySubjectsActivity" />
         <activity android:name=".SubjectActivities.MySubjectInfoActivity" />
-        <activity android:name=".CalendarActivities.MyCalendarProfessorActivity" />
+        <activity
+            android:name=".CalendarActivities.MyCalendarProfessorActivity"
+            android:label="@string/title_activity_my_calendar_professor"
+            android:parentActivityName=".menuActivities.MenuProfessorActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity" />
+        </activity>
         <activity android:name=".SubjectActivities.AddSubjectActivity" />
         <activity android:name=".CalendarActivities.AddTimeActivity" />
-        <activity android:name=".CalendarActivities.MyTimesActivity" />
+        <activity
+            android:name=".CalendarActivities.MyTimesActivity"
+            android:label="@string/title_activity_my_times"
+            android:parentActivityName=".CalendarActivities.MyCalendarProfessorActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.findclass.ajvm.findclassapp.CalendarActivities.MyCalendarProfessorActivity" />
+        </activity>
         <activity
             android:name=".menuActivities.SubjectCategoryLevelActivity"
             android:label="@string/title_activity_subject_category_medio"
