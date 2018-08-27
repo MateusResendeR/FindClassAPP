@@ -33,6 +33,8 @@
     <string name="title_activity_professor_ranking">Melhores professores</string>
     <string name="title_activity_subject_of_professor">Disciplinas</string>
     <string name="title_activity_subjects_of_level">Disciplinas</string>
+    <string name="title_activity_my_calendar_professor">Meu Calendário</string>
+    <string name="title_activity_my_times">Meus Horários</string>
 
     <string-array name="day_arrays">
         <item>dom</item>

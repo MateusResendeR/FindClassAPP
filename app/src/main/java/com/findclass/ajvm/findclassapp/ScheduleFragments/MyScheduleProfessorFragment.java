@@ -36,6 +36,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Locale;
 
@@ -54,7 +55,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
     //Elementos auxiliares
     private MyScheduleProfessorAdapter adapter;
     private ArrayList<ScheduleObject> myScheduleObjects = new ArrayList<>();
-    private ArrayList<Schedule> mySchedules = new ArrayList<>();
 
     public MyScheduleProfessorFragment() {
         // Required empty public constructor
@@ -66,7 +66,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_my_schedule_professor, container, false);
         //setando atributos
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects,mySchedules);
+        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
         //setando atributos do firebase
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
@@ -141,8 +141,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                             for (DataSnapshot scheduleSnap: dataSnapshot1.getChildren()){
                                 if (scheduleSnap.child("finish").getValue(Integer.class).equals(0)){
                                     myScheduleSnapshots.add(scheduleSnap);
-                                    mySchedules.add(scheduleSnap.getValue(Schedule.class));
-                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         }
@@ -278,10 +276,9 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                                     retrieveMySchedules();
 
                                 }else{
-                                    ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId());
+                                    ScheduleObject scheduleObject = new ScheduleObject(professor, student, subject, time, date, schedule.getId(),schedule.getCancel());
                                     myScheduleObjects.add(scheduleObject);
-                                    adapter.notifyDataSetChanged();
-
+                                    sortMySchedules();
                                 }
                             }
 
@@ -338,6 +335,25 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
     public void onRefresh() {
         retrieveMySchedules();
         mSwipeToRefresh.setRefreshing(false);
+    }
+
+    //Método para ordenar a lista por data
+    public void sortMySchedules(){
+        Collections.sort(myScheduleObjects);
+        ArrayList<ScheduleObject> canceledScheduleObjects = new ArrayList<>();
+        ArrayList<ScheduleObject> notCanceledScheduleObjects = new ArrayList<>();
+        for (ScheduleObject scheduleObject : myScheduleObjects){
+            if (scheduleObject.getCancel() == 1){
+                canceledScheduleObjects.add(scheduleObject);
+            }
+            else{
+                notCanceledScheduleObjects.add(scheduleObject);
+            }
+        }
+        myScheduleObjects.clear();
+        myScheduleObjects.addAll(notCanceledScheduleObjects);
+        myScheduleObjects.addAll(canceledScheduleObjects);
+        adapter.notifyDataSetChanged();
     }
 
 }

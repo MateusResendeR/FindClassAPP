@@ -40,8 +40,12 @@ import com.paypal.android.sdk.payments.PaymentConfirmation;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AvailabilityListAlunoActivity extends AppCompatActivity {
@@ -346,6 +350,7 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         adapter.notifyDataSetChanged();
     }
 
+    //Método que busca do banco as disponibilidades para apresentá-las ao aluno
     public void retrieveDateTimes(){
         listTimeDates.clear();
         valueEventListenerProfessores = dateTimeRef.addValueEventListener(new ValueEventListener() {
@@ -358,48 +363,8 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
 
                     td.setDate_time_id(dado.getKey());
                     if (dado.child("status").getValue(String.class).equals("não")){
-                        timeRef.addValueEventListener(
-                                new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                            Time time = d.getValue(Time.class);
-                                            if (d.getKey().equals(dado.child("time_id").getValue())) {
-                                                td.setTime(time);
-
-                                            }adapter.notifyDataSetChanged();
-                                        }adapter.notifyDataSetChanged();
-
-                                    }
-
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        //
-                                    }
-                                }
-                        );
-                        dateRef.addValueEventListener(
-                                new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        for (DataSnapshot d : dataSnapshot.getChildren()) {
-                                            Date_Status ds = d.getValue(Date_Status.class);
-                                            if (d.getKey().equals(dado.child("date_id").getValue())) {
-                                                td.setDate_status(ds);
-                                                listTimeDates.add(td);
-                                                adapter.notifyDataSetChanged();
-                                            }adapter.notifyDataSetChanged();
-                                        }adapter.notifyDataSetChanged();
-                                    }
-
-
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-                                        //
-                                    }
-                                }
-                        );
+                        addTime(td, dado.child("time_id").getValue().toString());
+                        addDate(td,dado.child("date_id").getValue().toString());
                     }
 
                 }
@@ -413,6 +378,60 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
         });
 
     }
+
+    //Método que adiciona os horários à lista de disponibilidade
+    public void addTime(final Time_Date td, final String time_id){
+        timeRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Time time = d.getValue(Time.class);
+                            if (d.getKey().equals(time_id)) {
+                                td.setTime(time);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
+    }
+
+    //Método que adiciona as datas à lista de disponibilidade
+    public void addDate(final Time_Date td, final String date_id){
+        dateRef.addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        SimpleDateFormat oldFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                        Date dataAtual = new Date();
+                        for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Date myDate = new Date();
+                            Date_Status ds = d.getValue(Date_Status.class);
+                            try {
+                                myDate = oldFormat.parse(ds.getDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (d.getKey().equals(date_id) && !myDate.before(dataAtual)) {
+                                td.setDate_status(ds);
+                                listTimeDates.add(td);
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
+    }
+
     public void logout(View view){
         try{
             FirebaseAuth.getInstance().signOut();
