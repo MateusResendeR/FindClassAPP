@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -116,7 +115,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
                 numberComplement+=(", "+scheduleAddress.getComplement());
             }
 
-            Log.e("FON",cityUf);
+
 
             cityUfTextView.setText(cityUf);
             districtTextView.setText(district);

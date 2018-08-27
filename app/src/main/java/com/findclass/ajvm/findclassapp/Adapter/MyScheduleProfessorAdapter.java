@@ -3,7 +3,6 @@ package com.findclass.ajvm.findclassapp.Adapter;
 import android.graphics.Color;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,7 +55,6 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
         }
         DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-        Log.e("DEBUG","PROFESSOR_ADAPTER");
         holder.subjectName.setText(schedule.getSubject().getName());
         holder.subjectLevel.setText(schedule.getSubject().getLevel());
         holder.studentName.setText(schedule.getStudent().getName());
