@@ -40,8 +40,12 @@ import com.paypal.android.sdk.payments.PaymentConfirmation;
 import org.json.JSONException;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 public class AvailabilityListAlunoActivity extends AppCompatActivity {
@@ -385,8 +389,9 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                             Time time = d.getValue(Time.class);
                             if (d.getKey().equals(time_id)) {
                                 td.setTime(time);
-                            }adapter.notifyDataSetChanged();
-                        }adapter.notifyDataSetChanged();
+                                adapter.notifyDataSetChanged();
+                            }
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
@@ -402,14 +407,22 @@ public class AvailabilityListAlunoActivity extends AppCompatActivity {
                 new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
+                        SimpleDateFormat oldFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+                        Date dataAtual = new Date();
                         for (DataSnapshot d : dataSnapshot.getChildren()) {
+                            Date myDate = new Date();
                             Date_Status ds = d.getValue(Date_Status.class);
-                            if (d.getKey().equals(date_id)) {
+                            try {
+                                myDate = oldFormat.parse(ds.getDate());
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                            if (d.getKey().equals(date_id) && !myDate.before(dataAtual)) {
                                 td.setDate_status(ds);
                                 listTimeDates.add(td);
                                 adapter.notifyDataSetChanged();
-                            }adapter.notifyDataSetChanged();
-                        }adapter.notifyDataSetChanged();
+                            }
+                        }
                     }
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
