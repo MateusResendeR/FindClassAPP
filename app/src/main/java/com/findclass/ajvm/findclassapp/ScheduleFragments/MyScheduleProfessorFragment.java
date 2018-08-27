@@ -342,7 +342,6 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
         Collections.sort(myScheduleObjects);
         ArrayList<ScheduleObject> canceledScheduleObjects = new ArrayList<>();
         ArrayList<ScheduleObject> notCanceledScheduleObjects = new ArrayList<>();
-        ArrayList<ScheduleObject> scheduleObjects = new ArrayList<>();
         for (ScheduleObject scheduleObject : myScheduleObjects){
             if (scheduleObject.getCancel() == 1){
                 canceledScheduleObjects.add(scheduleObject);
@@ -351,8 +350,8 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
                 notCanceledScheduleObjects.add(scheduleObject);
             }
         }
-        scheduleObjects.addAll(notCanceledScheduleObjects);
-        scheduleObjects.addAll(canceledScheduleObjects);
+        myScheduleObjects.clear();
+        myScheduleObjects.addAll(notCanceledScheduleObjects);
         myScheduleObjects.addAll(canceledScheduleObjects);
         adapter.notifyDataSetChanged();
     }

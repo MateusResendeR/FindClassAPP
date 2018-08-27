@@ -340,7 +340,6 @@ public class MyScheduleFinishStudentFragment extends Fragment implements SwipeRe
         Collections.reverse(myScheduleObjects);
         ArrayList<ScheduleObject> canceledScheduleObjects = new ArrayList<>();
         ArrayList<ScheduleObject> notCanceledScheduleObjects = new ArrayList<>();
-        ArrayList<ScheduleObject> scheduleObjects = new ArrayList<>();
         for (ScheduleObject scheduleObject : myScheduleObjects){
             if (scheduleObject.getCancel() == 1){
                 canceledScheduleObjects.add(scheduleObject);
@@ -349,11 +348,9 @@ public class MyScheduleFinishStudentFragment extends Fragment implements SwipeRe
                 notCanceledScheduleObjects.add(scheduleObject);
             }
         }
-        scheduleObjects.addAll(notCanceledScheduleObjects);
-        scheduleObjects.addAll(canceledScheduleObjects);
-        myScheduleObjects = scheduleObjects;
-        adapter = new MyScheduleStudentAdapter(myScheduleObjects);
-        recyclerViewMyScheduleList.setAdapter(adapter);
+        myScheduleObjects.clear();
+        myScheduleObjects.addAll(notCanceledScheduleObjects);
+        myScheduleObjects.addAll(canceledScheduleObjects);
         adapter.notifyDataSetChanged();
     }
 }

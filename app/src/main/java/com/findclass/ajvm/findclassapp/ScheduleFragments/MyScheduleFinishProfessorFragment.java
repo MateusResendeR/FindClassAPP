@@ -258,24 +258,21 @@ public class MyScheduleFinishProfessorFragment extends Fragment implements Swipe
     }
 
     //Método para ordenar a lista por data
-    public void sortMySchedules(){
+    public void sortMySchedules() {
         Collections.sort(myScheduleObjects);
         Collections.reverse(myScheduleObjects);
         ArrayList<ScheduleObject> canceledScheduleObjects = new ArrayList<>();
         ArrayList<ScheduleObject> notCanceledScheduleObjects = new ArrayList<>();
-        ArrayList<ScheduleObject> scheduleObjects = new ArrayList<>();
-        for (ScheduleObject scheduleObject : myScheduleObjects){
-            if (scheduleObject.getCancel() == 1){
+        for (ScheduleObject scheduleObject : myScheduleObjects) {
+            if (scheduleObject.getCancel() == 1) {
                 canceledScheduleObjects.add(scheduleObject);
-            }
-            else{
+            } else {
                 notCanceledScheduleObjects.add(scheduleObject);
             }
         }
-        scheduleObjects.addAll(notCanceledScheduleObjects);
-        scheduleObjects.addAll(canceledScheduleObjects);
-        myScheduleObjects = scheduleObjects;
-        adapter = new MyScheduleProfessorAdapter(myScheduleObjects);
-        recyclerViewMyScheduleList.setAdapter(adapter);
-        adapter.notifyDataSetChanged();    }
+        myScheduleObjects.clear();
+        myScheduleObjects.addAll(notCanceledScheduleObjects);
+        myScheduleObjects.addAll(canceledScheduleObjects);
+        adapter.notifyDataSetChanged();
+    }
 }
