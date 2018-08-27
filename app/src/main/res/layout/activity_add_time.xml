@@ -21,7 +21,6 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/textView2"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:text="Horário inicial"
@@ -45,7 +44,6 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:text="Horário final"
@@ -69,7 +67,6 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/textView4"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:text="Dia"
@@ -90,7 +87,6 @@
         android:padding="5dp">
 
         <TextView
-            android:id="@+id/textView5"
             android:layout_width="175dp"
             android:layout_height="wrap_content"
             android:text="Preço"
@@ -125,7 +121,6 @@
 
 
     <View
-        android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:background="?android:attr/listDivider"

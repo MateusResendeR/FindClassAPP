@@ -22,6 +22,5 @@
 
     <include layout="@layout/content_my_calendar_professor" />
 
-
-
 </android.support.design.widget.CoordinatorLayout>
+

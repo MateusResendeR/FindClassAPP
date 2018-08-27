@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,11 +32,7 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 public class InfoScheduleStudentActivity extends AppCompatActivity {
     private User professor;
@@ -116,7 +111,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
                 numberComplement+=(", "+scheduleAddress.getComplement());
             }
 
-            Log.e("FON",cityUf);
+
 
             cityUfTextView.setText(cityUf);
             districtTextView.setText(district);

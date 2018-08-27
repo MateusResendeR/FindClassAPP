@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.menuActivities.MenuAlunoActivity;
-import com.findclass.ajvm.findclassapp.menuActivities.MenuProfessorActivity;
 
 public class StudentAboutActivity extends AppCompatActivity {
 
