@@ -66,6 +66,13 @@ public class MyScheduleStudentAdapter extends RecyclerView.Adapter<MyScheduleStu
                 holder.cancel.setBackgroundColor(Color.parseColor("#FFC0CB"));
 
             }
+            else{
+                holder.date.setText(dateFormat.format(date) + " (" + schedule.getTime().getDay() + ")");
+                holder.time.setText(schedule.getTime().getStartTime() + " - " + schedule.getTime().getEndTime());
+                holder.date.setTextColor(Color.parseColor("#808080"));
+                holder.time.setTextColor(Color.parseColor("#808080"));
+                holder.cancel.setBackgroundColor(Color.WHITE);
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
