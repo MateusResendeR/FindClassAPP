@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.findclass.ajvm.findclassapp.R;
-import com.findclass.ajvm.findclassapp.SubjectActivities.AddSubjectActivity;
 
 public class MyTimesActivity extends AppCompatActivity {
     FloatingActionButton addTime;

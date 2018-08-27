@@ -1,7 +1,6 @@
 package com.findclass.ajvm.findclassapp.Adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -12,9 +11,6 @@ import android.widget.TextView;
 
 import com.findclass.ajvm.findclassapp.R;
 
-import java.util.List;
-
-import static com.findclass.ajvm.findclassapp.R.drawable.ic_flute;
 
 public class SubjectOfLevelAdapter extends RecyclerView.Adapter<SubjectOfLevelAdapter.MyViewHolder> {
     private String[] subjects;

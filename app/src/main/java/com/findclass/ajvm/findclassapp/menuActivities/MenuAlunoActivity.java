@@ -3,7 +3,6 @@ package com.findclass.ajvm.findclassapp.menuActivities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
-import android.view.MenuInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -13,16 +12,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Adapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.findclass.ajvm.findclassapp.AccountActivities.SignInActivity;
 import com.findclass.ajvm.findclassapp.AccountActivities.UpdateDataActivity;
-import com.findclass.ajvm.findclassapp.Adapter.MyScheduleProfessorAdapter;
 import com.findclass.ajvm.findclassapp.Adapter.MyScheduleStudentAdapter;
-import com.findclass.ajvm.findclassapp.Adapter.SubjectProfessorAdapter;
-import com.findclass.ajvm.findclassapp.Model.Subject_Professor;
 import com.findclass.ajvm.findclassapp.R;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleFinishStudentFragment;
 import com.findclass.ajvm.findclassapp.ScheduleFragments.MyScheduleStudentFragment;
@@ -37,8 +32,7 @@ import com.ogaclejapan.smarttablayout.SmartTabLayout;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItemAdapter;
 import com.ogaclejapan.smarttablayout.utils.v4.FragmentPagerItems;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 public class MenuAlunoActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
