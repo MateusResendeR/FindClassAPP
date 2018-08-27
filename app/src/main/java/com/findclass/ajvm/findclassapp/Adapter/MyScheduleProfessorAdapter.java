@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.findclass.ajvm.findclassapp.Model.Schedule;
 import com.findclass.ajvm.findclassapp.Model.ScheduleObject;
 import com.findclass.ajvm.findclassapp.R;
 
@@ -22,16 +21,11 @@ import java.util.Locale;
 
 public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleProfessorAdapter.MyViewHolder> {
     private List<ScheduleObject> mySchedules;
-    private List<Schedule> schedules;
 
     public MyScheduleProfessorAdapter(List<ScheduleObject> mySchedules) {
         this.mySchedules = mySchedules;
     }
 
-    public MyScheduleProfessorAdapter(List<ScheduleObject> mySchedules, List<Schedule> schedules) {
-        this.mySchedules = mySchedules;
-        this.schedules = schedules;
-    }
 
     @NonNull
     @Override
@@ -61,8 +55,7 @@ public class MyScheduleProfessorAdapter extends RecyclerView.Adapter<MyScheduleP
         holder.date.setText(dateFormat.format(date)+" ("+schedule.getTime().getDay()+")");
         holder.time.setText(schedule.getTime().getStartTime()+" - "+schedule.getTime().getEndTime());
         try {
-            Schedule schedule1 = schedules.get(position);
-            if (schedule1.getCancel() == 1) {
+            if (schedule.getCancel() == 1) {
                 holder.date.setText("Cancelada");
                 holder.time.setText("Cancelada");
                 holder.date.setTextColor(Color.RED);
