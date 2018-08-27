@@ -320,7 +320,7 @@ public class MyScheduleProfessorFragment extends Fragment implements SwipeRefres
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-            if (dataAtual.after(dataTime) || schedule.getCancel() == 1) {
+            if (dataAtual.after(dataTime)) {
                 schedule.setFinish(1);
                 schedulesRef.child(professor.getId()).child(student.getId()).child(schedule.getId()).child("finish").setValue(1);
             }
