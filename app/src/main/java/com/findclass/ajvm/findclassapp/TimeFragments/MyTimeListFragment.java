@@ -99,8 +99,6 @@ public class MyTimeListFragment extends Fragment {
     public void retrieveMyTimes(){
         myTimeList.clear();
 
-
-
         DatabaseReference professorTimesRef = rootRef.child("availability");
 
         valueEventListener = professorTimesRef
@@ -115,27 +113,7 @@ public class MyTimeListFragment extends Fragment {
                                     timesId.add(d.getKey());
                                 }
 
-                                timesRef = rootRef.child("availability").child(auth.getCurrentUser().getUid()).child("times");
-                                valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
-                                        new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot time: dataSnapshot.getChildren()){
-                                                    if (timesId.contains(time.getKey())){
-                                                        Time thisTime = time.getValue(Time.class);
-                                                        myTimeList.add(thisTime);
-                                                    }
-                                                }
-
-                                                adapter.notifyDataSetChanged();
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                                //
-                                            }
-                                        }
-                                );
+                                retrieveTimes(timesId);
 
                             }
 
@@ -147,6 +125,30 @@ public class MyTimeListFragment extends Fragment {
                 );
 
         
+    }
+
+    public void retrieveTimes(final ArrayList<String> timesId){
+        timesRef = rootRef.child("availability").child(auth.getCurrentUser().getUid()).child("times");
+        valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot time: dataSnapshot.getChildren()){
+                            if (timesId.contains(time.getKey())){
+                                Time thisTime = time.getValue(Time.class);
+                                myTimeList.add(thisTime);
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
     }
 
 }

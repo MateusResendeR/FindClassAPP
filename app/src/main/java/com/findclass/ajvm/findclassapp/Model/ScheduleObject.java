@@ -1,8 +1,14 @@
 package com.findclass.ajvm.findclassapp.Model;
 
-import java.io.Serializable;
+import android.support.annotation.NonNull;
 
-public class ScheduleObject implements Serializable {
+import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
+public class ScheduleObject implements Serializable, Comparable<ScheduleObject>{
     private User professor;
     private User student;
     private Subject subject;
@@ -10,17 +16,19 @@ public class ScheduleObject implements Serializable {
     private Date_Status date;
     private String rating;
     private String id;
+    private int cancel;
 
-    public ScheduleObject(User professor, User student, Subject subject, Time time, Date_Status date, String id) {
+    public ScheduleObject(User professor, User student, Subject subject, Time time, Date_Status date, String id, int cancel) {
         this.professor = professor;
         this.student = student;
         this.subject = subject;
         this.time = time;
         this.date = date;
         this.id = id;
+        this.cancel = cancel;
     }
 
-    public ScheduleObject(String rating,String id,User professor, User student, Subject subject, Time time, Date_Status date) {
+    public ScheduleObject(String rating,String id,User professor, User student, Subject subject, Time time, Date_Status date,int cancel) {
         this.professor = professor;
         this.student = student;
         this.subject = subject;
@@ -28,7 +36,12 @@ public class ScheduleObject implements Serializable {
         this.id = id;
         this.date =date;
         this.time = time;
+        this.cancel = cancel;
     }
+
+    public int getCancel() { return cancel; }
+
+    public void setCancel(int cancel) { this.cancel = cancel; }
 
     public User getProfessor() {
         return professor;
@@ -84,5 +97,22 @@ public class ScheduleObject implements Serializable {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    @Override
+    public int compareTo(@NonNull ScheduleObject scheduleObject) {
+        final SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+        try {
+            if (sdf.parse(getDate().getDate()) == null || sdf.parse(scheduleObject.getDate().getDate()) == null) {
+                return 0;
+            }
+            else if (getDate().getDate().equals(scheduleObject.getDate().getDate())){
+                return getTime().getStartTime().compareTo(scheduleObject.getTime().getStartTime());
+            }
+            return sdf.parse(getDate().getDate()).compareTo(sdf.parse(scheduleObject.getDate().getDate()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

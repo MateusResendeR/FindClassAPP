@@ -128,7 +128,7 @@ public class MySubjectListFragment extends Fragment {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         for (DataSnapshot subject: dataSnapshot.getChildren()){
                             Subject thisSubject = subject.getValue(Subject.class);
-                            mySubjectsList.add(thisSubject);
+                            mySubjectsList.addTime(thisSubject);
                         }
 
                         adapter.notifyDataSetChanged();

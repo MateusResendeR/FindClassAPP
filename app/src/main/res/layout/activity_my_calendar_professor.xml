@@ -1,59 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:padding="8dp">
-
-<LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:padding="5dp">
+    tools:context=".CalendarActivities.MyCalendarProfessorActivity">
 
-    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
-        android:id="@+id/calendarView"
-        android:layout_width="wrap_content"
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:mcv_calendarMode="week"
-        app:mcv_selectionColor="#00F" />
-</LinearLayout>
+        android:theme="@style/AppTheme.AppBarOverlay">
 
-<LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:orientation="horizontal"
-    android:padding="5dp">
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <Button
-        android:id="@+id/updateButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="addSubjectDates"
-        android:text="Adicionar Datas"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"
-        android:layout_weight="2"
-        tools:context=".CalendarActivities.MyCalendarProfessorActivity" />
+    </android.support.design.widget.AppBarLayout>
 
-    <Button
-        android:id="@+id/addButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="myTimes"
-        android:text="Meus Horários"
-        android:textColor="@android:color/background_light"
-        android:theme="@style/button"
-        android:layout_weight="2"
-        tools:context=".CalendarActivities.MyCalendarProfessorActivity"/>
-</LinearLayout>
+    <include layout="@layout/content_my_calendar_professor" />
 
-<View
-    android:layout_width="match_parent"
-    android:layout_height="3dp"
-    android:layout_weight="3"
-    android:background="?android:attr/listDivider" />
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
+

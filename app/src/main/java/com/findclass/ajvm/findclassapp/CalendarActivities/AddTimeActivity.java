@@ -11,6 +11,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.findclass.ajvm.findclassapp.Exception.AlreadyRegisteredTimeException;
 import com.findclass.ajvm.findclassapp.Exception.EmptyFieldException;
 import com.findclass.ajvm.findclassapp.Exception.InvalidTimeException;
 import com.findclass.ajvm.findclassapp.Exception.TimeFurtherThanOtherException;
@@ -25,6 +26,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.vicmikhailau.maskededittext.MaskedEditText;
+
+import java.util.ArrayList;
 
 
 /**
@@ -52,7 +55,6 @@ public class AddTimeActivity extends AppCompatActivity {
         Spinner day = findViewById(R.id.daySpinner);
 
         try {
-
             String[] startTimeWithoutColon = startTime.getText().toString().split(":");
             String[] endTimeWithoutColon = endTime.getText().toString().split(":");
 
@@ -69,130 +71,136 @@ public class AddTimeActivity extends AppCompatActivity {
                 }
             } else if(Integer.parseInt(startTimeWithoutColon[0]) > 23 || Integer.parseInt(endTimeWithoutColon[0]) > 23) {
                 throw new InvalidTimeException();
-            } else if(Integer.parseInt(startTimeWithoutColon[1]) == 59 || Integer.parseInt(endTimeWithoutColon[1]) > 59) {
+            } else if(Integer.parseInt(startTimeWithoutColon[1]) > 59 || Integer.parseInt(endTimeWithoutColon[1]) > 59) {
                 throw new InvalidTimeException();
             } else {
-
-                final Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),
+                Time time = new Time(startTime.getText().toString(), endTime.getText().toString(),
                         day.getSelectedItem().toString(),price.getText().toString());
-                professor
-                        .addListenerForSingleValueEvent(
-                                new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
-                                        try {
-                                            for (DataSnapshot d : dataSnapshot.child("times").getChildren()) {
-                                                if (time.getDay().equals(d.child("day").getValue(String.class))) {
-                                                    int myStartTime =
-                                                            Integer.valueOf(time.getStartTime().split(":")[0]+
-                                                                    time.getStartTime().split(":")[1]);
-                                                    int myEndTime =
-                                                            Integer.valueOf(time.getEndTime().split(":")[0]+
-                                                                    time.getEndTime().split(":")[1]);
-                                                    int intStartTime =
-                                                            Integer.valueOf(d.child("startTime").getValue(String.class).split(":")[0]+
-                                                                    d.child("startTime").getValue(String.class).split(":")[1]);
-                                                    int intEndTime =
-                                                            Integer.valueOf(d.child("endTime").getValue(String.class).split(":")[0]+
-                                                                    d.child("endTime").getValue(String.class).split(":")[1]);
-                                                    if (intStartTime >= myStartTime && intStartTime < myEndTime) {
-                                                        throw new InvalidTimeException();
-                                                    } else if (myStartTime >= intStartTime && myStartTime < intEndTime) {
-                                                        throw new InvalidTimeException();
-                                                    } else if (myEndTime > intStartTime && myEndTime <= intEndTime) {
-                                                        throw new InvalidTimeException();
-                                                    } else if (intEndTime > myStartTime && intEndTime <= myEndTime) {
-                                                        throw new InvalidTimeException();
-                                                    }
-                                                }
-                                            }
-                                            DatabaseReference timePush = professor.child("times").push();
-                                            timePush.setValue(time);
-                                            if (dataSnapshot.child("dates").hasChildren()) {
-                                                for (DataSnapshot d : dataSnapshot.child("dates").getChildren()) {
-                                                    String[] weekDay = d.child("date").getValue().toString().split(" ");
-                                                    if (weekDay[0].equals("Sun")
-                                                            && time.getDay().equals("dom")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Mon")
-                                                            && time.getDay().equals("seg")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Tue")
-                                                            && time.getDay().equals("ter")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Wed")
-                                                            && time.getDay().equals("qua")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Thu")
-                                                            && time.getDay().equals("qui")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Fri")
-                                                            && time.getDay().equals("sex")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    } else if (weekDay[0].equals("Sat")
-                                                            && time.getDay().equals("sab")) {
-                                                        professor.child("dates").child(d.getKey()).child("status").setValue("sim");
-                                                        Date_Time dt = new Date_Time(timePush.getKey(), d.getKey(), time.getDay(), "não");
-                                                        DatabaseReference pushDateTime = professor.child("dateTimes").push();
-                                                        pushDateTime.setValue(dt);
-                                                    }
-                                                }
-                                            }
-                                        } catch (Exception e){
-                                            Toast.makeText(AddTimeActivity.this, e.getMessage(), Toast.LENGTH_LONG).show();;
-                                        }
 
-                                    }
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
-
-                                    }
-                                }
-
-                        );
-
-                    Intent intent = new Intent(this, MyTimesActivity.class);
-                    startActivity(intent);
-                    Toast.makeText(this, "Horário adicionado com sucesso.", Toast.LENGTH_LONG).show();
-                }
-            } catch(EmptyFieldException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            } catch(FieldLenghtException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            } catch(TimeFurtherThanOtherException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            }catch(InvalidTimeException e){
-                Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
-            } catch (Exception e){
-                e.printStackTrace();
+                addTime(time);
             }
+        } catch(EmptyFieldException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch(FieldLenghtException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch(TimeFurtherThanOtherException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch(InvalidTimeException e){
+            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
-        private boolean thereAreEmptyFields (EditText startTime, EditText endTime){
-            if (TextUtils.isEmpty(startTime.getText()) || TextUtils.isEmpty(endTime.getText())) {
-                return true;
-            } else {
-                return false;
-            }
+    public void pushDateTimes(String[] weekDay,String key,Time time, DatabaseReference timePush){
+        if (weekDay[0].equals("Sun")
+                && time.getDay().equals("dom")) {
+            pushDateTime(key,time,timePush);
+        } else if (weekDay[0].equals("Mon")
+                && time.getDay().equals("seg")) {
+            pushDateTime(key,time,timePush);
+        } else if (weekDay[0].equals("Tue")
+                && time.getDay().equals("ter")) {
+            pushDateTime(key,time,timePush);
+        } else if (weekDay[0].equals("Wed")
+                && time.getDay().equals("qua")) {
+            pushDateTime(key,time,timePush);
+        } else if (weekDay[0].equals("Thu")
+                && time.getDay().equals("qui")) {
+            pushDateTime(key,time,timePush);
+        } else if (weekDay[0].equals("Fri")
+                && time.getDay().equals("sex")) {
+            pushDateTime(key,time,timePush);
+        } else if (weekDay[0].equals("Sat")
+                && time.getDay().equals("sab")) {
+            pushDateTime(key,time,timePush);
         }
+    }
 
+    public void pushDateTime(String key, Time time, DatabaseReference timePush){
+        professor.child("dates").child(key).child("status").setValue("sim");
+        Date_Time dt = new Date_Time(timePush.getKey(), key, time.getDay(), "não");
+        DatabaseReference pushDateTime = professor.child("dateTimes").push();
+        pushDateTime.setValue(dt);
+    }
+
+    public boolean invalidTimeTest(Time time, String startTime, String endTime){
+        int myStartTime =
+                Integer.valueOf(time.getStartTime().split(":")[0] +
+                        time.getStartTime().split(":")[1]);
+        int myEndTime =
+                Integer.valueOf(time.getEndTime().split(":")[0] +
+                        time.getEndTime().split(":")[1]);
+        int intStartTime =
+                Integer.valueOf(startTime.split(":")[0] +
+                        startTime.split(":")[1]);
+        int intEndTime =
+                Integer.valueOf(endTime.split(":")[0] +
+                        endTime.split(":")[1]);
+        if (intStartTime >= myStartTime && intStartTime < myEndTime) {
+            return true;
+        } else if (myStartTime >= intStartTime && myStartTime < intEndTime) {
+            return true;
+        } else if (myEndTime > intStartTime && myEndTime <= intEndTime) {
+            return true;
+        } else if (intEndTime > myStartTime && intEndTime <= myEndTime) {
+            return true;
+        }
+        return false;
+    }
+
+    public void addTime(Time time2){
+        final Time time = time2;
+        professor.addListenerForSingleValueEvent(
+            new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    try {
+                        final ArrayList<Boolean> invalidTimeTest = new ArrayList<>();
+                        for (DataSnapshot d : dataSnapshot.child("times").getChildren()) {
+                            String startTime = d.child("startTime").getValue(String.class);
+                            String endTime = d.child("endTime").getValue(String.class);
+                            if (time.getDay().equals(d.child("day").getValue(String.class))) {
+                                if (invalidTimeTest(time,startTime,endTime)) {
+                                    invalidTimeTest.add(invalidTimeTest(time,startTime,endTime));
+                                    throw new AlreadyRegisteredTimeException();
+                                }
+                            }
+                        }
+                        if (!invalidTimeTest.contains(false)) {
+                            DatabaseReference timePush = professor.child("times").push();
+                            timePush.setValue(time);
+                            for (DataSnapshot d : dataSnapshot.child("dates").getChildren()) {
+                                String[] weekDay = d.child("date").getValue().toString().split(" ");
+                                String key = d.getKey();
+                                pushDateTimes(weekDay, key, time, timePush);
+                            }
+                            Intent intent = new Intent(AddTimeActivity.this, MyTimesActivity.class);
+                            startActivity(intent);
+                            Toast.makeText(AddTimeActivity.this, "Horário adicionado com sucesso.", Toast.LENGTH_LONG).show();
+                        }
+                    } catch (AlreadyRegisteredTimeException e){
+                        Toast.makeText(AddTimeActivity.this, e.getMessage(), Toast.LENGTH_SHORT).show();
+                    } catch (Exception e){
+                        e.printStackTrace();
+                    }
+
+                }
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            }
+
+        );
+    }
+
+    private boolean thereAreEmptyFields (EditText startTime, EditText endTime){
+        if (TextUtils.isEmpty(startTime.getText()) || TextUtils.isEmpty(endTime.getText())) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
 }
