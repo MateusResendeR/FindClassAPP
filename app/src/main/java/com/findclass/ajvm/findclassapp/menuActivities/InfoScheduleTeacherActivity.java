@@ -45,7 +45,7 @@ public class InfoScheduleTeacherActivity extends AppCompatActivity {
     private User userS;
     private Date_Status date;
     private String dateTime;
-    private int cancel = 0;
+    private int cancel;
     private Date realDate;
     private TextView textViewSubject;
     private TextView textViewLevel;
@@ -265,7 +265,7 @@ public class InfoScheduleTeacherActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
         catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.getStackTrace();
         }
 
     }

@@ -38,7 +38,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
     private User professor;
     private Subject subject;
     private ScheduleObject schedule;
-    private int cancel = 0;
+    private int cancel;
     private DatabaseReference userRef;
     private DatabaseReference availabilityRef;
     private DatabaseReference scheduleRef;
@@ -268,7 +268,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
         }
         catch (Exception e){
-            Toast.makeText(this, e.getMessage(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
         }
 
     }
