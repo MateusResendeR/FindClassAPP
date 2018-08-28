@@ -238,15 +238,9 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             }
         });
     }
-    public void finish(View view){
-        if (cancel == 1){
-            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
-            scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
-            Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
-            startActivity(intent);
-        }else{
-            Toast.makeText(this, "Você só pode finalizar uma aula cancelada!", Toast.LENGTH_LONG).show();
-        }
+    public void finish(){
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("finish").setValue(1);
+        scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("rating").setValue("1");
     }
 
     public void cancel(View view){
@@ -261,6 +255,7 @@ public class InfoScheduleStudentActivity extends AppCompatActivity {
             if (days >= 2 && cancel == 0) {
                 scheduleRef.child(userP.getId()).child(userS.getId()).child(schedule.getId()).child("cancel").setValue(1);
                 availabilityRef.child(userP.getId()).child("dateTimes").child(dateTime).child("status").setValue("não");
+                finish();
                 Intent intent = new Intent(getBaseContext(), MenuAlunoActivity.class);
                 startActivity(intent);
             } else if (cancel == 1){
