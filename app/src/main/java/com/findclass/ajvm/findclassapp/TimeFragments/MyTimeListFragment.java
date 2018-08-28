@@ -96,10 +96,9 @@ public class MyTimeListFragment extends Fragment {
         timesRef.removeEventListener(valueEventListener);
     }
 
+    //Método que busca no banco todos os horários que me pertencem
     public void retrieveMyTimes(){
         myTimeList.clear();
-
-
 
         DatabaseReference professorTimesRef = rootRef.child("availability");
 
@@ -115,27 +114,7 @@ public class MyTimeListFragment extends Fragment {
                                     timesId.add(d.getKey());
                                 }
 
-                                timesRef = rootRef.child("availability").child(auth.getCurrentUser().getUid()).child("times");
-                                valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
-                                        new ValueEventListener() {
-                                            @Override
-                                            public void onDataChange(DataSnapshot dataSnapshot) {
-                                                for (DataSnapshot time: dataSnapshot.getChildren()){
-                                                    if (timesId.contains(time.getKey())){
-                                                        Time thisTime = time.getValue(Time.class);
-                                                        myTimeList.add(thisTime);
-                                                    }
-                                                }
-
-                                                adapter.notifyDataSetChanged();
-                                            }
-
-                                            @Override
-                                            public void onCancelled(DatabaseError databaseError) {
-                                                //
-                                            }
-                                        }
-                                );
+                                retrieveTimes(timesId);
 
                             }
 
@@ -147,6 +126,29 @@ public class MyTimeListFragment extends Fragment {
                 );
 
         
+    }
+
+    //Método que adiciona os horários do banco na lista
+    public void retrieveTimes(final ArrayList<String> timesId){
+        timesRef = rootRef.child("availability").child(auth.getCurrentUser().getUid()).child("times");
+        valueEventListener = timesRef.orderByChild("startTime").addValueEventListener(
+                new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        for (DataSnapshot time: dataSnapshot.getChildren()){
+                            if (timesId.contains(time.getKey())){
+                                Time thisTime = time.getValue(Time.class);
+                                myTimeList.add(thisTime);
+                            }
+                        }
+                        adapter.notifyDataSetChanged();
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+                        //
+                    }
+                }
+        );
     }
 
 }
