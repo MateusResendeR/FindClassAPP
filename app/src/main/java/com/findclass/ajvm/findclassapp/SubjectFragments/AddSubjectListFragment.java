@@ -48,18 +48,21 @@ public class AddSubjectListFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_add_subject_list, container, false);
 
+        //setar variáveis do firebase;
         auth = FirebaseAuth.getInstance();
         rootRef = FirebaseDatabase.getInstance().getReference();
 
+        //setar o elemento visual da interface;
         recyclerViewAddSubjecs = view.findViewById(R.id.addSubjectsRecyclerView);
 
+        //configurar o adapter
         adapter = new AddSubjectAdapter(subjectsToAdd,getActivity());
-
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerViewAddSubjecs.setLayoutManager(layoutManager);
         recyclerViewAddSubjecs.setHasFixedSize(true);
         recyclerViewAddSubjecs.setAdapter(adapter);
 
+        //configurar o touch para cada uma das disciplinas;
         recyclerViewAddSubjecs
                 .addOnItemTouchListener(
                         new RecyclerItemClickListener(
@@ -88,6 +91,7 @@ public class AddSubjectListFragment extends Fragment {
         return view;
     }
 
+    //função que faz a adição das disciplinas ao currículo do professor;
     private void addSubjectToMe(Subject subject, String uid) {
         professorSubjectsRef
                 .child(uid)
@@ -112,10 +116,13 @@ public class AddSubjectListFragment extends Fragment {
     }
 
     public void retrieveSubjectsToAdd(){
-        //subjectsToAdd.clear();
+        //resetar o arraylist que o adapter gerencia;
+        subjectsToAdd.clear();
 
+        //setar a referência no banco de dados;
         professorSubjectsRef = rootRef.child("professorSubjects");
 
+        //executar a consulta;
         valueEventListener = professorSubjectsRef
                 .child(auth.getCurrentUser().getUid())
                 .addValueEventListener(
@@ -123,10 +130,13 @@ public class AddSubjectListFragment extends Fragment {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 final ArrayList<String> subjectsId = new ArrayList<>();
+
+                                //pegar todos as disciplinas que esse professor já leciona;
                                 for (DataSnapshot d: dataSnapshot.getChildren()){
                                     subjectsId.add(d.getKey());
                                 }
 
+                                //recuperar todas as subjects que o professor não leciona pra possibilitar inserção.
                                 subjectsRef = rootRef.child("subjects");
                                 valueEventListener = subjectsRef.orderByChild("name").addValueEventListener(
                                         new ValueEventListener() {
@@ -134,6 +144,8 @@ public class AddSubjectListFragment extends Fragment {
                                             public void onDataChange(DataSnapshot dataSnapshot) {
                                                 for (DataSnapshot subject: dataSnapshot.getChildren()){
                                                     if (!subjectsId.contains(subject.getKey())){
+
+                                                        //adicionar as disciplinas para o adapter tratar;
                                                         Subject thisSubject = subject.getValue(Subject.class);
                                                         subjectsToAdd.add(thisSubject);
                                                     }
