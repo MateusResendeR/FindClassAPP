@@ -16,8 +16,10 @@ public class MySubjectsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_subjects);
 
+        //Setar o floating button;
         addSubject = findViewById(R.id.addSubjectFloatingActionButton);
 
+        //Método para adicionar disciplina;
         addSubject
                 .setOnClickListener(
                         new View.OnClickListener() {

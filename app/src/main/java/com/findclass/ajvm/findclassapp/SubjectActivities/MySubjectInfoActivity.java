@@ -15,11 +15,8 @@ public class MySubjectInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_my_subject_info);
 
+        //Recuperar os elementos passados entre as Intents;
         Bundle data = getIntent().getExtras();
         subject = (Subject) data.getSerializable("subject");
-
-        Toast.makeText(this, subject.getId(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this, subject.getName(), Toast.LENGTH_LONG).show();
-        Toast.makeText(this, subject.getLevel(), Toast.LENGTH_LONG).show();
     }
 }
