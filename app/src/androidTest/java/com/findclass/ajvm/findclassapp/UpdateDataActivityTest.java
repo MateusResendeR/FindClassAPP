@@ -36,23 +36,33 @@ public class UpdateDataActivityTest {
 
     @Test
     public void whenNameIsEmpty_AndClickFinishUpdateButton_shouldDisplayToast() throws InterruptedException {
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         clearFields();
         testEmptyFieldState(R.id.surnameEditText, R.id.phoneEditText);
     }
 
     @Test
     public void whenSurnameIsEmpty_AndClickFisnishUpdateButton_shouldDisplayToast() throws InterruptedException {
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         clearFields();
         testEmptyFieldState(R.id.nameEditText, R.id.phoneEditText);
     }
 
     @Test
     public void whenPhoneIsEmpty_AndClickFisnishUpdateButton_shouldDisplayToast() throws InterruptedException {
-        Thread.sleep(1500);
+        Thread.sleep(2000);
         clearFields();
         testEmptyFieldState(R.id.nameEditText, R.id.surnameEditText);
+    }
+
+    @Test
+    public void whenAllFieldsAreFilled_butPhoneNumberIsNotValid_ShouldDisplayToast() throws InterruptedException {
+        Thread.sleep(2000);
+        onView(withId(R.id.phoneEditText)).perform(clearText());
+        onView(withId(R.id.phoneEditText)).perform(typeText("12345"));
+        closeSoftKeyboard();
+        onView(withId(R.id.finishUpdateData)).perform(click());
+        onView(withText(R.string.INVALID_PHONE_TOAST)).inRoot(withDecorView(not(mActivityRule.getActivity().getWindow().getDecorView()))).check(matches(isDisplayed()));
     }
 
     private void clearFields(){
