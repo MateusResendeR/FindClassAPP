@@ -35,6 +35,7 @@
     <string name="title_activity_subjects_of_level">Disciplinas</string>
     <string name="title_activity_my_calendar_professor">Meu Calendário</string>
     <string name="title_activity_my_times">Meus Horários</string>
+    <string name="INVALID_PHONE_TOAST">Telefone inválido!</string>
 
     <string-array name="day_arrays">
         <item>dom</item>
